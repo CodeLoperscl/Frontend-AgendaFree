@@ -38,19 +38,23 @@ const configuracionesCalendario = ref(
     },
   ]
 );
-
 const nuevaCita = ref({
   "fecha": null,
   "paciente_id": storePaciente.getPaciente().paciente.id,
   "prevision_id": storePaciente.getPaciente().paciente.prevision_id,
   "hora_id": null
 });
+//TOken
+const token = {
+  headers: {
+    "x-token": sessionStorage.getItem("token")
+  }
+};
 
 console.log('store desde reserva de hora: ', dataEspecialista.especialista.profesionales);
 
-
 const getHorarios = () =>{
-  axios.get(API_ESPECIALISTA+"api/hora_disponible")
+  axios.get(API_ESPECIALISTA+"api/hora_disponible",token)
     .then((response)=>{
       if(response){
         horariosEspecialista.value = response.data.horas_disponibles;
@@ -64,7 +68,7 @@ const getHorarios = () =>{
 
 
 const getPrevisiones = () =>{
-  axios.get(API_ESPECIALISTA + "prevision")
+  axios.get(API_ESPECIALISTA + "prevision", token)
     .then((response) =>{
       if(response){
         previsiones.value = response.data.previsiones.filter(prevision => prevision.estado_id === 3);
@@ -141,7 +145,7 @@ const reservarCita = () =>{
   }).then((result) => {
     if (result.isConfirmed) {
       // Acción a realizar si el usuario confirma
-      axios.post(API_ESPECIALISTA+"api/cita",nuevaCita.value)
+      axios.post(API_ESPECIALISTA+"api/cita",nuevaCita.value, token)
         .then((response)=>{
           if(response){
             console.log(response);
@@ -207,7 +211,7 @@ const getCitas = () =>{
     date.value = format(date.value, "yyyy-MM-dd");
     nuevaCita.value.fecha = date.value;
     //Cargo todas las citas para el especialista con id 1 en la fecha seleccionada en el calendario
-    axios.get(API_ESPECIALISTA+"api/cita/esp_date/"+1+"/"+date.value)
+    axios.get(API_ESPECIALISTA+"api/cita/esp_date/"+1+"/"+date.value, token)
      .then((response)=>{
       //citas deel especialista del dia seleccionado
        citasEspecialista.value = response.data.allCitasFecha;

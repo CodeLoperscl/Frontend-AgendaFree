@@ -1,13 +1,20 @@
 <script setup>
-import { defineEmits, ref, watch, onBeforeMount, onMounted, onBeforeUpdate } from "vue";
+import { ref, watch, onBeforeMount, onMounted, onBeforeUpdate, reactive} from "vue";
 import ModalComponent from "../componentes/ModalDatosPacientes.vue";
 import { useRoute, useRouter } from "vue-router";
 import inputRut  from '../componentes/inputRut.vue';
-import { reactive } from "vue";
 import axios from "axios";
 import { useEspecialistaDatos, useUrlApiEspecialista } from "../../stores/store";
 import LoadingSpinner from "../../Component/LoadingSpinner.vue";
 
+
+//Usuario visita
+const usuarioVista = reactive({
+  "username": "visita",
+  "password": "2843bc16"
+});
+//token
+const token = ref(null);
 const isLoading = ref(true);
 const storeEspecialista = useEspecialistaDatos();
 const storeAPIEspecialista = useUrlApiEspecialista();
@@ -45,33 +52,52 @@ const guardarDatos = () => {
   console.log("Hola desde cerrar modal");
 };
 
-const getEspecialista = () => {
-  axios.get(API_GENERAL + "users/uid/"+uid)
-  .then((response)=>{
-    if(response){
-      if(response.data.personas[0].profesionales[0].habilitado == true){
-        if(response.data.personas[0].profesionales[0].ruta_api){
-          storeAPIEspecialista.setUrl(response.data.personas[0].profesionales[0].ruta_api);
-          //console.log(storeAPIEspecialista.url);
-          dataEspecialista.value = response.data;
-        }else{
-          router.push({ path: '/error' });
-        }
-      }else{
-        router.push({ path: '/error' }); 
-      }
-    }else{
-      router.push({ path: '/error' });
+const getEspecialista = async () => {
+  console.log("token desde getEspecialista", token.value);
+  try {
+    const response = await axios.get(`${API_GENERAL}users/uid/${uid}`, token.value);
+    
+    if (!response || !response.data) {
+      throw new Error('No se recibieron datos');
     }
-  })
-  .catch((error)=>{
-    console.log(error);
+
+    const profesional = response.data.personas[0]?.profesionales[0];
+    
+    if (!profesional || !profesional.habilitado || !profesional.ruta_api) {
+      throw new Error('Profesional no válido o no habilitado');
+    }
+
+    storeAPIEspecialista.setUrl(profesional.ruta_api);
+    dataEspecialista.value = response.data;
+  } catch (error) {
+    console.error('Error al obtener datos del especialista:', error);
     router.push({ path: '/error' });
-  });
+  }
 }
 
-onBeforeMount(()=>{
-  getEspecialista();
+const autoLogin = async () => {
+  try {
+    const response = await axios.post(`${API_GENERAL}auth/login`, usuarioVista);
+    if (response) {
+      sessionStorage.setItem("token", response.data.token);
+      token.value = {
+        headers: {
+          "x-token": response.data.token
+        }
+      }
+      console.log('Usuario autenticado:', response.data.token);
+    } else {
+      console.error('Error al autenticar al usuario:', response.data);
+    }
+  } catch (error) {
+    console.error('Error al autenticar al usuario:', error);
+    router.push({ path: '/error' });
+  }
+}
+
+onBeforeMount(async ()=>{
+  await autoLogin();
+  await getEspecialista();
   //isLoading.value = false;
 });
 onBeforeUpdate(()=>{
@@ -122,6 +148,12 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  <ModalComponent
+    :isOpen="modal"
+    :rut = "rutPaciente"
+    @modal-close="closeModal"
+    @submit-data="guardarDatos"
+  ></ModalComponent>
 </template>
 
 <style lang="scss">
