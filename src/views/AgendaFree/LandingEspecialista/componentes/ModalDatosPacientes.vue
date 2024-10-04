@@ -16,13 +16,19 @@ const showReservarHora = ref(false);
 const router = useRouter();
 const tipoCampo = ref("RUT");
 const previsionSeleccionada = ref(0);
-const previsionDisponible = ref();
+const previsionDisponible = ref({});
+const nacionalidadesDisponibles = ref({});
 //API 
 const API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
 const API_ESPECIALISTA = import.meta.env.VITE_URL_API_ESPECIALISTA;
+//Token
+const token = {
+  headers: {
+    "x-token": sessionStorage.getItem("token")
+  }
+};
 
 const togglecomponent = async () => {
-
   const isValid = await v$.value.$validate();
   if (!isValid) {
     // Mostrar errores si la validación falla
@@ -48,15 +54,17 @@ const paciente = reactive({
   nombre: null,
   email: null,
   fono: null,
-  nacionalidad: computed(()=>{
-    //Chileno
-    if(store.sharedData == 0){
-      return 1;
-    }else{
-      //Nacionalidad...
-      return 0;
-    };
-  })
+  nacionalidad: 0 // Valor inicial
+});
+
+// Creamos una propiedad computada separada para nacionalidad
+const nacionalidadComputed = computed(() => {
+  return store.sharedData === 0 ? 1 : 0;
+});
+
+// Observamos los cambios en nacionalidadComputed y actualizamos paciente.nacionalidad
+watch(nacionalidadComputed, (newValue) => {
+  paciente.nacionalidad = newValue;
 });
 
 // Reglas de validación
@@ -89,10 +97,11 @@ const reglas = computed(() => ({
 //Inicializar Vuevalidate
 const v$ = useVuelidate(reglas, paciente)
 
-function sendData() {
-  // Enviar datos a API
-  emit("submit-data");
-}
+// function sendData() {
+//   // Enviar datos a API
+//   emit("submit-data");
+// }
+
 watch(() => store.sharedData, (newVal) => {
   if (newVal == 1) {
     tipoCampo.value = "DNI";
@@ -132,7 +141,8 @@ const registrarPaciente = () =>{
     console.log("Nuevo paciente extranjero: ",nuevaPersonaExtranjera);
   }
   console.log(API_GENERAL+"persona", store.sharedData == 0 ? nuevaPersonaChilena.value : nuevaPersonaExtranjera.value);
-  axios.post(API_GENERAL+"persona", store.sharedData == 0 ? nuevaPersonaChilena.value : nuevaPersonaExtranjera.value)
+  console.log("token desde ModalDatosPacientes", token);
+  axios.post(API_GENERAL+"persona", store.sharedData == 0 ? nuevaPersonaChilena.value : nuevaPersonaExtranjera.value, token)
     .then((response)=>{
       if(response){
         dataPaciente.value = response.data;
@@ -152,7 +162,7 @@ const registrarPaciente = () =>{
 }
 
 const getDataPrevisiones = () =>{
-  axios.get(API_ESPECIALISTA + "/prevision")
+  axios.get(API_ESPECIALISTA + "/prevision", token)
     .then((response) =>{
       if(response){
         previsionDisponible.value = response.data.previsiones.filter(prevision => prevision.estado_id === 3);
@@ -164,9 +174,8 @@ const getDataPrevisiones = () =>{
       }
     });
 }
-const nacionalidadesDisponibles = ref();
 const getDataNacionalidades = () =>{
-  axios.get(API_GENERAL + "/nacionalidad")
+  axios.get(API_GENERAL + "/nacionalidad", token)
     .then((response) =>{
       if(response){
         nacionalidadesDisponibles.value = response.data.nacionalidades.filter(nacionalidad => nacionalidad.estado_id === 1);

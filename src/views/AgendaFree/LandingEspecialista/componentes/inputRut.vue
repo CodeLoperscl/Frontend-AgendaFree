@@ -35,9 +35,9 @@ const dataPaciente = ref();
 
 //TOKEN
 const token = {
-    headers: {
-        "x-token": localStorage.getItem("Token"),
-    },
+  headers: {
+    "x-token": sessionStorage.getItem("token")
+  }
 };
 
 
@@ -90,24 +90,25 @@ const arrayTipo = [
 //         })
 // }
 const getPaciente = async (identificador) => {
-    isLoading.value = true;
-    axios.get(URL_API_GENERAL + "persona/rut/" + identificador)
-    .then((response)=>{
-        if(response){
-            dataPaciente.value = response.data.paciente;
-            console.log(dataPaciente.value);
-            storePaciente.setPaciente(dataPaciente.value);
-            storePersonaPaciente.setPersona(response.data);
-            console.log("store paciente: ", storePaciente.getPaciente());
-            router.push({ name: 'modulo-reserva'});
-            isLoading.value = false;
-        }
-    })
-    .catch((error)=>{
-        console.log("Error: ", error);
-        isLoading.value = false;
-        emitAbrirModal();
-    });
+  isLoading.value = true;
+  console.log("token desde Input", token);
+  axios.get(`${URL_API_GENERAL}persona/rut/${identificador}`, token)
+  .then((response)=>{
+      if(response){
+          dataPaciente.value = response.data.paciente;
+          console.log(dataPaciente.value);
+          storePaciente.setPaciente(dataPaciente.value);
+          storePersonaPaciente.setPersona(response.data);
+          console.log("store paciente: ", storePaciente.getPaciente());
+          router.push({ name: 'modulo-reserva'});
+      }
+  })
+  .catch((error)=>{
+      console.log("Error: ", error);
+      emitAbrirModal();
+  }).finally(()=>{
+    isLoading.value = false;
+  });
 
     // try {
     //     const buscarPersona = await axios.get(URL_API_GENERAL + "persona/rut/" + identificador);

@@ -27,7 +27,6 @@ store.mainContent({ mode: "full" });
         :to="{ name: 'landing' }"
         class="logo-link d-flex align-items-center"
       >
-        <img src="@/assets/images/logo.svg" alt="AgendaFree Logo" class="me-2" width="32" height="32">
         <span class="logo-text">
           Agenda<span class="fw-light">Free</span>
         </span>
