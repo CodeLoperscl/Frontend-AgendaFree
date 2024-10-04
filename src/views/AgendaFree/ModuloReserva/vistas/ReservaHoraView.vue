@@ -375,7 +375,7 @@ onBeforeMount(async ()=>{
     background-color: #1f2937;
     color: #FAFAFA;
     &:hover {
-      color: #FAFAFA;
+      
         background-color: darken(#3d5770, 10%);
     }
 }
