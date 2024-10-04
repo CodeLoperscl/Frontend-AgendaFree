@@ -1,4 +1,5 @@
 <script setup>
+// El código JavaScript se mantiene igual
 import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import Swal from 'sweetalert2';
@@ -9,7 +10,7 @@ import { useEspecialistaDatos, useUrlApiEspecialista, usePacienteDatos, usePerso
 import axios from "axios";
 import LoadingSpinner  from "../../Component/LoadingSpinner.vue";
 
-//Variables
+// Variables
 const previsiones = ref({});
 const storePersonaPaciente = usePersonaPacienteDatos();
 const storeAPIEspecialista = useUrlApiEspecialista();
@@ -30,11 +31,10 @@ const configuracionesCalendario = ref(
       highlight: true,
       key: 'today',
       highlight: {
-        color: 'blue',
+        color: '#16A085',
         fillMode: 'light',
         contentClass: 'italic',
       },
-      
     },
   ]
 );
@@ -48,7 +48,6 @@ const nuevaCita = ref({
 
 console.log('store desde reserva de hora: ', dataEspecialista.especialista.profesionales);
 
-
 const getHorarios = () =>{
   axios.get(API_ESPECIALISTA+"api/hora_disponible")
     .then((response)=>{
@@ -61,7 +60,6 @@ const getHorarios = () =>{
       console.log(e);
     });
 }
-
 
 const getPrevisiones = () =>{
   axios.get(API_ESPECIALISTA + "prevision")
@@ -82,11 +80,9 @@ const generarOpciones = () =>{
   return previsiones.value.map(opcion => 
   `<option value="${opcion.value}">${opcion.label}</option>`
   ).join('');
-
 }
 
 const reservarCita = () =>{
-
   console.log("store desde reservar citaL",storePersonaPaciente.getPersona());
   Swal.fire({
   html:
@@ -122,7 +118,6 @@ const reservarCita = () =>{
         <select class="form-select">
         ${{generarOpciones}}
         </select>
-        
       </div>
 
       <div class="mb-3">
@@ -136,21 +131,20 @@ const reservarCita = () =>{
   showCancelButton: true,
   confirmButtonText: 'Confirmar',
   cancelButtonText: 'Cancelar',
-  confirmButtonColor: '#069fba',
-  cancelButtonColor: '#d33'
+  confirmButtonColor: '#16A085',
+  cancelButtonColor: '#95A5A6'
   }).then((result) => {
     if (result.isConfirmed) {
-      // Acción a realizar si el usuario confirma
       axios.post(API_ESPECIALISTA+"api/cita",nuevaCita.value)
         .then((response)=>{
           if(response){
             console.log(response);
             Swal.fire({
-              title: 'Cita agendada con exito!',
+              title: 'Cita agendada con éxito!',
               text: 'En espera de confirmación del especialista',
               icon: 'success',
               confirmButtonText: 'Aceptar',
-              confirmButtonColor: '#069fba'
+              confirmButtonColor: '#16A085'
             });
             horariosEspecialista.value.some((horario)=>{
               if(horario.id == nuevaCita.value.hora_id){
@@ -160,30 +154,26 @@ const reservarCita = () =>{
               console.log("Cita reservada con id: ", horario.id);
             });
           }
-          
         }).catch((e)=>{
           console.log(e);
         })
     } else if (result.isDismissed) {
-      // Acción a realizar si el usuario cancela
       Swal.fire({
         title: 'Reserva de cita cancelada',
         text: 'Tu cita ha sido cancelada. Si necesitas reprogramar, por favor contáctanos.',
         icon: 'info',
         confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#069fba'
+        confirmButtonColor: '#16A085'
       });
     }
   });
 }
-
 
 const seleccionarHorario = (id, horario) =>{
   idHorarioSeleccionado.value = id
   horarioSeleccionado.value = horario
   solicitarHoraBtnEstado.value = false;
   console.log("id horario seleccionado: ", idHorarioSeleccionado.value);
-  //console.log("horario seleccionado: ", horarioSeleccionado.value);
   nuevaCita.value.hora_id = id;
   console.log(nuevaCita.value);
 }
@@ -195,24 +185,17 @@ const fechaMaxima = () =>{
 }
 
 const getCitas = () =>{
-  console.log('Miaxmos dias de atencion: ', dataEspecialista.especialista.profesionales[0].max_dias_atencion);
-  //Habilito el boton para solicitar hora
+  console.log('Máximos días de atención: ', dataEspecialista.especialista.profesionales[0].max_dias_atencion);
   solicitarHoraBtnEstado.value = true;
-  //Si hay fecha seleccionada en el calendario...
   if(date.value != null){
-    //Abrir spinner de carga
     isLoading.value = true;
-    //Capturo el dia seleccionado para el template
     diaSeleccionado.value = format(date.value, "dd-MM-yyyy");
     date.value = format(date.value, "yyyy-MM-dd");
     nuevaCita.value.fecha = date.value;
-    //Cargo todas las citas para el especialista con id 1 en la fecha seleccionada en el calendario
     axios.get(API_ESPECIALISTA+"api/cita/esp_date/"+1+"/"+date.value)
      .then((response)=>{
-      //citas deel especialista del dia seleccionado
        citasEspecialista.value = response.data.allCitasFecha;
        console.log("Citas especialista",citasEspecialista.value);
-       //Cierro spinner de carga y cargo los horarios libres
        horasDisponiblesPorDia();
        isLoading.value = false;
      })
@@ -220,13 +203,11 @@ const getCitas = () =>{
        console.log(e);
        isLoading.value = false;
      });
-    //Si date.value es null, o sea, no hay fecha seleccionada en el calendario
-    //Las horas estaran bloqueadas
   }else{
     horariosEspecialista.value.forEach((horario)=>{ horario.agendado = true; });
   }
 }
-//Realizo el mappeo con la logica necesaria para obtener las horas libres para el dia seleccionado en el calendario
+
 const horasDisponiblesPorDia = () =>{
   if(citasEspecialista.value.length === 0){
     horariosEspecialista.value.forEach((horario)=>{ horario.agendado = false;});
@@ -244,118 +225,255 @@ onBeforeMount(async ()=>{
   await getCitas();
 });
 
-
 </script>
 
 <template>
-
-    <LoadingSpinner :isLoading="isLoading" />
-    <div class="row pt-3 py-md-5 my-md-3">
-        <div
-          class="col-xl-4 offset-xl-2 pt-2 bg-info  text-center"
-          style="padding-bottom: 25%"
-        >
-          <h2 class="text-white">
-            ¿En qué fecha deseas solicitar reunión con
-            <span class="fst-italic fw-light"> {{ dataEspecialista.especialista.nombre + " " + dataEspecialista.especialista.apellido}}</span>
-          </h2>
-          <div class="calendar-container">
-            <DatePicker 
-              locale= 'es-MX'
-              class="calendar"
-              v-model="date"
-              color="blue"
-              :attributes="configuracionesCalendario"
-              :min-date="new Date()"
-              :max-date="fechaMaxima()"
-              @dayclick="getCitas()"
-              expanded
-              borderless
-              transparent
-            />
-          </div>
-        </div>
-        <div class="col-lg-8 col-xl-4 p-5 border border-primary">
-          <p v-if="date != null">
-            ¿A qué hora te gustaría agendar tu cita? Aquí están los horarios disponibles para el día
-            <span class="fw-bold">{{ diaSeleccionado }}</span>
-          </p>
-          <p v-else>
-            {{ "¿Qué día te gustaría agendar tu cita con el Dr./Dra. "+ dataEspecialista.especialista.nombre + " " + dataEspecialista.especialista.apellido+"? Selecciona una fecha disponible."}}
-          </p>
-          <div class="d-grid gap-2">
-            <button
-              v-for="horario in horariosEspecialista"
-              :key="horario.id"
-              :id=horario.id
-              type="button"
-              :class="['btn', 'py-2', 'mb-2', horario.estado ? 'btn-primary' : 'btn-outline-primary']"
-              data-toggle="click-ripple"
-              :disabled="horario.agendado"
-              @click="seleccionarHorario(horario.id, horario.hora)"
-            >
-              {{ horario.hora }}
-            </button>
-            <button 
-              class="btn btn-info js-click-ripple-enabled py-2 mb-2"
-              @click="reservarCita"
-              :disabled="solicitarHoraBtnEstado"
-              >Solicitar Hora
-            </button>
-          </div>
+    <div class="d-flex justify-content-center align-items-center vh-100" transition-style="in:circle:hesitate">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 mb-4 d-flex">
+                    <div class="card shadow h-100 flex-grow-1 d-flex flex-column">
+                        <div class="card-body bg-teal text-ivory d-flex flex-column justify-content-between">
+                            <h2 class="card-title text-center mb-4 fw-bold">
+                                Agenda tu cita con
+                                <img src="/assets/media/avatars/avatar0.jpg" alt="Imagen" class="my-2" style="max-width: 100px; display: block; margin: 0 auto;">
+                                <span class="fst-italic fw-light d-block mt-2">{{ dataEspecialista.especialista.nombre + " " + dataEspecialista.especialista.apellido}}</span>
+                            </h2>
+                            <div class="calendar-wrapper flex-grow-1 d-flex align-items-center">
+                                <DatePicker 
+                                    locale= 'es-MX'
+                                    class="calendar w-100"
+                                    v-model="date"
+                                    color="#16A085"
+                                    :attributes="configuracionesCalendario"
+                                    :min-date="new Date()"
+                                    :max-date="fechaMaxima()"
+                                    @dayclick="getCitas()"
+                                    expanded
+                                    borderless
+                                    transparent
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   <div class="col-lg-6 mb-4 d-flex">
+                    <div class="card shadow h-100 flex-grow-1 d-flex flex-column">
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="card-title text-navy mb-4 fw-bold" v-if="date != null">
+                                Horarios disponibles para el <span class="text-teal">{{ diaSeleccionado }}</span>
+                            </h3>
+                            <h3 class="card-title text-navy mb-4 fw-bold" v-else>
+                                Selecciona una fecha para ver los horarios disponibles
+                            </h3>
+                            <div class="row g-3 flex-grow-1">
+                                <div class="col-6" v-for="horario in horariosEspecialista" :key="horario.id">
+                                    <button
+                                        :id="horario.id"
+                                        type="button"
+                                        :class="['btn', 'w-100', 'py-2', horario.estado ? 'btn-teal' : 'btn-outline-teal']"
+                                        :disabled="horario.agendado"
+                                        @click="seleccionarHorario(horario.id, horario.hora)"
+                                    >
+                                        {{ horario.hora }}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center mt-4">
+                                <button 
+                                    class="btn btn-navy btn-small fw-bold"
+                                    @click="reservarCita"
+                                    :disabled="solicitarHoraBtnEstado"
+                                >
+                                    Solicitar Hora
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <style lang="scss">
-
 .vc-disabled {
-    pointer-events: none; /* Desactiva los eventos del puntero, haciendo el elemento no clickeable */
-    cursor: default; /* Cambia el cursor a una flecha estándar para indicar que no es interactivo */
+    pointer-events: none;
+    cursor: default;
 }
-
-
-/* Cambiar color de los días no seleccionables a rojo */
 
 .vc-pane-container {
-  transform: scale(1); /* Escala el tamaño del calendario junto con el fondo */ /* Mantén el calendario anclado en la esquina superior izquierda */
+    transform: scale(0.95);
 }
-
 
 .vc-day, .vc-day-content {
-  font-size: 1.8rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  color: white;
-  padding: 10px;
-  /* Aumenta el tamaño del texto en los días del calendario */
+    font-size: 1.1rem;
+    color: #16A085;
+    font-weight: 500;
 }
 
-/* Opcional: ajustar el tamaño del contenedor del calendario para evitar que se corte */
 .vc-container {
-  width: 100%;
-  height: 300px;
+    width: 100%;
+    border: none;
+    background: transparent;
 }
 
-.vc-highlight{
-  width: 50px;
-  height: 50px;
-}
-.vc-weekday{
-  font-size: 1.3rem;
-  color: white;
-  margin-top: 50px;
-}
-.vc-title{
-  background-color: #0891B2;
-  color: white;
-}
-.vc-header .vc-title{
-  color: white;
-  font-size: 1.8rem;
+.vc-highlight {
+    width: 38px;
+    height: 38px;
 }
 
+.vc-weekday {
+    font-size: 1rem;
+    color: #16A085;
+    font-weight: 600;
+}
 
+.vc-title {
+    background-color: transparent;
+    color: #FAFAFA;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
 
+.bg-teal {
+    background-color: #D1F2EB;
+}
 
+.text-ivory {
+    color: #FAFAFA;
+}
+
+.text-navy {
+    color: #2C3E50;
+}
+
+.text-teal {
+    color: #16A085;
+}
+
+.btn-teal {
+    background-color: #16A085;
+    color: #FAFAFA;
+    font-weight: 600;
+    &:hover {
+        background-color: darken(#16A085, 10%);
+    }
+}
+
+.btn-outline-teal {
+    border-color: #16A085;
+    color: #16A085;
+    font-weight: 600;
+    &:hover {
+        background-color: #16A085;
+        color: #FAFAFA;
+    }
+}
+
+.btn-navy {
+    background-color: #1f2937;
+    color: #FAFAFA;
+    &:hover {
+      color: #FAFAFA;
+        background-color: darken(#3d5770, 10%);
+    }
+}
+
+body {
+    background-color: #E8F6F3;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+}
+
+.btn {
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+}
+
+.card-body {
+    padding: 2rem;
+    flex-grow: 1;
+}
+
+h2, h3 {
+    letter-spacing: 0.5px;
+}
+
+.card-title {
+    color: #16A085; // Cambia este valor al color deseado
+}
+
+.row.g-3.flex-grow-1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; // Centra los botones
+    gap: 0.5rem; // Espacio reducido entre botones
+}
+
+.col-6 {
+    flex: 0 0 85%; // Ajusta el ancho para que quepan mejor
+    margin-bottom: 0.5rem; // Espaciado uniforme entre filas
+}
+
+.btn {
+    width: 100%;
+    height: 45px; // Altura uniforme para todos los botones
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0; // Elimina margen inferior adicional
+}
+
+.btn-small {
+    width: auto; // Ajusta el ancho automáticamente
+    padding: 0.5rem 1rem; // Ajusta el padding para un tamaño más pequeño
+}
+
+.vh-100 {
+    height: 100vh; // Ocupa toda la altura de la pantalla
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+@keyframes circle-in-hesitate {
+  0% {
+    clip-path: circle(0%);
+  }
+  40% {
+    clip-path: circle(40%);
+  }
+  100% {
+    clip-path: circle(125%);
+  }
+}
+
+[transition-style="in:circle:hesitate"] {
+  animation: 2.5s cubic-bezier(.25, 1, .30, 1) circle-in-hesitate both;
+}
 </style>

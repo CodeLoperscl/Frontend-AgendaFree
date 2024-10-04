@@ -95,6 +95,15 @@ onMounted(() => {
 
 <template>
   <LoadingSpinner :isLoading="isLoading" />
+  <div v-if="isLoading" class="spinner-overlay">
+    <div class="loader">
+      <div class="orbe" style="--index: 0"></div>
+      <div class="orbe" style="--index: 1"></div>
+      <div class="orbe" style="--index: 2"></div>
+      <div class="orbe" style="--index: 3"></div>
+      <div class="orbe" style="--index: 4"></div>
+    </div>
+  </div>
   <div class="hero d-flex align-items-center justify-content-center">
     <div class="animated-background">
       <div class="shape shape-1"></div>
@@ -211,6 +220,152 @@ $verde-pastel: #D1F2EB;
   }
   50% {
     transform: translateY(50px) rotate(180deg);
+  }
+}
+
+h1 {
+  font-size: 3rem;
+  color: $azul-marino;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: $gris-acero;
+  margin-bottom: 3rem;
+}
+
+.bg-card {
+  background-color: $verde-pastel;
+  padding: 3rem !important;
+}
+
+.input-container {
+  margin-top: 2rem;
+}
+
+.text-primary {
+  color: $verde-azulado !important;
+}
+
+.text-dark {
+  color: $azul-marino !important;
+}
+
+:deep(.input-group) {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+:deep(.form-control) {
+  flex: 1;
+  font-size: 1.5rem;
+  height: 70px;
+  padding: 1rem 1.5rem;
+  border: 2px solid $verde-azulado;
+}
+
+:deep(.btn-primary) {
+  min-width: 200px;
+  height: 70px;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  background-color: $verde-azulado;
+  border-color: $verde-azulado;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken($verde-azulado, 10%);
+    border-color: darken($verde-azulado, 10%);
+  }
+}
+
+// Ajustes adicionales para dispositivos móviles
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 3rem 1.5rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .bg-card {
+    padding: 2rem !important;
+  }
+
+  :deep(.input-group) {
+    flex-direction: column;
+  }
+
+  :deep(.form-control),
+  :deep(.btn-primary) {
+    width: 100%;
+    margin-top: 1rem;
+    height: 60px;
+    font-size: 1.25rem;
+  }
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($blanco-marfil, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader {
+  --size-loader: 50px;
+  --size-orbe: 10px;
+  width: var(--size-loader);
+  height: var(--size-loader);
+  position: relative;
+  transform: rotate(45deg);
+}
+
+.orbe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  --delay: calc(var(--index) * 0.1s);
+  animation: orbit7456 ease-in-out 1.5s var(--delay) infinite;
+  opacity: calc(1 - calc(0.2 * var(--index)));
+}
+
+.orbe::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: var(--size-orbe);
+  height: var(--size-orbe);
+  background-color: $verde-azulado;
+  box-shadow: 0px 0px 20px 2px $verde-azulado;
+  border-radius: 50%;
+}
+
+@keyframes orbit7456 {
+  0% {
+  }
+
+  80% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
