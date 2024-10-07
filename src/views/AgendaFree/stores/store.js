@@ -80,12 +80,17 @@ export const usePacienteDatos = defineStore('datosPaciente', () => {
   const setPaciente = (datos) => {
     paciente.value = datos;
   };
+  
+  const setPacientePrevision = (datos) => {
+    paciente.value.prevision_id = datos;
+  };
 
   const clearPaciente = () => {
     paciente.value = {};
   };
 
   return {
+    setPacientePrevision,
     getPaciente,
     setPaciente,
     clearPaciente
@@ -105,11 +110,21 @@ export const usePersonaPacienteDatos = defineStore('datosPersona', () => {
     persona.value = datos;
   };
 
+  // Acciones para actualizar los datos
+  const setPersonaFono = (datos) => {
+    persona.value.persona.fono = datos;
+  };
+  const setPersonaEmail= (datos) => {
+    persona.value.persona.email = datos;
+  };
+
   const clearPersona = () => {
     persona.value = {};
   };
 
   return {
+    setPersonaFono,
+    setPersonaEmail,
     getPersona,
     setPersona,
     clearPersona

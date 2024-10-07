@@ -38,6 +38,8 @@
     "@popperjs/core": "^2.11.8",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "@tiptap/vue-3": "^2.0.0-beta.90",
+    "@tsparticles/slim": "^3.5.0",
+    "@tsparticles/vue3": "^3.0.1",
     "@vueform/slider": "^2.0.9",
     "@vuelidate/core": "^2.0.0-alpha.34",
     "@vuelidate/validators": "^2.0.0-alpha.26",
@@ -63,7 +65,8 @@
     "vue-flatpickr-component": "^9.0.5",
     "vue-router": "^4.0.14",
     "vue-select": "^4.0.0-beta.3",
-    "vue-star-rating": "^2.1.0"
+    "vue-star-rating": "^2.1.0",
+    "vue3-particles": "^2.12.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.4",

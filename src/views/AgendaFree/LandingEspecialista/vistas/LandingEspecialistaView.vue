@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, onBeforeMount, onMounted, onBeforeUpdate, reactive} from "vue";
-import ModalComponent from "../componentes/ModalDatosPacientes.vue";
+// import ModalComponent from "../componentes/ModalDatosPacientes.vue";
 import { useRoute, useRouter } from "vue-router";
 import inputRut  from '../componentes/inputRut.vue';
 import axios from "axios";
@@ -28,7 +28,7 @@ const persona = ref(
     apellido: '',
   });
 const rutPaciente = ref(null);
-const modal = ref(false);
+// const modal = ref(false);
 const route = useRoute();
 const router = useRouter();
 // Con el uid traere los datos del especialista
@@ -36,21 +36,21 @@ const uid = route.params.uid
 const dataEspecialista = ref([]);
 const API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
 
-const closeModal = () => {
-  modal.value = false;
-  //router.push({ name: 'agenda'});
-};
-const openModal = (data) => {
-  rutPaciente.value = data;
-  modal.value = true;
-  console.log("data", rutPaciente.value);
-}
+// const closeModal = () => {
+//   modal.value = false;
+//   //router.push({ name: 'agenda'});
+// };
+// const openModal = (data) => {
+//   rutPaciente.value = data;
+//   modal.value = true;
+//   console.log("data", rutPaciente.value);
+// }
 
-const guardarDatos = () => {
-  closeModal();
-  //session.value = dataEspecialista.value.nombre;
-  console.log("Hola desde cerrar modal");
-};
+// const guardarDatos = () => {
+//   closeModal();
+//   //session.value = dataEspecialista.value.nombre;
+//   console.log("Hola desde cerrar modal");
+// };
 
 const getEspecialista = async () => {
   console.log("token desde getEspecialista", token.value);
@@ -95,10 +95,10 @@ const autoLogin = async () => {
   }
 }
 
+
 onBeforeMount(async ()=>{
   await autoLogin();
   await getEspecialista();
-  //isLoading.value = false;
 });
 onBeforeUpdate(()=>{
   isLoading.value = false;
@@ -110,6 +110,78 @@ watch(dataEspecialista, (newValue) => {
   persona.value = personaData;
   storeEspecialista.setEspecialista(persona.value)
   console.log("store especialista: ",storeEspecialista.especialista)
+});
+
+const particlesOptions = ref({
+  background: {
+    color: {
+      value: '#ffffff'
+    }
+  },
+  fpsLimit: 120,
+  interactivity: {
+    events: {
+      onClick: {
+        enable: true,
+        mode: 'push'
+      },
+      onHover: {
+        enable: true,
+        mode: 'repulse'
+      },
+    },
+    modes: {
+      bubble: {
+        distance: 400,
+        duration: 2,
+        opacity: 0.8,
+        size: 40
+      },
+      push: {
+        quantity: 4
+      },
+      repulse: {
+        distance: 200,
+        duration: 0.4
+      }
+    }
+  },
+  particles: {
+    color: {
+      value: '#16A085'
+    },
+    links: {
+      color: '#ffff',
+      distance: 150,
+      enable: true,
+      opacity: 0.5,
+      width: 1
+    },
+    move: {
+      direction: 'none',
+      enable: true,
+      outModes: 'bounce',
+      random: false,
+      speed: 6,
+      straight: false
+    },
+    number: {
+      density: {
+        enable: true,
+      },
+      value: 80
+    },
+    opacity: {
+      value: 0.5
+    },
+    shape: {
+      type: 'circle'
+    },
+    size: {
+      value: { min: 1, max: 5 }
+    }
+  },
+  detectRetina: true
 });
 
 onMounted(() => {
@@ -149,7 +221,7 @@ onMounted(() => {
                 Para solicitar una hora de atención, ingrese su RUT y presione continuar.
               </p>
               <div class="input-container">
-                <inputRut @abrirModal="openModal" />
+                <inputRut />
               </div>
             </div>
           </div>
@@ -157,12 +229,17 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <ModalComponent
+  <!-- <ModalComponent
     :isOpen="modal"
     :rut = "rutPaciente"
     @modal-close="closeModal"
     @submit-data="guardarDatos"
-  ></ModalComponent>
+  ></ModalComponent> -->
+  <vue-particles
+    id="tsparticles"
+    :options="particlesOptions"
+    @particles-loaded="particlesLoaded"
+  />
 </template>
 
 <style lang="scss">

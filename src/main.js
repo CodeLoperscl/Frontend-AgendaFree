@@ -1,7 +1,9 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
-
+//Particulas
+import Particles from "@tsparticles/vue3";
+import { loadSlim } from "@tsparticles/slim";
 // You can use the following starter router instead of the default one as a clean starting point
 // import router from "./router/starter";
 import router from "./router/starter.js";
@@ -20,6 +22,13 @@ window.bootstrap = bootstrap;
 
 // Craft new application
 const app = createApp(App);
+
+// Use Plugins
+app.use(Particles, {
+    init: async (engine) => {
+        await loadSlim(engine); // Carga la versión slim
+    },
+});
 
 // Register global components
 app.component("BaseBlock", BaseBlock);

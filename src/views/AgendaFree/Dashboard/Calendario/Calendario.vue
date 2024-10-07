@@ -32,12 +32,21 @@ const citasEspecialista = ref({});
 const isLoading = ref(true);
 const events = ref([]);
 
-onBeforeMount(()=>{
-  getCitasEspecialista();
+//Token especialista
+const getToken = () =>{
+  return {
+    headers: {
+      "x-token": sessionStorage.getItem("especialista-token")
+    }
+  }
+}
+
+onBeforeMount(async ()=>{
+  await getCitasEspecialista();
 });
 
 const getCitasEspecialista = () => {
-  axios.get(API_ESPECIALISTA + 'cita')
+  axios.get(`${API_ESPECIALISTA}cita`, getToken())
     .then((response) => {
       if (response) {
         // Asigna las citas recibidas a citasEspecialista.value
@@ -58,6 +67,7 @@ const getCitasEspecialista = () => {
 
 const formatearCitas = (citas) => {
   return citas.map((cita) => {
+    console.log(cita);
     return {
       id: cita.id,
       title: cita.persona.nombre + " " + cita.persona.apellido, // nombre paciente

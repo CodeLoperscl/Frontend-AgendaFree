@@ -5,9 +5,13 @@ import { useMainStore, usePacienteDatos, usePersonaPacienteDatos, useUrlApiEspec
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import LoadingSpinner from '../../Component/LoadingSpinner.vue';
+import ModalComponent from './ModalDatosPacientes.vue';
+
+//Modal
+const modal = ref(false);
 
 //Store
-const storeAPIEspecialista = useUrlApiEspecialista();
+//const storeAPIEspecialista = useUrlApiEspecialista();
 const storePersonaPaciente = usePersonaPacienteDatos();
 const storePaciente = usePacienteDatos();
 const store = useMainStore();
@@ -27,33 +31,48 @@ const rutValidated = ref('');
 const isLoading = ref(false);
 const estado = ref(0);
 
-//Define Emits
-const emit = defineEmits(['abrirModal']);
-
 //Informacion
 const dataPaciente = ref();
 
 //TOKEN
-const token = {
-  headers: {
-    "x-token": sessionStorage.getItem("token")
+const getToken = () =>{
+  return {
+    headers: {
+      "x-token": sessionStorage.getItem("token")
+    }
   }
 };
-
-
+//Modal Crear nuevo paciente
 const updateStoreData = () => {
     store.updateData(estado.value);
 }
+const emitAbrirModal = () =>{
+    openModal();
+    //emit('abrirModal', rutValidated.value);
+    updateStoreData();
+}
 
+
+const openModal = () => {
+  modal.value = true;
+  console.log("data");
+}
+const closeModal = () => {
+  modal.value = false;
+  //router.push({ name: 'agenda'});
+};
+const guardarDatos = () => {
+  closeModal();
+  //session.value = dataEspecialista.value.nombre;
+  console.log("Hola desde cerrar modal");
+};
+
+//Verificar rut
 const verificarRut = () => {
     rutState.value = validateRut(rutInput.value);
     rutValidated.value = formatRut(rutInput.value);
 }
-
-const emitAbrirModal = () =>{
-    emit('abrirModal', rutValidated.value);
-    updateStoreData();
-}
+//Formatear rut
 const formatearRut = () =>{
     rutInput.value = rutValidated.value;
 }
@@ -89,10 +108,12 @@ const arrayTipo = [
 //             }
 //         })
 // }
+
+//Buscar paciente
 const getPaciente = async (identificador) => {
   isLoading.value = true;
-  console.log("token desde Input", token);
-  axios.get(`${URL_API_GENERAL}persona/rut/${identificador}`, token)
+  console.log("token desde Input", getToken());
+  axios.get(`${URL_API_GENERAL}persona/rut/${identificador}`, getToken())
   .then((response)=>{
       if(response){
           dataPaciente.value = response.data.paciente;
@@ -141,7 +162,6 @@ const getPaciente = async (identificador) => {
     // }
 };
 
-
 </script>
 
 <template>
@@ -186,13 +206,18 @@ const getPaciente = async (identificador) => {
           <i class="fa fa-fw fa-arrow-right"></i>
         </button>
       </div>
-
       <div class="mt-2 text-center">
         <a v-if="estado == 0" href="#" @click.prevent="inputExtranjero()" class="toggle-input">Ingresar con {{ arrayTipo[1].tipo }}</a>
         <a v-else-if="estado == 1" href="#" @click.prevent="inputChileno()" class="toggle-input">Ingresar con {{ arrayTipo[0].tipo }}</a>
       </div>
     </div>
   </div>
+  <ModalComponent
+    :isOpen="modal"
+    :rut = "rutValidated"
+    @modal-close="closeModal"
+    @submit-data="guardarDatos"
+  ></ModalComponent>
 </template>
 
 <style lang="scss" scoped>

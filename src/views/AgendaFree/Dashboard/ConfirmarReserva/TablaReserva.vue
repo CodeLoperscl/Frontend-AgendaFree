@@ -13,7 +13,14 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
-
+//Token especialista
+const tokenEspecialista = () =>{
+  return{
+    headers: {
+      "x-token": sessionStorage.getItem("especialista-token")
+    }
+  }
+}
 //Route
 const route = useRoute();
 //Parametro uid
@@ -28,7 +35,7 @@ const citasEspecialista = ref();
 
 //Obtener API del Especialista
 const getEspecialistaAPI = async () =>{
-  await axios.get(API_GENERAL+"users/uid/"+uid)
+  await axios.get(API_GENERAL+"users/uid/"+uid, tokenEspecialista())
   .then((response)=>{
     if(response.data.personas[0].profesionales[0].habilitado == true && response.data.personas[0].profesionales[0].ruta_api){
       API_ESPECIALISTA.value = response.data.personas[0].profesionales[0].ruta_api;
@@ -40,7 +47,7 @@ const getEspecialistaAPI = async () =>{
   });
 }
 const getCitas = (api) =>{
-  axios.get(api+"/api/cita")
+  axios.get(api+"/api/cita", tokenEspecialista())
     .then((response)=>{
       if(response){
         citasEspecialista.value = response.data.allCitas;
@@ -155,7 +162,8 @@ onMounted(() => {
 
 //Rechazar cita, filtra la cita donde el id coincida con el id de la lista cita
 const rechazarCita = (id) => {
-  axios.put(`${API_ESPECIALISTA.value}api/rechazar-cita/${id}`)
+  console.log(`${API_ESPECIALISTA.value}api/rechazar-cita/${id}`);
+  axios.put(`${API_ESPECIALISTA.value}api/rechazar-cita/${id}`, tokenEspecialista())
     .then(response => {
       if (response.data.success) {
         citasEspecialista.value = citasEspecialista.value.filter(cita => cita.id !== id);
@@ -168,7 +176,7 @@ const rechazarCita = (id) => {
 
 // Solicitar Bono, cambiará el estado del objeto a 3
 const solicitarAbono = (id) => {
-  axios.put(`${API_ESPECIALISTA.value}api/cita/bono/${id}`)
+  axios.put(`${API_ESPECIALISTA.value}api/cita/bono/${id}`, tokenEspecialista())
     .then(response => {
       if (response) {
         console.log("Cita actualizada: ", response.data);
@@ -185,7 +193,7 @@ const solicitarAbono = (id) => {
 
 // Confirmar cita, la solicitud se aprobará y se borrará de la lista de solicitudes sin gestionar
 const confirmarCita = (id) => {
-  axios.put(`${API_ESPECIALISTA.value}api/confirmar-cita/${id}`)
+  axios.put(`${API_ESPECIALISTA.value}api/confirmar-cita/${id}`,tokenEspecialista())
     .then(response => {
       if (response.data.success) {
         citasEspecialista.value = citasEspecialista.value.filter(cita => cita.id !== id);

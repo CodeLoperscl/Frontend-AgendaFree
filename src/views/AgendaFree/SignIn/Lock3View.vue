@@ -8,6 +8,11 @@ import axios from "axios";
 import useVuelidate from "@vuelidate/core";
 import { required, minLength } from "@vuelidate/validators";
 
+const token = ref();
+const usuarioVista = reactive({
+  "username": "visita",
+  "password": "2843bc16"
+});
 // Main store and Router
 const store = useTemplateStore();
 const storeAPIEspecialista = useUrlApiEspecialista();
@@ -22,34 +27,53 @@ const dataEspecialista = ref("");
 
 //Parametro uid
 const uid = route.params.uid
+console.log(uid);
+
+const autoLogin = async () => {
+  try {
+    const response = await axios.post(`${API_GENERAL}auth/login`, usuarioVista);
+    if (response) {
+      token.value = {
+        headers: {
+          "x-token": response.data.token
+        }
+      }
+      getEspecialista();
+      console.log('Usuario autenticado:', response.data.token);
+    } else {
+      console.error('Error al autenticar al usuario:', response.data);
+    }
+  } catch (error) {
+    console.error('Error al autenticar al usuario:', error);
+    router.push({ path: '/error' });
+  }
+}
+
 
 // Verificar si existe especialista por uid
 const getEspecialista = async () => {
-  await axios.get(API_GENERAL + "users/uid/"+uid)
-  .then((response)=>{
-    if(response){
-      if(response.data.personas[0].profesionales[0].habilitado == true){
-        if(response.data.personas[0].profesionales[0].ruta_api){
-          storeAPIEspecialista.setUrl(response.data.personas[0].profesionales[0].ruta_api);
-          //console.log(storeAPIEspecialista.url);
-          dataEspecialista.value = response.data.personas[0];
-          state.username = dataEspecialista.value.rut;
-          console.log(dataEspecialista.value);
-        }else{
-          router.push({ path: '/error' });
-        }
-      }else{
-        router.push({ path: '/error' }); 
-      }
-    }else{
-      router.push({ path: '/error' });
+  try {
+    const response = await axios.get(`${API_GENERAL}users/uid/${uid}`, token.value);
+    
+    if (!response || !response.data.personas || !response.data.personas[0]) {
+      throw new Error('Respuesta inválida');
     }
-  })
-  .catch((error)=>{
-    console.log(error);
+
+    const profesional = response.data.personas[0].profesionales[0];
+    
+    if (!profesional || !profesional.habilitado || !profesional.ruta_api) {
+      throw new Error('Profesional no habilitado o sin ruta API');
+    }
+
+    storeAPIEspecialista.setUrl(profesional.ruta_api);
+    dataEspecialista.value = response.data.personas[0];
+    state.username = dataEspecialista.value.rut;
+    console.log(dataEspecialista.value);
+  } catch (error) {
+    console.error('Error al obtener datos del especialista:', error);
     router.push({ path: '/error' });
-  });
-}
+  }
+};
 // Input state variables
 const state = reactive({
   username: null,
@@ -91,7 +115,7 @@ async function onSubmit() {
       if(response){
         console.log(response.status);
         if(response.status === 200){
-          sessionStorage.setItem("token", response.data.token);
+          sessionStorage.setItem("especialista-token", response.data.token);
           router.push({ name: "backend-dashboard" });
         }
       }
@@ -107,7 +131,7 @@ async function onSubmit() {
 
 //Comprobar si hay sesion
 const isSession = () =>{
-  const session = sessionStorage.getItem("token");
+  const session = sessionStorage.getItem("especialista-token");
   if(session){
     router.push({ name: "backend-dashboard" });
   }
@@ -120,11 +144,12 @@ watch(()=> state.password, (newPassword)=>{
 });
 
 
-onBeforeMount(()=>{
-  isSession();
+onBeforeMount(async ()=>{
+  await autoLogin();
+  await isSession();
 });
 onMounted(()=>{
-  getEspecialista();
+ //autoLogin();
 })
 
 </script>

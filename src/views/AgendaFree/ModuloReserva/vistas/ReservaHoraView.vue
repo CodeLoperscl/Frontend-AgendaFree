@@ -10,11 +10,16 @@ import { useEspecialistaDatos, useUrlApiEspecialista, usePacienteDatos, usePerso
 import axios from "axios";
 import LoadingSpinner  from "../../Component/LoadingSpinner.vue";
 
-// Variables
-const previsiones = ref({});
+//API
+const API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
+
+//Store
 const storePersonaPaciente = usePersonaPacienteDatos();
 const storeAPIEspecialista = useUrlApiEspecialista();
 const storePaciente = usePacienteDatos();
+
+// Variables
+const previsiones = ref();
 const API_ESPECIALISTA = storeAPIEspecialista.url;
 const date = ref(new Date());
 const solicitarHoraBtnEstado = ref(true);
@@ -39,22 +44,25 @@ const configuracionesCalendario = ref(
   ]
 );
 const nuevaCita = ref({
+  "especialista_id": 1,
   "fecha": null,
-  "paciente_id": storePaciente.getPaciente().paciente.id,
-  "prevision_id": storePaciente.getPaciente().paciente.prevision_id,
-  "hora_id": null
+  "paciente_id": storePaciente.getPaciente().id,
+  "prevision_id": storePaciente.getPaciente().prevision_id,
+  "hora_id": null,
+  "estado_cita_id":1
 });
-//TOken
-const token = {
-  headers: {
-    "x-token": sessionStorage.getItem("token")
+const getToken = () =>{
+  return {
+    headers: {
+      "x-token": sessionStorage.getItem("token")
+    }
   }
 };
 
 console.log('store desde reserva de hora: ', dataEspecialista.especialista.profesionales);
 
 const getHorarios = () =>{
-  axios.get(API_ESPECIALISTA+"api/hora_disponible",token)
+  axios.get(API_ESPECIALISTA+"api/hora_disponible",getToken())
     .then((response)=>{
       if(response){
         horariosEspecialista.value = response.data.horas_disponibles;
@@ -67,7 +75,7 @@ const getHorarios = () =>{
 }
 
 const getPrevisiones = () =>{
-  axios.get(API_ESPECIALISTA + "prevision", token)
+  axios.get(API_ESPECIALISTA + "api/prevision", getToken())
     .then((response) =>{
       if(response){
         previsiones.value = response.data.previsiones.filter(prevision => prevision.estado_id === 3);
@@ -82,13 +90,21 @@ const getPrevisiones = () =>{
 }
 
 const generarOpciones = () =>{
-  return previsiones.value.map(opcion => 
-  `<option value="${opcion.value}">${opcion.label}</option>`
-  ).join('');
+  const esChileno = storePersonaPaciente.getPersona().persona.nacionalidad_id === 1;
+  const previsionActual = storePaciente.getPaciente().prevision_id;
+  console.log("Prevision actual: ", previsionActual);
+  
+  if (esChileno) {
+    return previsiones.value.map(opcion => 
+      `<option value="${opcion.id}" id="prevision${opcion.id}" ${opcion.id === previsionActual ? 'selected' : ''}>${opcion.nombre}</option>`
+    ).join('');
+  } else {
+    return `<option value="3" id="previsionExtranjero" selected>Particular</option>`;
+  }
 }
 
 const reservarCita = () =>{
-  console.log("store desde reservar citaL",storePersonaPaciente.getPersona());
+  console.log("Paciente: ", storePaciente.getPaciente().prevision_id);
   Swal.fire({
   html:
   `
@@ -120,8 +136,8 @@ const reservarCita = () =>{
 
       <div class="mb-3">
         <label for="prevision" class="form-label"><strong>Prevision:</strong></label>
-        <select class="form-select">
-        ${{generarOpciones}}
+        <select class="form-select" id="prevision" value="${storePaciente.getPaciente().prevision_id}">
+        ${generarOpciones()}
         </select>
       </div>
 
@@ -137,32 +153,61 @@ const reservarCita = () =>{
   confirmButtonText: 'Confirmar',
   cancelButtonText: 'Cancelar',
   confirmButtonColor: '#16A085',
-  cancelButtonColor: '#95A5A6'
+  cancelButtonColor: '#95A5A6',
+  preConfirm: ()=>{
+    const email = document.getElementById('email').value;
+    const fono = document.getElementById('fono').value;
+    const prevision = document.getElementById('prevision').value;
+    
+    if (!email || !fono || !prevision) {
+      Swal.showValidationMessage('Por favor, completa todos los campos');
+    }
+    
+    return { email, fono, prevision }; 
+  }
   }).then((result) => {
     if (result.isConfirmed) {
-      // Acción a realizar si el usuario confirma
-      axios.post(API_ESPECIALISTA+"api/cita",nuevaCita.value, token)
-        .then((response)=>{
-          if(response){
-            console.log(response);
+      const { email, fono, prevision } = result.value;
+      // Actualizar los datos del paciente
+      storePersonaPaciente.setPersonaEmail(email);
+      storePersonaPaciente.setPersonaFono(fono);
+      storePaciente.setPacientePrevision(parseInt(prevision));
+      if(email && fono){
+        axios.put(`${API_GENERAL}persona/${storePersonaPaciente.getPersona().persona.id}`, {email: email, fono: fono}, getToken())
+          .then((response) => {
+            if(response){
+              console.log("Paciente actualizado: ", response.data);
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          })
+      }
+      if(prevision){
+        axios.put(`${API_ESPECIALISTA}api/paciente/${storePaciente.getPaciente().id}`, {prevision_id: prevision}, getToken())
+          .then((response) => {
+            if(response){
+              console.log("Paciente actualizado: ", response.data);
+              nuevaCita.value.prevision_id = parseInt(prevision);
+              console.log("La Prevision de la Cita ha sido actualizada: ", nuevaCita.value);
+              // Registrar la cita después de actualizar el paciente
+              registrarCita();
+            }
+          })
+          .catch((e) => {
+            console.log(e);
             Swal.fire({
-              title: 'Cita agendada con éxito!',
-              text: 'En espera de confirmación del especialista',
-              icon: 'success',
+              title: 'Error',
+              text: 'Hubo un problema al actualizar los datos del paciente. Por favor, inténtalo de nuevo.',
+              icon: 'error',
               confirmButtonText: 'Aceptar',
               confirmButtonColor: '#16A085'
             });
-            horariosEspecialista.value.some((horario)=>{
-              if(horario.id == nuevaCita.value.hora_id){
-                horario.agendado = true;
-                solicitarHoraBtnEstado.value = true;
-              }
-              console.log("Cita reservada con id: ", horario.id);
-            });
-          }
-        }).catch((e)=>{
-          console.log(e);
-        })
+          });
+      } else {
+        // Si no hay previsión para actualizar, registrar la cita directamente
+        registrarCita();
+      }
     } else if (result.isDismissed) {
       Swal.fire({
         title: 'Reserva de cita cancelada',
@@ -173,6 +218,39 @@ const reservarCita = () =>{
       });
     }
   });
+}
+
+// Función para registrar la cita
+function registrarCita() {
+  axios.post(API_ESPECIALISTA+"api/cita", nuevaCita.value, getToken())
+    .then((response) => {
+      if(response){
+        console.log(response);
+        Swal.fire({
+          title: 'Cita agendada con éxito!',
+          text: 'En espera de confirmación del especialista',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#16A085'
+        });
+        horariosEspecialista.value.some((horario) => {
+          if(horario.id == nuevaCita.value.hora_id){
+            horario.agendado = true;
+            solicitarHoraBtnEstado.value = true;
+          }
+          console.log("Cita reservada con id: ", horario.id);
+        });
+      }
+    }).catch((e) => {
+      console.log(e);
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al agendar la cita. Por favor, inténtalo de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#16A085'
+      });
+    });
 }
 
 const seleccionarHorario = (id, horario) =>{
@@ -199,7 +277,7 @@ const getCitas = () =>{
     date.value = format(date.value, "yyyy-MM-dd");
     nuevaCita.value.fecha = date.value;
     //Cargo todas las citas para el especialista con id 1 en la fecha seleccionada en el calendario
-    axios.get(API_ESPECIALISTA+"api/cita/esp_date/"+1+"/"+date.value, token)
+    axios.get(API_ESPECIALISTA+"api/cita/esp_date/"+1+"/"+date.value, getToken())
      .then((response)=>{
        citasEspecialista.value = response.data.allCitasFecha;
        console.log("Citas especialista",citasEspecialista.value);
@@ -227,7 +305,8 @@ const horasDisponiblesPorDia = () =>{
 }
 
 onBeforeMount(async ()=>{
-  getPrevisiones();
+  console.log("store2", storePersonaPaciente.getPersona());
+  await getPrevisiones();
   await getHorarios();
   await getCitas();
 });
