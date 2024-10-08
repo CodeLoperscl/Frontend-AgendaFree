@@ -67,6 +67,11 @@ const routes = [
     children: [
       {
         path: "",
+        name: "confirmar-hora",
+        component: ConfirmarHoraView,
+      },
+      {
+        path: "",
         name: "backend-dashboard",
         component: BackendDashboard,
       },
@@ -75,11 +80,6 @@ const routes = [
         name: "calendario",
         component: CalendarioView,
       },
-      {
-        path: "",
-        name: "confirmar-hora",
-        component: ConfirmarHoraView,
-      }
     ],
   },
   {

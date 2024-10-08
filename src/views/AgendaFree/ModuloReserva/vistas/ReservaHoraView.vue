@@ -43,14 +43,16 @@ const configuracionesCalendario = ref(
     },
   ]
 );
+
 const nuevaCita = ref({
-  "especialista_id": 1,
+  "especialista_id": dataEspecialista.especialista.profesionales[0].id,
   "fecha": null,
   "paciente_id": storePaciente.getPaciente().id,
   "prevision_id": storePaciente.getPaciente().prevision_id,
   "hora_id": null,
   "estado_cita_id":1
 });
+
 const getToken = () =>{
   return {
     headers: {
@@ -59,7 +61,7 @@ const getToken = () =>{
   }
 };
 
-console.log('store desde reserva de hora: ', dataEspecialista.especialista.profesionales);
+console.log('store desde reserva de hora: ', dataEspecialista.especialista);
 
 const getHorarios = () =>{
   axios.get(API_ESPECIALISTA+"api/hora_disponible",getToken())

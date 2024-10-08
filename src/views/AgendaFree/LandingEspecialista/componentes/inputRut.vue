@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import LoadingSpinner from '../../Component/LoadingSpinner.vue';
 import ModalComponent from './ModalDatosPacientes.vue';
-
 //Modal
 const modal = ref(false);
 
@@ -165,6 +164,7 @@ const getPaciente = async (identificador) => {
 </script>
 
 <template>
+  <ModalTest />
   <LoadingSpinner :isLoading="isLoading" />
   <div class="row mt-3 justify-content-center">
     <div class="col-12 col-md-10 col-lg-8">
@@ -218,6 +218,7 @@ const getPaciente = async (identificador) => {
     @modal-close="closeModal"
     @submit-data="guardarDatos"
   ></ModalComponent>
+
 </template>
 
 <style lang="scss" scoped>

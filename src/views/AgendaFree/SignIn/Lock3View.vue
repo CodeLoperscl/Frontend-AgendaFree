@@ -116,7 +116,7 @@ async function onSubmit() {
         console.log(response.status);
         if(response.status === 200){
           sessionStorage.setItem("especialista-token", response.data.token);
-          router.push({ name: "backend-dashboard" });
+          router.push({ name: "confirmar-hora" });
         }
       }
     }).catch((e)=>{
@@ -133,7 +133,7 @@ async function onSubmit() {
 const isSession = () =>{
   const session = sessionStorage.getItem("especialista-token");
   if(session){
-    router.push({ name: "backend-dashboard" });
+    router.push({ name: "confirmar-hora" });
   }
 }
 

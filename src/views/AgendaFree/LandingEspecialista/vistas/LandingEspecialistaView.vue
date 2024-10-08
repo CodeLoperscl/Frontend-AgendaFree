@@ -68,11 +68,24 @@ const getEspecialista = async () => {
     }
 
     storeAPIEspecialista.setUrl(profesional.ruta_api);
+    getAbreviatura(profesional.ruta_api);
     dataEspecialista.value = response.data;
+
   } catch (error) {
     console.error('Error al obtener datos del especialista:', error);
     router.push({ path: '/error' });
   }
+}
+
+const getAbreviatura = (ruta_api) => {
+  console.log("ruta_api: ", ruta_api);
+  axios.get(`${ruta_api}api/especialista/1`, token.value)
+  .then(response => {
+    console.log("response: ", response.data.especialista.especialidades[0].especialidad);
+  })
+  .catch(error => {
+    console.error('Error al obtener datos del especialista:', error);
+  })
 }
 
 const autoLogin = async () => {

@@ -194,115 +194,6 @@ const getNacionalidadPrevision = async (token) => {
   }
 };
 
-
-// Define particles options
-const particlesOptions = ref({
-  particles: {
-    number: {
-      value: 80,
-      density: {
-        enable: true,
-        value_area: 800
-      }
-    },
-    color: {
-      value: "#16A085"
-    },
-    shape: {
-      type: "circle",
-      stroke: {
-        width: 0,
-        color: "#000000"
-      },
-      polygon: {
-        nb_sides: 5
-      }
-    },
-    opacity: {
-      value: 0.5,
-      random: false,
-      anim: {
-        enable: false,
-        speed: 1,
-        opacity_min: 0.1,
-        sync: false
-      }
-    },
-    size: {
-      value: 3,
-      random: true,
-      anim: {
-        enable: false,
-        speed: 40,
-        size_min: 0.1,
-        sync: false
-      }
-    },
-    line_linked: {
-      enable: true,
-      distance: 150,
-      color: "#ffffff",
-      opacity: 0.4,
-      width: 1
-    },
-    move: {
-      enable: true,
-      speed: 6,
-      direction: "none",
-      random: false,
-      straight: false,
-      out_mode: "out",
-      bounce: false,
-      attract: {
-        enable: false,
-        rotateX: 600,
-        rotateY: 1200
-      }
-    }
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: true,
-        mode: "repulse"
-      },
-      onclick: {
-        enable: true,
-        mode: "push"
-      },
-      resize: true
-    },
-    modes: {
-      grab: {
-        distance: 400,
-        line_linked: {
-          opacity: 1
-        }
-      },
-      bubble: {
-        distance: 400,
-        size: 40,
-        duration: 2,
-        opacity: 8,
-        speed: 3
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4
-      },
-      push: {
-        particles_nb: 4
-      },
-      remove: {
-        particles_nb: 2
-      }
-    }
-  },
-  retina_detect: true
-});
-
-
 </script>
 
 <template>
@@ -321,10 +212,8 @@ const particlesOptions = ref({
           </button>
         </div>
         <div class="modal-body">
-          <vue-particles
-            id="tsparticles"
-            :options="particlesOptions" 
-          />
+          <!-- Eliminar la siguiente línea -->
+          <!-- <vue-particles id="tsparticles" :options="particlesOptions" /> -->
           <p class="modal-description">
             Para solicitar hora de atención por favor ingrese sus datos y presione continuar
           </p>
@@ -431,46 +320,6 @@ const particlesOptions = ref({
 </template>
 
 <style scoped>
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes floatCircle {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(20px, 20px) rotate(180deg); }
-  100% { transform: translate(0, 0) rotate(360deg); }
-}
-
-@keyframes floatSquare {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-20px, 20px) rotate(-90deg); }
-  100% { transform: translate(0, 0) rotate(-180deg); }
-}
-
-@keyframes floatTriangle {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(20px, -20px) rotate(45deg); }
-  100% { transform: translate(0, 0) rotate(90deg); }
-}
-
-@keyframes rainbowThreeColors {
-  0% { color: #1ABC9C; } /* Primer color */
-  33% { color: #76da88; } /* Segundo color */
-  66% { color: #0d6453; } /* Tercer color */
-  100% { color: #1ABC9C; } /* Volver al primer color */
-}
-
-.rainbow-text {
-  animation: rainbowThreeColors 5s linear infinite;
-}
-
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -482,192 +331,69 @@ const particlesOptions = ref({
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 0.3s ease-out;
-  overflow: hidden;
 }
 
 .modal-container {
-  width: 100%;
-  max-width: 1000px; /* Reducido de 1200px */
-  max-height: 80vh; /* Limita la altura al 80% de la altura de la ventana */
-  overflow-y: auto; /* Permite scroll si el contenido excede la altura */
+  width: 90%;
+  max-width: 500px;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  animation: slideIn 0.3s ease-out;
-  position: relative;
-  z-index: 1;
-  border: 5px solid;
-  animation: borderRainbow 5s linear infinite;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 .modal-header {
-  background-color: #16A085;
-  color: white;
-  padding: 15px 20px; /* Reducido de 20px */
+  background-color: #f0f0f0;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.modal-title {
-  margin: 0;
-  font-size: 1.3em; /* Reducido de 1.5em */
-  font-weight: 600;
-}
-
-.close-btn {
-  background-color: transparent;
-  border: none;
-  color: white;
-  font-size: 1.5em;
-  cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.close-btn:hover {
-  transform: rotate(90deg);
-  opacity: 0.8;
-}
-
 .modal-body {
-  padding: 20px; /* Reducido de 30px */
-  width: 100%;
-  max-width: 700px; /* Reducido de 800px */
-  margin: 0 auto;
-  position: relative; /* Ensure positioning context for absolute children */
-  overflow: hidden; /* Hide overflow to keep animations within bounds */
-}
-
-.modal-description {
-  color: #7F8C8D;
-  margin-bottom: 15px; /* Reducido de 25px */
-  font-size: 1em; /* Reducido de 1.1em */
-  line-height: 1.4;
+  padding: 15px;
 }
 
 .form-group {
-  margin-bottom: 15px; /* Reducido de 20px */
-  text-align: left;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .form-group label {
-  display: block;
-  text-align: left;
-  margin-bottom: 5px; /* Reducido de 8px */
-  color: #2C3E50;
-  font-weight: 600;
+  flex: 0 0 30%; /* Ajusta este valor según necesites */
+  margin-right: 10px;
+  text-align: right;
 }
 
 .form-group input,
 .form-group select {
-  width: 100%;
-  padding: 8px; /* Reducido de 12px */
-  border: 2px solid #BDC3C7;
-  border-radius: 6px;
-  font-size: 0.9em; /* Reducido de 1em */
-  transition: all 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #16A085;
-  box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.2);
-  outline: none;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .submit-btn {
   width: 100%;
-  padding: 10px; /* Reducido de 14px */
-  background-color: #16A085;
+  padding: 10px;
+  background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 1em; /* Reducido de 1.1em */
-  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.submit-btn:hover {
-  background-color: #1ABC9C;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
 }
 
-.is-invalid {
-  border-color: #E74C3C !important;
+.modal-title,
+.modal-description {
+  text-align: left;
 }
-
-.invalid-feedback {
-  color: #E74C3C;
-  font-size: 0.9em;
-  margin-top: 5px;
-}
-
-.geometric-shapes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.circle, .square, .triangle {
-  position: absolute;
-  opacity: 0.1;
-}
-
-.circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #16A085;
-  top: 10%;
-  left: 10%;
-  animation: floatCircle 3s infinite linear; /* Reduced duration */
-}
-
-.square {
-  width: 80px;
-  height: 80px;
-  background-color: #1ABC9C;
-  bottom: 15%;
-  right: 15%;
-  animation: floatSquare 4s infinite linear; /* Reduced duration */
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-bottom: 86.6px solid #2ECC71;
-  top: 50%;
-  left: 50%;
-  animation: floatTriangle 2s infinite linear; /* Reduced duration */
-}
-@keyframes borderRainbow {
-  0% { border-color: #1ABC9C; } /* Primer color */
-  33% { border-color: #2ECC71; } /* Segundo color */
-  66% { border-color: #31a762; } /* Tercer color */
-  100% { border-color: #1ABC9C; } /* Volver al primer color */
-}
-
-.modal-container {
-  width: 100%;
-  max-width: 1200px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  animation: slideIn 0.3s ease-out;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-  border: 5px solid; /* Añadir borde */
-  animation: borderRainbow 5s linear infinite; /* Aplicar animación */
-}
-
 </style>
