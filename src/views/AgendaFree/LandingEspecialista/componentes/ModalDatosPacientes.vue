@@ -211,10 +211,10 @@ const getNacionalidadPrevision = async (token) => {
             <i class="fa fa-fw fa-times"></i>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body px-5">
           <!-- Eliminar la siguiente línea -->
           <!-- <vue-particles id="tsparticles" :options="particlesOptions" /> -->
-          <p class="modal-description">
+          <p class="modal-description mt-3">
             Para solicitar hora de atención por favor ingrese sus datos y presione continuar
           </p>
           <div>
@@ -303,7 +303,7 @@ const getNacionalidadPrevision = async (token) => {
                   </option>
                 </select>
               </div>
-              <div class="text-end">
+              <div class="text-end mb-3 mt-5">
                 <button
                   type="submit"
                   class="submit-btn"
@@ -335,7 +335,6 @@ const getNacionalidadPrevision = async (token) => {
 
 .modal-container {
   width: 90%;
-  max-width: 500px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
@@ -344,7 +343,8 @@ const getNacionalidadPrevision = async (token) => {
 }
 
 .modal-header {
-  background-color: #f0f0f0;
+  background-color: #1F2937;
+  color: white;
   padding: 15px;
   display: flex;
   justify-content: space-between;
@@ -359,26 +359,26 @@ const getNacionalidadPrevision = async (token) => {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  text-align: left;
 }
 
 .form-group label {
   flex: 0 0 30%; /* Ajusta este valor según necesites */
   margin-right: 10px;
-  text-align: right;
 }
 
 .form-group input,
 .form-group select {
   flex: 1;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #16A085;
   border-radius: 4px;
+  text-align: left;
 }
 
 .submit-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
+  padding: 10px 20px;
+  background-color: #1F2937;
   color: white;
   border: none;
   border-radius: 4px;
@@ -386,6 +386,7 @@ const getNacionalidadPrevision = async (token) => {
 }
 
 .close-btn {
+  color: white;
   background: none;
   border: none;
   font-size: 20px;

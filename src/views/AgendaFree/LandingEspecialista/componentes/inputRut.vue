@@ -115,7 +115,6 @@ const getPaciente = async (identificador) => {
 </script>
 
 <template>
-  <ModalTest />
   <LoadingSpinner :isLoading="isLoading" />
   <div class="row mt-3 justify-content-center">
     <div class="col-12 col-md-10 col-lg-8">

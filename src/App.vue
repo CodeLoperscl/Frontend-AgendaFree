@@ -1,5 +1,4 @@
 <script>
-  localStorage.setItem("Token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZWR1YXJkbyIsImlkIjoxMSwiaWF0IjoxNzIzNjczMjI2LCJleHAiOjE3NTUyMDkyMjZ9.02aRvMpe9DxBMZEB-omS8TL4YNfua_d-4Oz_VgPaxrw");
 </script>
 
 <template>
@@ -7,6 +6,7 @@
 </template>
 
 <style lang="scss">
+
 // Main Stylesheet
 @import "@/assets/scss/main";
 
