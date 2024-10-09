@@ -48,7 +48,7 @@ const configuracionesCalendario = ref([
 ]);
 
 const nuevaCita = ref({
-  especialista_id: dataEspecialista.especialista.id,
+  especialista_id: dataEspecialista.especialista.especialista.id,
   fecha: null,
   paciente_id: storePaciente.getPaciente().id,
   prevision_id: storePaciente.getPaciente().prevision_id,
@@ -294,7 +294,7 @@ const seleccionarHorario = (id, horario) => {
   solicitarHoraBtnEstado.value = false;
   console.log("id horario seleccionado: ", idHorarioSeleccionado.value);
   nuevaCita.value.hora_id = id;
-  console.log(nuevaCita.value);
+  console.log("Ultima cita:",nuevaCita.value);
 };
 
 const fechaMaxima = () => {
