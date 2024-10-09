@@ -10,10 +10,8 @@
   </div>
 </template>
 
-
 <script setup>
-
-import { defineProps } from 'vue';
+import { defineProps } from "vue";
 
 // Definimos el prop que recibe el estado de carga
 const props = defineProps({
@@ -25,7 +23,6 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-
 $blanco-marfil: #fafafa;
 $verde-azulado: #16a085;
 $verde-pastel: #d1f2eb;
@@ -71,6 +68,17 @@ $verde-pastel: #d1f2eb;
   position: relative;
   transform: rotate(45deg);
 }
+
+@keyframes orbit7456 {
+  0% {
+  }
+
+  80% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>
-  
-  

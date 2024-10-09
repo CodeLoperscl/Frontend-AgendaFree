@@ -117,7 +117,7 @@ const getPaciente = async (identificador) => {
 <template>
   <LoadingSpinner :isLoading="isLoading" />
   <div class="row mt-3 justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
+    <div class="col-12 col-md-10">
       <div class="input-rut">
         <input
           type="text"
@@ -141,7 +141,10 @@ const getPaciente = async (identificador) => {
       </div>
 
       <div class="mt-2 text-center">
-        <a href="#" @click.prevent="inputChange(!estado)" class="toggle-input"
+        <a
+          href="#"
+          @click.prevent="inputChange(!estado)"
+          class="toggle-input fs-7"
           >Ingresar con {{ arrayTipo.tipo }}</a
         >
       </div>
@@ -163,6 +166,10 @@ $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
 
+.fs-7 {
+  font-size: 0.8rem !important;
+}
+
 .input-rut {
   display: flex;
   flex-direction: column;
@@ -175,7 +182,7 @@ $verde-pastel: #d1f2eb;
 
   .form-control {
     height: 50px;
-    font-size: 1rem;
+    font-size: 0.75rem;
     background-color: $blanco-marfil;
     border: 2px solid $gris-acero;
     color: $azul-marino;
@@ -185,7 +192,7 @@ $verde-pastel: #d1f2eb;
     width: 100%;
 
     @media (min-width: 768px) {
-      height: 40px;
+      height: 35px;
       margin-bottom: 0;
       margin-right: 1rem;
       flex: 1;
@@ -216,7 +223,7 @@ $verde-pastel: #d1f2eb;
     letter-spacing: 0.5px;
 
     @media (min-width: 768px) {
-      height: 40px;
+      height: 35px;
       font-size: 0.75rem;
       min-width: 120px;
       width: auto;

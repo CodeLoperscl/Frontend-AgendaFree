@@ -81,9 +81,9 @@ const getEspecialista = (persona_id, nombre, apellido, dias_atencion) => {
       response.data.nombre = nombre;
       response.data.apellido = apellido;
       storeEspecialista.setEspecialista(response.data);
-      console.log("store especialista 1: ", storeEspecialista.especialista);
+      console.log("responde especialista : ", response.data);
       persona.value.abreviatura =
-        storeEspecialista.especialista.especialista.especialidades[0].abreviatura;
+        storeEspecialista.especialista.especialista.especialidades[0].especialidad;
     })
     .catch((error) => {
       console.error("Error al obtener datos del especialista:", error);
@@ -204,22 +204,22 @@ onMounted(() => {
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-    <div
-      class="hero-content pb-0 text-center"
-      transition-style="in:circle:hesitate"
-    >
-      <div class="content content-full text-center">
-        <!-- <i class="fa fa-4x fa-stethoscope text-primary mb-5"></i> -->
-        <h1 class="fw-bold my-3">Agenda tu cita online con</h1>
-        <h2 class="fw-light mb-5">
-          {{ persona.abreviatura }}.
+    <div class="hero-content text-center" transition-style="in:circle:hesitate">
+      <div class="content content-full text-center p-0">
+        <h4 class="fw-light">
+          Bienvenido a sistema de reserva de citas Online de:
+        </h4>
+        <h1 class="fw-bold">
           {{ persona.nombre + " " + persona.apellido }}
-        </h2>
+        </h1>
+        <h3 class="fw-bold">
+          {{ persona.abreviatura }}
+        </h3>
 
         <div class="row justify-content-center">
-          <div class="col-12 col-xl-10">
-            <div class="bg-card p-5 rounded shadow-lg">
-              <p class="fs-5 fw-medium text-dark mb-4">
+          <div class="col-12">
+            <div class="bg-card rounded shadow-lg">
+              <p class="fs-6 fw-medium text-dark mb-4">
                 Para solicitar una hora de atención, ingrese su RUT y presione
                 continuar.
               </p>
@@ -230,16 +230,14 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <img
-        src="/assets/media/AGFree/logo_v1_2.svg"
-        class="mt-5 mb-5"
-        width="70"
-        alt="Logo Agenda Free"
-      />
-      <div class="shadow"></div>
     </div>
   </div>
-
+  <img
+    src="/assets/media/AGFree/logo_v1_2.svg"
+    class="mt-5 mb-5 float-end"
+    width="70"
+    alt="Logo Agenda Free"
+  />
   <vue-particles id="tsparticles" :options="particlesOptions" />
 </template>
 
@@ -250,24 +248,6 @@ $blanco-marfil: #fafafa;
 $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
-
-.shadow {
-  position: absolute;
-  bottom: 48px; /* Ajusta la distancia de la sombra debajo de la imagen */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 7%; /* Ajusta el tamaño horizontal del óvalo */
-  height: 10px; /* Ajusta el grosor del óvalo */
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0
-  ); /* Color negro con opacidad para suavizar */
-  border-radius: 45%; /* Crea el efecto de óvalo */
-  z-index: -1; /* Coloca la sombra debajo de la imagen */
-  box-shadow: 0 1.5rem 0.5rem rgba(0, 0, 0, 0.15) !important;
-}
 
 @keyframes circle-in-hesitate {
   0% {
@@ -281,6 +261,10 @@ $verde-pastel: #d1f2eb;
   }
 }
 
+.fs-7 {
+  font-size: 0.8rem !important;
+}
+
 .hero {
   min-height: 100vh;
   background-color: $blanco-marfil;
@@ -290,12 +274,10 @@ $verde-pastel: #d1f2eb;
 }
 
 .hero-content {
-  width: 90%;
-  height: 90%;
-  max-width: 800px;
-  max-height: 800px;
+  max-width: 1000px;
+  //max-height: 800px;
   margin: auto;
-  padding: 4rem 2rem;
+  padding: 4rem;
   background-color: rgba($blanco-marfil, 0.9);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -368,7 +350,7 @@ h2 {
 
 .bg-card {
   background-color: $verde-pastel;
-  padding: 3rem !important;
+  padding: 3rem 2rem !important;
 }
 
 .input-container {
@@ -421,109 +403,6 @@ h2 {
   .hero {
     overflow: scroll !important;
   }
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .bg-card {
-    padding: 2rem !important;
-  }
-
-  :deep(.input-group) {
-    flex-direction: column;
-  }
-
-  :deep(.form-control),
-  :deep(.btn-primary) {
-    width: 100%;
-    margin-top: 1rem;
-    height: 60px;
-    font-size: 1.25rem;
-  }
-}
-
-@keyframes orbit7456 {
-  0% {
-  }
-
-  80% {
-    transform: rotate(360deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-h1 {
-  font-size: 3rem;
-  color: $azul-marino;
-  margin-bottom: 1rem;
-}
-
-h2 {
-  font-size: 1.8rem;
-  color: $gris-acero;
-  margin-bottom: 3rem;
-}
-
-.bg-card {
-  background-color: $verde-pastel;
-  padding: 3rem !important;
-}
-
-.input-container {
-  margin-top: 2rem;
-}
-
-.text-primary {
-  color: $verde-azulado !important;
-}
-
-.text-dark {
-  color: $azul-marino !important;
-}
-
-:deep(.input-group) {
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-:deep(.form-control) {
-  flex: 1;
-  font-size: 1.5rem;
-  height: 70px;
-  padding: 1rem 1.5rem;
-  border: 2px solid $verde-azulado;
-}
-
-:deep(.btn-primary) {
-  min-width: 200px;
-  height: 70px;
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
-  background-color: $verde-azulado;
-  border-color: $verde-azulado;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: darken($verde-azulado, 10%);
-    border-color: darken($verde-azulado, 10%);
-  }
-}
-
-// Ajustes adicionales para dispositivos móviles
-@media (max-width: 768px) {
-  .hero-content {
-    padding: 3rem 1.5rem;
-  }
-
   h1 {
     font-size: 2.5rem;
   }
