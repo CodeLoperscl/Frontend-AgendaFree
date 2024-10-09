@@ -10,9 +10,6 @@ import SimpleBar from "simplebar";
 // Grab menu navigation arrays
 import menu from "@/data/menu";
 
-import Logo from "../../views/AgendaFree/Logo/Logo.vue";
-
-
 const navigation = menu.main;
 
 // Main store
@@ -68,6 +65,8 @@ watch(
 onMounted(() => {
   new SimpleBar(document.getElementById("simplebar-sidebar"));
 });
+
+
 </script>
 
 <template>
@@ -89,10 +88,14 @@ onMounted(() => {
       <div class="content-header">
         <slot name="header">
           <!-- Logo -->
-          <Logo />
+          <div class="logo-container">
+            <!-- Logo normal -->
+            <img src="../../../public/assets/media/AGFree/logo_v3.svg" alt="Logo AGFree" class="logo-normal smini-hide smini-hidden ">
+            <!-- Logo mini -->
+            <img src="../../../public//assets/media/AGFree/isotipo_FT.png" alt="Logo AGFree Mini" class="logo-mini smini-visible smini-visible-block">
+          </div>
           <!-- END Logo -->
         </slot>
-
         <!-- Extra -->
         <div>
           <!-- Close Sidebar, Visible only on mobile screens -->
@@ -125,3 +128,19 @@ onMounted(() => {
   </nav>
   <!-- END Sidebar -->
 </template>
+<style scoped>
+
+.logo-normal {
+  width: 200px;
+  height: 70px;
+}
+
+.logo-mini {
+  width: 37px;
+  height: 38px;
+  margin-right: 30px;
+}
+.content-header{
+  padding-left: 0.8rem !important;
+}
+</style>

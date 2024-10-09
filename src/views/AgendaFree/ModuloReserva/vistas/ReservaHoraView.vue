@@ -170,7 +170,7 @@ const reservarCita = () => {
     showCancelButton: true,
     confirmButtonText: "Confirmar",
     cancelButtonText: "Cancelar",
-    confirmButtonColor: "#16A085",
+    confirmButtonColor: "#3485b7",
     cancelButtonColor: "#95A5A6",
     preConfirm: () => {
       const email = document.getElementById("email").value;
@@ -234,7 +234,7 @@ const reservarCita = () => {
               text: "Hubo un problema al actualizar los datos del paciente. Por favor, inténtalo de nuevo.",
               icon: "error",
               confirmButtonText: "Aceptar",
-              confirmButtonColor: "#16A085",
+              confirmButtonColor: "#3485b7",
             });
           });
       } else {
@@ -247,7 +247,7 @@ const reservarCita = () => {
         text: "Tu cita ha sido cancelada. Si necesitas reprogramar, por favor contáctanos.",
         icon: "info",
         confirmButtonText: "Aceptar",
-        confirmButtonColor: "#16A085",
+        confirmButtonColor: "#3485b7",
       });
     }
   });
@@ -265,7 +265,7 @@ function registrarCita() {
           text: "En espera de confirmación del especialista",
           icon: "success",
           confirmButtonText: "Aceptar",
-          confirmButtonColor: "#16A085",
+          confirmButtonColor: "#3485b7",
         });
         horariosEspecialista.value.some((horario) => {
           if (horario.id == nuevaCita.value.hora_id) {
@@ -283,7 +283,7 @@ function registrarCita() {
         text: "Hubo un problema al agendar la cita. Por favor, inténtalo de nuevo.",
         icon: "error",
         confirmButtonText: "Aceptar",
-        confirmButtonColor: "#16A085",
+        confirmButtonColor: "#3485b7",
       });
     });
 }
@@ -361,6 +361,14 @@ onBeforeMount(async () => {
   await getHorarios();
   await getCitas();
 });
+
+const disabledDates = ref([
+  {
+    repeat: {
+      weekdays: [7, 1],
+    },
+  },
+]);
 </script>
 
 <template>
@@ -375,19 +383,16 @@ onBeforeMount(async () => {
             <div
               class="card-body bg-teal text-ivory d-flex flex-column justify-content-between"
             >
-              <h2 class="card-title text-center mb-4 fw-bold">
-                Agenda tu cita con
+              <h2 class="card-title text-center mb-4">
                 <img
                   src="/assets/media/avatars/avatar0.jpg"
                   alt="Imagen"
-                  class="my-2"
+                  class="my-2 rounded-circle"
                   style="max-width: 100px; display: block; margin: 0 auto"
                 />
                 <span class="fst-italic fw-light d-block mt-2">{{
-                  dataEspecialista.especialista.nombre +
-                  " " +
-                  dataEspecialista.especialista.apellido
-                }}</span>
+                `${dataEspecialista.especialista.especialista.especialidades[0].abreviatura}. ${dataEspecialista.especialista.nombre} ${dataEspecialista.especialista.apellido}`}}
+                </span>
               </h2>
               <div
                 class="calendar-wrapper flex-grow-1 d-flex align-items-center"
@@ -397,6 +402,7 @@ onBeforeMount(async () => {
                   class="calendar w-100"
                   v-model="date"
                   color="#16A085"
+                  :disabled-dates="disabledDates"
                   :attributes="configuracionesCalendario"
                   :min-date="new Date()"
                   :max-date="fechaMaxima()"
@@ -412,7 +418,7 @@ onBeforeMount(async () => {
         <div class="col-lg-6 mb-4 d-flex">
           <div class="card shadow h-100 flex-grow-1 d-flex flex-column">
             <div class="card-body d-flex flex-column">
-              <h3 class="card-title text-navy mb-4 fw-bold" v-if="date != null">
+              <h3 class="card-title text-navy mb-4" v-if="date != null">
                 Horarios disponibles para el
                 <span class="text-teal">{{ diaSeleccionado }}</span>
               </h3>
@@ -420,11 +426,7 @@ onBeforeMount(async () => {
                 Selecciona una fecha para ver los horarios disponibles
               </h3>
               <div class="row g-3 flex-grow-1">
-                <div
-                  class="col-6"
-                  v-for="horario in horariosEspecialista"
-                  :key="horario.id"
-                >
+                <div class="col-6" v-for="horario in horariosEspecialista" :key="horario.id">
                   <button
                     :id="horario.id"
                     type="button"
@@ -432,7 +434,9 @@ onBeforeMount(async () => {
                       'btn',
                       'w-100',
                       'py-2',
-                      horario.estado ? 'btn-teal' : 'btn-outline-teal',
+                      'btn-hora',
+                      { 'btn-hora-seleccionada': horario.id === idHorarioSeleccionado },
+                      { 'btn-hora-deshabilitada': horario.agendado },
                     ]"
                     :disabled="horario.agendado"
                     @click="seleccionarHorario(horario.id, horario.hora)"
@@ -459,6 +463,144 @@ onBeforeMount(async () => {
 </template>
 
 <style lang="scss">
+// Variables de color
+$color-primary: #3485b7;
+$color-secondary: #00b1b9;
+$color-tertiary: #a6d4cc;
+
+// ... código existente ...
+
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba($color-primary, 0.1) !important;
+  }
+}
+
+.card-body {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+// Estilo para la primera card (calendario)
+.card:first-of-type .card-body {
+  background-color: $color-tertiary;
+  color: $color-primary;
+}
+
+// Estilo para la segunda card (horarios)
+.card:last-of-type .card-body {
+  background-color: #ffffff;
+  color: $color-primary;
+}
+
+h2,
+h3 {
+  letter-spacing: 0.5px;
+  color: $color-secondary;
+}
+
+.bg-teal {
+  background-color: $color-tertiary;
+}
+
+.text-ivory {
+  color: $color-primary;
+}
+
+.text-navy {
+  color: $color-primary;
+}
+
+.text-teal {
+  color: $color-secondary;
+}
+
+.btn-teal {
+  background-color: $color-secondary;
+  color: #ffffff;
+  font-weight: 600;
+  &:hover {
+    background-color: darken($color-secondary, 10%);
+  }
+}
+
+.btn-outline-teal {
+  border-color: $color-secondary;
+  color: $color-secondary;
+  font-weight: 600;
+  &:hover {
+    background-color: $color-secondary;
+    color: #ffffff;
+  }
+}
+
+.btn-navy {
+  background-color: $color-primary;
+  color: #ffffff;
+  &:hover {
+    color: #ffffff;
+    background-color: darken($color-primary, 10%);
+  }
+}
+
+.btn-hora {
+  background-color: transparent;
+  border: 1px solid $color-primary;
+  color: $color-primary;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba($color-primary, 0.1);
+  
+  &:hover:not(:disabled) {
+    background-color: rgba($color-primary, 0.1);
+    box-shadow: 0 6px 8px rgba($color-primary, 0.2);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($color-primary, 0.25);
+  }
+}
+
+.btn-hora-seleccionada {
+  background-color: $color-primary;
+  color: #ffffff;
+  box-shadow: 0 4px 6px rgba($color-primary, 0.3);
+}
+
+.btn-hora-deshabilitada {
+  border-color: #95a5a6;
+  color: #95a5a6;
+  cursor: not-allowed;
+  box-shadow: none;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+body {
+  background-color: #eff2f3;
+}
+
+// Actualiza los colores del calendario
+
+.vc-title-wrapper {
+    padding-bottom: 15px;
+}
+
+.vc-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: $color-primary;
+}
+
 .vc-disabled {
   pointer-events: none;
   cursor: default;
@@ -471,7 +613,7 @@ onBeforeMount(async () => {
 .vc-day,
 .vc-day-content {
   font-size: 1.1rem;
-  color: #16a085;
+  color: $color-secondary;
   font-weight: 500;
 }
 
@@ -482,13 +624,15 @@ onBeforeMount(async () => {
 }
 
 .vc-highlight {
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
+  background-color: $color-tertiary;
 }
 
 .vc-weekday {
+  padding: 20px;
   font-size: 1rem;
-  color: #16a085;
+  color: $color-primary;
   font-weight: 600;
 }
 
@@ -499,145 +643,5 @@ onBeforeMount(async () => {
   font-weight: bold;
 }
 
-.bg-teal {
-  background-color: #d1f2eb;
-}
-
-.text-ivory {
-  color: #fafafa;
-}
-
-.text-navy {
-  color: #2c3e50;
-}
-
-.text-teal {
-  color: #16a085;
-}
-
-.btn-teal {
-  background-color: #16a085;
-  color: #fafafa;
-  font-weight: 600;
-  &:hover {
-    background-color: darken(#16a085, 10%);
-  }
-}
-
-.btn-outline-teal {
-  border-color: #16a085;
-  color: #16a085;
-  font-weight: 600;
-  &:hover {
-    background-color: #16a085;
-    color: #fafafa;
-  }
-}
-
-.btn-navy {
-  background-color: #1f2937;
-  color: #fafafa;
-  &:hover {
-    color: #fafafa;
-    background-color: darken(#3d5770, 10%);
-  }
-}
-
-body {
-  background-color: #e8f6f3;
-}
-
-.card {
-  border: none;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-  }
-}
-
-.btn {
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.card-body {
-  padding: 2rem;
-  flex-grow: 1;
-}
-
-h2,
-h3 {
-  letter-spacing: 0.5px;
-}
-
-.card-title {
-  color: #16a085; // Cambia este valor al color deseado
-}
-
-.row.g-3.flex-grow-1 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; // Centra los botones
-  gap: 0.5rem; // Espacio reducido entre botones
-}
-
-.col-6 {
-  flex: 0 0 85%; // Ajusta el ancho para que quepan mejor
-  margin-bottom: 0.5rem; // Espaciado uniforme entre filas
-}
-
-.btn {
-  width: 100%;
-  height: 45px; // Altura uniforme para todos los botones
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0; // Elimina margen inferior adicional
-}
-
-.btn-small {
-  width: auto; // Ajusta el ancho automáticamente
-  padding: 0.5rem 1rem; // Ajusta el padding para un tamaño más pequeño
-}
-
-.vh-100 {
-  height: 100vh; // Ocupa toda la altura de la pantalla
-}
-
-.d-flex {
-  display: flex;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-@keyframes circle-in-hesitate {
-  0% {
-    clip-path: circle(0%);
-  }
-  40% {
-    clip-path: circle(40%);
-  }
-  100% {
-    clip-path: circle(125%);
-  }
-}
-
-[transition-style="in:circle:hesitate"] {
-  animation: 2.5s cubic-bezier(0.25, 1, 0.3, 1) circle-in-hesitate both;
-}
+// ... resto del código ...
 </style>

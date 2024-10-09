@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, reactive } from "vue";
-// import ModalComponent from "../componentes/ModalDatosPacientes.vue";
 import { useRoute, useRouter } from "vue-router";
 import inputRut from "../componentes/inputRut.vue";
 import axios from "axios";
@@ -244,7 +243,6 @@ onMounted(() => {
   <vue-particles
     id="tsparticles"
     :options="particlesOptions"
-    @particles-loaded="particlesLoaded"
   />
 </template>
 
@@ -255,6 +253,8 @@ $blanco-marfil: #fafafa;
 $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
+
+
 
 @keyframes circle-in-hesitate {
   0% {
@@ -277,8 +277,10 @@ $verde-pastel: #d1f2eb;
 }
 
 .hero-content {
-  width: 100%;
-  max-width: 1000px;
+  width: 90%;
+  height: 90%;
+  max-width: 800px;
+  max-height: 800px;
   margin: auto;
   padding: 4rem 2rem;
   background-color: rgba($blanco-marfil, 0.9);
