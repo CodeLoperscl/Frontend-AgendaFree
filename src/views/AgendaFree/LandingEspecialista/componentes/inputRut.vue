@@ -1,11 +1,16 @@
 <script setup>
-import { validateRut, formatRut } from '@fdograph/rut-utilities';
+import { validateRut, formatRut } from "@fdograph/rut-utilities";
 import { defineEmits, onBeforeMount, onMounted, ref } from "vue";
-import { useMainStore, usePacienteDatos, usePersonaPacienteDatos, useUrlApiEspecialista } from '../../stores/store';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
-import LoadingSpinner from '../../Component/LoadingSpinner.vue';
-import ModalComponent from './ModalDatosPacientes.vue';
+import {
+  useMainStore,
+  usePacienteDatos,
+  usePersonaPacienteDatos,
+  useUrlApiEspecialista,
+} from "../../stores/store";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import LoadingSpinner from "../../Component/LoadingSpinner.vue";
+import ModalComponent from "./ModalDatosPacientes.vue";
 //Modal
 const modal = ref(false);
 
@@ -22,9 +27,9 @@ const URL_API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
 const router = useRouter();
 
 //RUT/DNI
-const rutInput = ref('');
+const rutInput = ref("");
 const rutState = ref(false);
-const rutValidated = ref('');
+const rutValidated = ref("");
 
 //Estados
 const isLoading = ref(false);
@@ -34,28 +39,27 @@ const estado = ref(0);
 const dataPaciente = ref();
 
 //TOKEN
-const getToken = () =>{
+const getToken = () => {
   return {
     headers: {
-      "x-token": sessionStorage.getItem("token")
-    }
-  }
+      "x-token": sessionStorage.getItem("token"),
+    },
+  };
 };
 //Modal Crear nuevo paciente
 const updateStoreData = () => {
-    store.updateData(estado.value);
-}
-const emitAbrirModal = () =>{
-    openModal();
-    //emit('abrirModal', rutValidated.value);
-    updateStoreData();
-}
-
+  store.updateData(estado.value);
+};
+const emitAbrirModal = () => {
+  openModal();
+  //emit('abrirModal', rutValidated.value);
+  updateStoreData();
+};
 
 const openModal = () => {
   modal.value = true;
   console.log("data");
-}
+};
 const closeModal = () => {
   modal.value = false;
   //router.push({ name: 'agenda'});
@@ -68,30 +72,30 @@ const guardarDatos = () => {
 
 //Verificar rut
 const verificarRut = () => {
-    rutState.value = validateRut(rutInput.value);
-    rutValidated.value = formatRut(rutInput.value);
-}
+  rutState.value = validateRut(rutInput.value);
+  rutValidated.value = formatRut(rutInput.value);
+};
 //Formatear rut
-const formatearRut = () =>{
-    rutInput.value = rutValidated.value;
-}
-const inputExtranjero = () =>{
-    estado.value = 1;
-    rutValidated.value = '';
-}
-const inputChileno = () =>{
-    estado.value = 0;
-    rutInput.value = '';
-}
+const formatearRut = () => {
+  rutInput.value = rutValidated.value;
+};
+const inputExtranjero = () => {
+  estado.value = 1;
+  rutValidated.value = "";
+};
+const inputChileno = () => {
+  estado.value = 0;
+  rutInput.value = "";
+};
 const arrayTipo = [
-    {
-        "tipo": "RUT",
-        "ejemplo": "Rut Ej: 17463223-K",
-    },
-    {
-        "tipo":"DNI",
-        "ejemplo": "Ingrese su DNI",
-    },
+  {
+    tipo: "RUT",
+    ejemplo: "Rut Ej: 17463223-K",
+  },
+  {
+    tipo: "DNI",
+    ejemplo: "Ingrese su DNI",
+  },
 ];
 
 // const getPaciente = (identificador) =>{
@@ -111,56 +115,55 @@ const arrayTipo = [
 //Buscar paciente
 const getPaciente = async (identificador) => {
   isLoading.value = true;
-  console.log("token desde Input", getToken());
-  axios.get(`${URL_API_GENERAL}persona/rut/${identificador}`, getToken())
-  .then((response)=>{
-      if(response){
-          dataPaciente.value = response.data.paciente;
-          console.log(dataPaciente.value);
-          storePaciente.setPaciente(dataPaciente.value);
-          storePersonaPaciente.setPersona(response.data);
-          console.log("store paciente: ", storePaciente.getPaciente());
-          router.push({ name: 'modulo-reserva'});
+  axios
+    .get(`${URL_API_GENERAL}persona/rut/${identificador}`, getToken())
+    .then((response) => {
+      if (response) {
+        dataPaciente.value = response.data.paciente;
+        console.log(dataPaciente.value);
+        storePaciente.setPaciente(dataPaciente.value);
+        storePersonaPaciente.setPersona(response.data);
+        router.push({ name: "modulo-reserva" });
       }
-  })
-  .catch((error)=>{
+    })
+    .catch((error) => {
       console.log("Error: ", error);
       emitAbrirModal();
-  }).finally(()=>{
-    isLoading.value = false;
-  });
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
 
-    // try {
-    //     const buscarPersona = await axios.get(URL_API_GENERAL + "persona/rut/" + identificador);
-    //     //Primero busco si persona existe
-    //     if (buscarPersona.status === 200) {
-    //         //Si persona existe, buscare a paciente en la base de datos del especialista
-    //         //Buscar si persona existe en la base de datos del especialista api-especialista/api/persona/idpersona
-    //             //Si existe paciente, realizar un post a la api del especialista para crear paciente enviando el id de persona, si paciente existe
-    //             //devuelve error 400 y si no existe 200 y se registra
-    //             //En ambos casos lleva al calendario
-    //         //Pero, si paciente no existe, se registra paciente a traves del modal de registo de persona, se crea persona y paciente (en la api de 
-    //         //especialista) y redirige a calendario
-    //         dataPaciente.value = response.data.paciente;
-    //         console.log(dataPaciente.value);
-    //         storePaciente.setPaciente(dataPaciente.value);
-    //         storePersonaPaciente.setPersona(response.data);
-    //         console.log("store paciente: ", storePaciente.getPaciente());
-    //         router.push({ name: 'modulo-reserva'});
-    //         isLoading.value = false;
-    //     }
-    // } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //         isLoading.value = false;
-    //         emitAbrirModal();
-    //     } else {
-    //         isLoading.value = false;
-    //         console.error("Error inesperado:", error);
-    //         // Manejar otros errores si es necesario
-    //     }
-    // }
+  // try {
+  //     const buscarPersona = await axios.get(URL_API_GENERAL + "persona/rut/" + identificador);
+  //     //Primero busco si persona existe
+  //     if (buscarPersona.status === 200) {
+  //         //Si persona existe, buscare a paciente en la base de datos del especialista
+  //         //Buscar si persona existe en la base de datos del especialista api-especialista/api/persona/idpersona
+  //             //Si existe paciente, realizar un post a la api del especialista para crear paciente enviando el id de persona, si paciente existe
+  //             //devuelve error 400 y si no existe 200 y se registra
+  //             //En ambos casos lleva al calendario
+  //         //Pero, si paciente no existe, se registra paciente a traves del modal de registo de persona, se crea persona y paciente (en la api de
+  //         //especialista) y redirige a calendario
+  //         dataPaciente.value = response.data.paciente;
+  //         console.log(dataPaciente.value);
+  //         storePaciente.setPaciente(dataPaciente.value);
+  //         storePersonaPaciente.setPersona(response.data);
+  //         console.log("store paciente: ", storePaciente.getPaciente());
+  //         router.push({ name: 'modulo-reserva'});
+  //         isLoading.value = false;
+  //     }
+  // } catch (error) {
+  //     if (error.response && error.response.status === 404) {
+  //         isLoading.value = false;
+  //         emitAbrirModal();
+  //     } else {
+  //         isLoading.value = false;
+  //         console.error("Error inesperado:", error);
+  //         // Manejar otros errores si es necesario
+  //     }
+  // }
 };
-
 </script>
 
 <template>
@@ -172,7 +175,7 @@ const getPaciente = async (identificador) => {
         <input
           type="text"
           class="form-control"
-          :class="{'text-info': !rutState}"
+          :class="{ 'text-info': !rutState }"
           :placeholder="arrayTipo[0].ejemplo"
           @input="verificarRut"
           @change="formatearRut"
@@ -207,32 +210,43 @@ const getPaciente = async (identificador) => {
         </button>
       </div>
       <div class="mt-2 text-center">
-        <a v-if="estado == 0" href="#" @click.prevent="inputExtranjero()" class="toggle-input">Ingresar con {{ arrayTipo[1].tipo }}</a>
-        <a v-else-if="estado == 1" href="#" @click.prevent="inputChileno()" class="toggle-input">Ingresar con {{ arrayTipo[0].tipo }}</a>
+        <a
+          v-if="estado == 0"
+          href="#"
+          @click.prevent="inputExtranjero()"
+          class="toggle-input"
+          >Ingresar con {{ arrayTipo[1].tipo }}</a
+        >
+        <a
+          v-else-if="estado == 1"
+          href="#"
+          @click.prevent="inputChileno()"
+          class="toggle-input"
+          >Ingresar con {{ arrayTipo[0].tipo }}</a
+        >
       </div>
     </div>
   </div>
   <ModalComponent
     :isOpen="modal"
-    :rut = "rutValidated"
+    :rut="rutValidated"
     @modal-close="closeModal"
     @submit-data="guardarDatos"
   ></ModalComponent>
-
 </template>
 
 <style lang="scss" scoped>
 // Definición de variables de color
-$verde-azulado: #16A085;
-$blanco-marfil: #FAFAFA;
-$azul-marino: #2C3E50;
-$gris-acero: #95A5A6;
-$verde-pastel: #D1F2EB;
+$verde-azulado: #16a085;
+$blanco-marfil: #fafafa;
+$azul-marino: #2c3e50;
+$gris-acero: #95a5a6;
+$verde-pastel: #d1f2eb;
 
 .input-rut {
   display: flex;
   align-items: center; // Alinea verticalmente el input y el botón
-  
+
   .form-control {
     height: 40px; // Ajusta esto si es necesario para que coincida con tu input actual
     font-size: 1rem;
@@ -242,18 +256,18 @@ $verde-pastel: #D1F2EB;
     margin-bottom: 1rem;
     padding: 0.75rem 1.25rem;
     border-radius: 8px; // Bordes más redondeados
-    
+
     @media (min-width: 768px) {
       margin-bottom: 0;
       margin-right: 1rem; // Más espacio entre input y botón
     }
-    
+
     &:focus {
       border-color: $verde-azulado;
       box-shadow: 0 0 0 0.2rem rgba($verde-azulado, 0.25);
     }
   }
-  
+
   .btn-primary {
     height: 40px; // Igual que la altura del input
     font-size: 0.75rem; // Mantenemos el tamaño de fuente pequeño
@@ -262,7 +276,7 @@ $verde-pastel: #D1F2EB;
     align-items: center;
     justify-content: center;
     white-space: nowrap; // Evita que el texto se divida en dos líneas
-    
+
     background-color: $verde-azulado;
     border-color: $verde-azulado;
     color: $blanco-marfil;
@@ -272,7 +286,7 @@ $verde-pastel: #D1F2EB;
     min-width: 120px; // Mantenemos el ancho mínimo original
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    
+
     &:hover:not(:disabled),
     &:focus:not(:disabled) {
       background-color: darken($verde-azulado, 10%);
@@ -280,7 +294,7 @@ $verde-pastel: #D1F2EB;
       transform: translateY(-1px);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    
+
     &:disabled {
       background-color: $gris-acero;
       border-color: $gris-acero;
@@ -300,7 +314,7 @@ $verde-pastel: #D1F2EB;
   font-weight: 500;
   margin-top: 1rem; // Más espacio arriba
   display: inline-block;
-  
+
   &:hover {
     text-decoration: underline;
   }

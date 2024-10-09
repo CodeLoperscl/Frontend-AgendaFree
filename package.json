@@ -54,7 +54,7 @@
     "qalendar": "^3.8.1",
     "simplebar": "^5.3.6",
     "simplebar-vue": "^2.3.5",
-    "sweetalert2": "^11.12.4",
+    "sweetalert2": "^11.3.0",
     "uid": "^2.0.2",
     "v-calendar": "^3.1.2",
     "vue": "^3.2.31",
@@ -69,10 +69,10 @@
     "vue3-particles": "^2.12.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.3.4",
+    "@vitejs/plugin-vue": "^5.1.4",
     "eslint": "^8.11.0",
     "eslint-plugin-vue": "^8.5.0",
     "sass": "^1.49.9",
-    "vite": "^2.8.6"
+    "vite": "^5.4.8"
   }
 }

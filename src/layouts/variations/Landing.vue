@@ -28,7 +28,9 @@ store.mainContent({ mode: "full" });
         class="logo-link d-flex align-items-center"
       >
         <span class="logo-text">
-          Agenda<span class="fw-light">Free</span>
+          <!-- Agenda
+          <span class="fw-light">Free</span> -->
+          <img src="/assets/media/AGFree/logo_v3.svg" width="200" alt="Logo" />
         </span>
       </RouterLink>
       <!-- END Logo -->
@@ -38,11 +40,11 @@ store.mainContent({ mode: "full" });
 
 <style lang="scss" scoped>
 // Definición de variables de color
-$verde-azulado: #16A085;
-$blanco-marfil: #FAFAFA;
-$azul-marino: #2C3E50;
-$gris-acero: #95A5A6;
-$verde-pastel: #D1F2EB;
+$verde-azulado: #16a085;
+$blanco-marfil: #fafafa;
+$azul-marino: #2c3e50;
+$gris-acero: #95a5a6;
+$verde-pastel: #d1f2eb;
 
 :deep(.header-navbar) {
   background-color: $azul-marino;
@@ -71,8 +73,9 @@ $verde-pastel: #D1F2EB;
 
 :deep(.nav-main-link) {
   color: $blanco-marfil;
-  
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     color: $verde-pastel;
     background-color: rgba($verde-azulado, 0.1);
   }
@@ -83,7 +86,8 @@ $verde-pastel: #D1F2EB;
   border-color: $verde-azulado;
   color: $blanco-marfil;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: darken($verde-azulado, 10%);
     border-color: darken($verde-azulado, 10%);
   }

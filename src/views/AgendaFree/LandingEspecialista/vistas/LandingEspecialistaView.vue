@@ -1,92 +1,95 @@
 <script setup>
-import { ref, watch, onBeforeMount, onMounted, onBeforeUpdate, reactive} from "vue";
+import { ref, onBeforeMount, onMounted, reactive } from "vue";
 // import ModalComponent from "../componentes/ModalDatosPacientes.vue";
 import { useRoute, useRouter } from "vue-router";
-import inputRut  from '../componentes/inputRut.vue';
+import inputRut from "../componentes/inputRut.vue";
 import axios from "axios";
-import { useEspecialistaDatos, useUrlApiEspecialista } from "../../stores/store";
+import {
+  useEspecialistaDatos,
+  useUrlApiEspecialista,
+} from "../../stores/store";
 import LoadingSpinner from "../../Component/LoadingSpinner.vue";
-
 
 //Usuario visita
 const usuarioVista = reactive({
-  "username": "visita",
-  "password": "2843bc16"
+  username: "visita",
+  password: "2843bc16",
 });
 //token
 const token = ref(null);
 const isLoading = ref(true);
 const storeEspecialista = useEspecialistaDatos();
 const storeAPIEspecialista = useUrlApiEspecialista();
-const persona = ref(
-  {
-    id: '',
-    uid: '',
-    username: '',
-    estado_id: '',
-    nombre: '',
-    apellido: '',
-  });
+const persona = ref({
+  id: "",
+  uid: "",
+  username: "",
+  estado_id: "",
+  nombre: "",
+  apellido: "",
+  abreviatura: "",
+});
 const rutPaciente = ref(null);
-// const modal = ref(false);
 const route = useRoute();
 const router = useRouter();
 // Con el uid traere los datos del especialista
-const uid = route.params.uid
-const dataEspecialista = ref([]);
+const uid = route.params.uid;
 const API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
 
-// const closeModal = () => {
-//   modal.value = false;
-//   //router.push({ name: 'agenda'});
-// };
-// const openModal = (data) => {
-//   rutPaciente.value = data;
-//   modal.value = true;
-//   console.log("data", rutPaciente.value);
-// }
-
-// const guardarDatos = () => {
-//   closeModal();
-//   //session.value = dataEspecialista.value.nombre;
-//   console.log("Hola desde cerrar modal");
-// };
-
-const getEspecialista = async () => {
-  console.log("token desde getEspecialista", token.value);
+const getProfesional = async () => {
   try {
-    const response = await axios.get(`${API_GENERAL}users/uid/${uid}`, token.value);
-    
+    const response = await axios.get(
+      `${API_GENERAL}users/uid/${uid}`,
+      token.value
+    );
+
     if (!response || !response.data) {
-      throw new Error('No se recibieron datos');
+      throw new Error("No se recibieron datos");
     }
-
+    console.log("response profesional: ", response.data);
     const profesional = response.data.personas[0]?.profesionales[0];
-    
+
     if (!profesional || !profesional.habilitado || !profesional.ruta_api) {
-      throw new Error('Profesional no válido o no habilitado');
+      throw new Error("Profesional no válido o no habilitado");
     }
-
     storeAPIEspecialista.setUrl(profesional.ruta_api);
-    getAbreviatura(profesional.ruta_api);
-    dataEspecialista.value = response.data;
-
+    persona.value.id = response.data.personas[0].id;
+    persona.value.uid = response.data.uid;
+    persona.value.username = response.data.username;
+    persona.value.estado_id = response.data.estado_id;
+    persona.value.nombre = response.data.personas[0].nombre;
+    persona.value.apellido = response.data.personas[0].apellido;
+    await getEspecialista(
+      profesional.persona_id,
+      response.data.personas[0]?.nombre,
+      response.data.personas[0]?.apellido,
+      response.data.personas[0]?.profesionales[0].max_dias_atencion
+    );
   } catch (error) {
-    console.error('Error al obtener datos del especialista:', error);
-    router.push({ path: '/error' });
+    console.error("Error al obtener datos del especialista:", error);
+    router.push({ path: "/error" });
   }
-}
+};
 
-const getAbreviatura = (ruta_api) => {
-  console.log("ruta_api: ", ruta_api);
-  axios.get(`${ruta_api}api/especialista/1`, token.value)
-  .then(response => {
-    console.log("response: ", response.data.especialista.especialidades[0].especialidad);
-  })
-  .catch(error => {
-    console.error('Error al obtener datos del especialista:', error);
-  })
-}
+const getEspecialista = (persona_id, nombre, apellido, dias_atencion) => {
+  axios
+    .get(
+      `${storeAPIEspecialista.getURL()}api/especialista/persona/${persona_id}`,
+      token.value
+    )
+    .then((response) => {
+      response.data.max_dias_atencion = dias_atencion;
+      response.data.nombre = nombre;
+      response.data.apellido = apellido;
+      storeEspecialista.setEspecialista(response.data);
+      console.log("store especialista 1: ", storeEspecialista.especialista);
+      persona.value.abreviatura =
+        storeEspecialista.especialista.especialista.especialidades[0].abreviatura;
+    })
+    .catch((error) => {
+      console.error("Error al obtener datos del especialista:", error);
+    });
+};
 
 const autoLogin = async () => {
   try {
@@ -95,52 +98,41 @@ const autoLogin = async () => {
       sessionStorage.setItem("token", response.data.token);
       token.value = {
         headers: {
-          "x-token": response.data.token
-        }
-      }
-      console.log('Usuario autenticado:', response.data.token);
+          "x-token": response.data.token,
+        },
+      };
+      console.log("Usuario autenticado:", response.data.token);
     } else {
-      console.error('Error al autenticar al usuario:', response.data);
+      console.error("Error al autenticar al usuario:", response.data);
     }
   } catch (error) {
-    console.error('Error al autenticar al usuario:', error);
-    router.push({ path: '/error' });
+    console.error("Error al autenticar al usuario:", error);
+    router.push({ path: "/error" });
   }
-}
+};
 
-
-onBeforeMount(async ()=>{
+onBeforeMount(async () => {
   await autoLogin();
-  await getEspecialista();
-});
-onBeforeUpdate(()=>{
+  await getProfesional();
   isLoading.value = false;
-})
-
-watch(dataEspecialista, (newValue) => {
-  // Esta función se ejecutará cuando dataEspecialista cambie
-  const personaData = newValue.personas[0];
-  persona.value = personaData;
-  storeEspecialista.setEspecialista(persona.value)
-  console.log("store especialista: ",storeEspecialista.especialista)
 });
 
 const particlesOptions = ref({
   background: {
     color: {
-      value: '#ffffff'
-    }
+      value: "#ffffff",
+    },
   },
   fpsLimit: 120,
   interactivity: {
     events: {
       onClick: {
         enable: true,
-        mode: 'push'
+        mode: "push",
       },
       onHover: {
         enable: true,
-        mode: 'repulse'
+        mode: "repulse",
       },
     },
     modes: {
@@ -148,58 +140,59 @@ const particlesOptions = ref({
         distance: 400,
         duration: 2,
         opacity: 0.8,
-        size: 40
+        size: 40,
       },
       push: {
-        quantity: 4
+        quantity: 4,
       },
       repulse: {
         distance: 200,
-        duration: 0.4
-      }
-    }
+        duration: 0.4,
+      },
+    },
   },
   particles: {
     color: {
-      value: '#16A085'
+      value: "#16A085",
     },
     links: {
-      color: '#ffff',
+      color: "#ffff",
       distance: 150,
       enable: true,
       opacity: 0.5,
-      width: 1
+      width: 1,
     },
     move: {
-      direction: 'none',
+      direction: "none",
       enable: true,
-      outModes: 'bounce',
+      outModes: "bounce",
       random: false,
       speed: 6,
-      straight: false
+      straight: false,
     },
     number: {
       density: {
         enable: true,
       },
-      value: 80
+      value: 80,
     },
     opacity: {
-      value: 0.5
+      value: 0.5,
     },
     shape: {
-      type: 'circle'
+      type: "circle",
     },
     size: {
-      value: { min: 1, max: 5 }
-    }
+      value: { min: 1, max: 5 },
+    },
   },
-  detectRetina: true
+  detectRetina: true,
 });
 
 onMounted(() => {
   setTimeout(() => {
-    document.querySelector('.hero-content').style.animationPlayState = 'running';
+    document.querySelector(".hero-content").style.animationPlayState =
+      "running";
   }, 100);
 });
 </script>
@@ -223,15 +216,20 @@ onMounted(() => {
     </div>
     <div class="hero-content" transition-style="in:circle:hesitate">
       <div class="content content-full text-center">
-        <i class="fa fa-4x fa-stethoscope text-primary mb-5"></i>
+        <!-- <i class="fa fa-4x fa-stethoscope text-primary mb-5"></i> -->
+        <img src="/assets/media/AGFree/logo_v1.svg" width="200" alt="Logo" />
         <h1 class="fw-bold mb-4">Sistema de Reservas Online</h1>
-        <h2 class="fw-light mb-5">Dr. {{ persona.nombre + " " + persona.apellido }}</h2>
-        
+        <h2 class="fw-light mb-5">
+          {{ persona.abreviatura }}.
+          {{ persona.nombre + " " + persona.apellido }}
+        </h2>
+
         <div class="row justify-content-center">
           <div class="col-12 col-xl-10">
             <div class="bg-card p-5 rounded shadow-lg">
               <p class="fs-4 fw-medium text-dark mb-4">
-                Para solicitar una hora de atención, ingrese su RUT y presione continuar.
+                Para solicitar una hora de atención, ingrese su RUT y presione
+                continuar.
               </p>
               <div class="input-container">
                 <inputRut />
@@ -242,12 +240,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <!-- <ModalComponent
-    :isOpen="modal"
-    :rut = "rutPaciente"
-    @modal-close="closeModal"
-    @submit-data="guardarDatos"
-  ></ModalComponent> -->
+
   <vue-particles
     id="tsparticles"
     :options="particlesOptions"
@@ -257,11 +250,11 @@ onMounted(() => {
 
 <style lang="scss">
 // Definición de variables de color
-$verde-azulado: #16A085;
-$blanco-marfil: #FAFAFA;
-$azul-marino: #2C3E50;
-$gris-acero: #95A5A6;
-$verde-pastel: #D1F2EB;
+$verde-azulado: #16a085;
+$blanco-marfil: #fafafa;
+$azul-marino: #2c3e50;
+$gris-acero: #95a5a6;
+$verde-pastel: #d1f2eb;
 
 @keyframes circle-in-hesitate {
   0% {
@@ -291,7 +284,7 @@ $verde-pastel: #D1F2EB;
   background-color: rgba($blanco-marfil, 0.9);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  animation: 2.5s cubic-bezier(.25, 1, .30, 1) circle-in-hesitate both;
+  animation: 2.5s cubic-bezier(0.25, 1, 0.3, 1) circle-in-hesitate both;
   animation-play-state: paused;
   position: relative;
   z-index: 2;
@@ -337,7 +330,8 @@ $verde-pastel: #D1F2EB;
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
   }
   50% {
@@ -468,7 +462,7 @@ h2 {
 
 .orbe::after {
   position: absolute;
-  content: '';
+  content: "";
   top: 0;
   left: 0;
   width: var(--size-orbe);
