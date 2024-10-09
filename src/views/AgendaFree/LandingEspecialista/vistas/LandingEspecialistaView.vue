@@ -198,7 +198,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <LoadingSpinner :isLoading="isLoading" />
+  <!-- <LoadingSpinner :isLoading="isLoading" /> -->
   <div v-if="isLoading" class="spinner-overlay">
     <div class="loader">
       <div class="orbe" style="--index: 0"></div>
@@ -215,13 +215,12 @@ onMounted(() => {
       <div class="shape shape-3"></div>
     </div>
     <div
-      class="hero-content vista-escalada"
+      class="hero-content pb-0 text-center"
       transition-style="in:circle:hesitate"
     >
       <div class="content content-full text-center">
         <!-- <i class="fa fa-4x fa-stethoscope text-primary mb-5"></i> -->
-        <img src="/assets/media/AGFree/logo_v1_2.svg" width="200" alt="Logo" />
-        <h1 class="fw-bold mb-4">Sistema de Reservas Online</h1>
+        <h1 class="fw-bold my-3">Agenda tu cita online con</h1>
         <h2 class="fw-light mb-5">
           {{ persona.abreviatura }}.
           {{ persona.nombre + " " + persona.apellido }}
@@ -230,7 +229,7 @@ onMounted(() => {
         <div class="row justify-content-center">
           <div class="col-12 col-xl-10">
             <div class="bg-card p-5 rounded shadow-lg">
-              <p class="fs-4 fw-medium text-dark mb-4">
+              <p class="fs-5 fw-medium text-dark mb-4">
                 Para solicitar una hora de atención, ingrese su RUT y presione
                 continuar.
               </p>
@@ -241,6 +240,13 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <img
+        src="/assets/media/AGFree/logo_v1_2.svg"
+        class="mt-5 mb-5"
+        width="70"
+        alt="Logo Agenda Free"
+      />
+      <div class="shadow"></div>
     </div>
   </div>
 
@@ -259,19 +265,32 @@ $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
 
-.vista-escalada {
-  transform: scale(0.8);
-  transform-origin: center;
-  width: 125%; // 100% / 0.8
-  padding-right: 25%; // Compensar el aumento de ancho
-  margin-bottom: -20%; // Compensar el aumento de altura
+.image-container {
+  position: relative;
+  display: inline-block;
+}
 
-  @media (max-width: 767px) {
-    transform: none;
-    width: 100%;
-    padding-right: 0;
-    margin-bottom: 0;
-  }
+.image-container img {
+  display: block;
+  width: 100%; /* Ajusta el tamaño de la imagen si es necesario */
+}
+
+.shadow {
+  position: absolute;
+  bottom: 48px; /* Ajusta la distancia de la sombra debajo de la imagen */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7%; /* Ajusta el tamaño horizontal del óvalo */
+  height: 10px; /* Ajusta el grosor del óvalo */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0
+  ); /* Color negro con opacidad para suavizar */
+  border-radius: 45%; /* Crea el efecto de óvalo */
+  z-index: -1; /* Coloca la sombra debajo de la imagen */
+  box-shadow: 0 1.5rem 0.5rem rgba(0, 0, 0, 0.15) !important;
 }
 
 @keyframes circle-in-hesitate {

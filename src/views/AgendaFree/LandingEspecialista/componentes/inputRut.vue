@@ -164,25 +164,6 @@ $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
 
-// Aplicar escala al contenedor principal
-body {
-  transform: scale(0.8);
-  transform-origin: top left;
-  width: 125%; // 100% / 0.8
-  height: 125%; // 100% / 0.8
-  overflow-x: hidden;
-}
-
-// Ajustar el tamaño de la ventana gráfica
-@media screen and (min-width: 1200px) {
-  html,
-  body {
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-  }
-}
-
 .input-rut {
   display: flex;
   flex-direction: column;
