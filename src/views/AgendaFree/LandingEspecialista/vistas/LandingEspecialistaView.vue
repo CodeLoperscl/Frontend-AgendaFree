@@ -214,10 +214,13 @@ onMounted(() => {
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-    <div class="hero-content" transition-style="in:circle:hesitate">
+    <div
+      class="hero-content vista-escalada"
+      transition-style="in:circle:hesitate"
+    >
       <div class="content content-full text-center">
         <!-- <i class="fa fa-4x fa-stethoscope text-primary mb-5"></i> -->
-        <img src="/assets/media/AGFree/logo_v1.svg" width="200" alt="Logo" />
+        <img src="/assets/media/AGFree/logo_v1_2.svg" width="200" alt="Logo" />
         <h1 class="fw-bold mb-4">Sistema de Reservas Online</h1>
         <h2 class="fw-light mb-5">
           {{ persona.abreviatura }}.
@@ -255,6 +258,21 @@ $blanco-marfil: #fafafa;
 $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
+
+.vista-escalada {
+  transform: scale(0.8);
+  transform-origin: center;
+  width: 125%; // 100% / 0.8
+  padding-right: 25%; // Compensar el aumento de ancho
+  margin-bottom: -20%; // Compensar el aumento de altura
+
+  @media (max-width: 767px) {
+    transform: none;
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 0;
+  }
+}
 
 @keyframes circle-in-hesitate {
   0% {
@@ -403,7 +421,9 @@ h2 {
   .hero-content {
     padding: 3rem 1.5rem;
   }
-
+  .hero {
+    overflow: scroll !important;
+  }
   h1 {
     font-size: 2.5rem;
   }

@@ -300,7 +300,8 @@ const seleccionarHorario = (id, horario) => {
 const fechaMaxima = () => {
   let fecha = new Date();
   fecha.setDate(
-    fecha.getDate() + dataEspecialista.especialista.max_dias_atencion
+    fecha.getDate() +
+      dataEspecialista.especialista.profesionales[0].max_dias_atencion
   );
   return fecha;
 };
@@ -308,7 +309,7 @@ const fechaMaxima = () => {
 const getCitas = () => {
   console.log(
     "Máximos días de atención: ",
-    dataEspecialista.especialista.max_dias_atencion
+    dataEspecialista.especialista.profesionales[0].max_dias_atencion
   );
   solicitarHoraBtnEstado.value = true;
   if (date.value != null) {
@@ -355,6 +356,7 @@ const horasDisponiblesPorDia = () => {
 };
 
 onBeforeMount(async () => {
+  alert();
   console.log("store2", storePersonaPaciente.getPersona());
   console.log("store3", dataEspecialista.especialista);
   await getPrevisiones();

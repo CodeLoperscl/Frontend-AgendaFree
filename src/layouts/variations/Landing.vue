@@ -30,7 +30,11 @@ store.mainContent({ mode: "full" });
         <span class="logo-text">
           <!-- Agenda
           <span class="fw-light">Free</span> -->
-          <img src="/assets/media/AGFree/logo_v3.svg" width="200" alt="Logo" />
+          <img
+            src="/assets/media/AGFree/logo_v3_2.svg"
+            width="200"
+            alt="Logo"
+          />
         </span>
       </RouterLink>
       <!-- END Logo -->
