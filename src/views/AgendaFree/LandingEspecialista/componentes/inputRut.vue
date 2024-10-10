@@ -1,6 +1,6 @@
 <script setup>
 import { validateRut, formatRut } from "@fdograph/rut-utilities";
-import { defineEmits, onBeforeMount, onMounted, ref } from "vue";
+import { ref, reactive } from "vue";
 import {
   useMainStore,
   usePacienteDatos,
@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import LoadingSpinner from "../../Component/LoadingSpinner.vue";
 import ModalComponent from "./ModalDatosPacientes.vue";
+
 //Modal
 const modal = ref(false);
 
@@ -21,23 +22,6 @@ const storePaciente = usePacienteDatos();
 const store = useMainStore();
 //API
 const URL_API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
-//const API_ESPECIALISTA = storeAPIEspecialista.getUrl();
-
-//Vue Router
-const router = useRouter();
-
-//RUT/DNI
-const rutInput = ref("");
-const rutState = ref(false);
-const rutValidated = ref("");
-
-//Estados
-const isLoading = ref(false);
-const estado = ref(0);
-
-//Informacion
-const dataPaciente = ref();
-
 //TOKEN
 const getToken = () => {
   return {
@@ -46,10 +30,22 @@ const getToken = () => {
     },
   };
 };
-//Modal Crear nuevo paciente
-const updateStoreData = () => {
-  store.updateData(estado.value);
-};
+//Vue Router
+const router = useRouter();
+const dataPaciente = ref();
+//Estados
+const isLoading = ref(false);
+const estado = ref(false);
+const arrayTipo = reactive({
+  tipo: "Documento Extranjero",
+  ejemplo: "Rut Ej: 17463223-K",
+});
+//RUT/DNI
+const rutInput = ref("");
+const rutState = ref(false);
+const rutValidated = ref("");
+
+//modal methods
 const emitAbrirModal = () => {
   openModal();
   //emit('abrirModal', rutValidated.value);
@@ -70,51 +66,50 @@ const guardarDatos = () => {
   console.log("Hola desde cerrar modal");
 };
 
+//estados
+const updateStoreData = () => {
+  if (estado.value) {
+    store.updateData(1);
+  } else {
+    store.updateData(0);
+  }
+};
 //Verificar rut
 const verificarRut = () => {
+  if (!estado.value) {
   rutState.value = validateRut(rutInput.value);
   rutValidated.value = formatRut(rutInput.value);
+  }
 };
 //Formatear rut
 const formatearRut = () => {
+  if (!estado.value) {
   rutInput.value = rutValidated.value;
+  }
 };
-const inputExtranjero = () => {
-  estado.value = 1;
-  rutValidated.value = "";
-};
-const inputChileno = () => {
-  estado.value = 0;
-  rutInput.value = "";
-};
-const arrayTipo = [
-  {
-    tipo: "RUT",
-    ejemplo: "Rut Ej: 17463223-K",
-  },
-  {
-    tipo: "DNI",
-    ejemplo: "Ingrese su DNI",
-  },
-];
 
-// const getPaciente = (identificador) =>{
-//     isLoading.value = true;
-//     axios.get(URL_API_GENERAL + "persona/rut/" + identificador)
-//         .then((response)=>{
-//             if(response){
-//                 if(response.status === 200){
-//                     //Persona existe en la api general
-//                     //Si persona existe, buscar paciente en API especialista con id del paciente
-//                     axios.get(API_ESPECIALISTA)
-//                 }
-//             }
-//         })
-// }
+const inputChange = (est) => {
+  estado.value = est;
+  updateStoreData();
+  rutInput.value = "";
+  rutValidated.value = "";
+  if (est) {
+    arrayTipo.tipo = "CI Documento Chileno";
+    arrayTipo.ejemplo = "DNI";
+    rutState.value = true;
+  } else {
+    arrayTipo.tipo = "Documento Extranjero";
+    arrayTipo.ejemplo = "Rut Ej: 17463223-K";
+  }
+};
 
 //Buscar paciente
-const getPaciente = async (identificador) => {
+const getPaciente = async () => {
   isLoading.value = true;
+  if(estado.value){
+    rutValidated.value = rutInput.value;
+  }
+  const identificador = rutValidated.value;
   axios
     .get(`${URL_API_GENERAL}persona/rut/${identificador}`, getToken())
     .then((response) => {
@@ -169,13 +164,13 @@ const getPaciente = async (identificador) => {
 <template>
   <LoadingSpinner :isLoading="isLoading" />
   <div class="row mt-3 justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
-      <div v-show="estado == 0" class="input-rut">
+    <div class="col-12 col-md-10">
+      <div class="input-rut">
         <input
           type="text"
           class="form-control"
           :class="{ 'text-info': !rutState }"
-          :placeholder="arrayTipo[0].ejemplo"
+          :placeholder="arrayTipo.ejemplo"
           @input="verificarRut"
           @change="formatearRut"
           v-model="rutInput"
@@ -191,37 +186,13 @@ const getPaciente = async (identificador) => {
           <i class="fa fa-fw fa-arrow-right"></i>
         </button>
       </div>
-      <div v-show="estado == 1" class="input-rut">
-        <input
-          type="text"
-          class="form-control"
-          :placeholder="arrayTipo[1].ejemplo"
-          v-model="rutValidated"
-        />
-        <button
-          type="button"
-          class="btn btn-primary"
-          v-click-ripple
-          @click="getPaciente(rutValidated)"
-        >
-          CONTINUAR
-          <i class="fa fa-fw fa-arrow-right"></i>
-        </button>
-      </div>
+
       <div class="mt-2 text-center">
         <a
-          v-if="estado == 0"
           href="#"
-          @click.prevent="inputExtranjero()"
-          class="toggle-input"
-          >Ingresar con {{ arrayTipo[1].tipo }}</a
-        >
-        <a
-          v-else-if="estado == 1"
-          href="#"
-          @click.prevent="inputChileno()"
-          class="toggle-input"
-          >Ingresar con {{ arrayTipo[0].tipo }}</a
+          @click.prevent="inputChange(!estado)"
+          class="toggle-input fs-7"
+          >Ingresar con {{ arrayTipo.tipo }}</a
         >
       </div>
     </div>
@@ -242,23 +213,36 @@ $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
 
+.fs-7 {
+  font-size: 0.8rem !important;
+}
+
 .input-rut {
   display: flex;
-  align-items: center; // Alinea verticalmente el input y el botón
+  flex-direction: column;
+  align-items: stretch;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
 
   .form-control {
-    height: 40px; // Ajusta esto si es necesario para que coincida con tu input actual
-    font-size: 1rem;
+    height: 50px;
+    font-size: 0.75rem;
     background-color: $blanco-marfil;
-    border: 2px solid $gris-acero; // Borde más visible
+    border: 2px solid $gris-acero;
     color: $azul-marino;
     margin-bottom: 1rem;
     padding: 0.75rem 1.25rem;
-    border-radius: 8px; // Bordes más redondeados
+    border-radius: 8px;
+    width: 100%;
 
     @media (min-width: 768px) {
+      height: 35px;
       margin-bottom: 0;
-      margin-right: 1rem; // Más espacio entre input y botón
+      margin-right: 1rem;
+      flex: 1;
     }
 
     &:focus {
@@ -268,23 +252,29 @@ $verde-pastel: #d1f2eb;
   }
 
   .btn-primary {
-    height: 40px; // Igual que la altura del input
-    font-size: 0.75rem; // Mantenemos el tamaño de fuente pequeño
-    padding: 0 1rem; // Ajustamos el padding horizontal
+    height: 50px;
+    font-size: 0.9rem;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    white-space: nowrap; // Evita que el texto se divida en dos líneas
-
+    white-space: nowrap;
     background-color: $verde-azulado;
     border-color: $verde-azulado;
     color: $blanco-marfil;
     font-weight: 600;
     transition: all 0.3s ease;
-    border-radius: 6px; // Mantenemos el radio de borde original
-    min-width: 120px; // Mantenemos el ancho mínimo original
+    border-radius: 6px;
+    width: 100%;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+
+    @media (min-width: 768px) {
+      height: 35px;
+      font-size: 0.75rem;
+      min-width: 120px;
+      width: auto;
+    }
 
     &:hover:not(:disabled),
     &:focus:not(:disabled) {
@@ -302,7 +292,7 @@ $verde-pastel: #d1f2eb;
 
     i {
       margin-left: 4px;
-      font-size: 0.7rem; // Reducido el tamaño del icono
+      font-size: 0.7rem;
     }
   }
 }

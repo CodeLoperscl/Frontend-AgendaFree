@@ -108,11 +108,11 @@ const v$ = useVuelidate(reglas, paciente)
 watch(() => store.sharedData, (newVal) => {
   if (newVal == 1) {
     tipoCampo.value = "DNI";
-    paciente.prevision = 3;
+    paciente.prevision_id = 3;
     previsionSeleccionada.value = 1;
   } else {
     tipoCampo.value = "RUT";
-    paciente.prevision = 0;
+    paciente.prevision_id = 0;
     previsionSeleccionada.value = 0;
   }
 });
@@ -124,6 +124,12 @@ watch(() => props.isOpen, (newVal) => {
     getNacionalidadPrevision(getToken());
   } else {
     console.log('El modal se ha cerrado');
+    paciente.prevision_id = 0;
+    paciente.nacionalidad = 0;
+    paciente.nombre = "";
+    paciente.apellido = "";
+    paciente.email = "";
+    paciente.fono = "";
   }
 });
 

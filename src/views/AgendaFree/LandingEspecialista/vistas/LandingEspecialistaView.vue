@@ -14,7 +14,8 @@ const usuarioVista = reactive({
   username: "visita",
   password: "2843bc16",
 });
-//token
+
+//Token
 const token = ref(null);
 const isLoading = ref(true);
 const storeEspecialista = useEspecialistaDatos();
@@ -28,13 +29,18 @@ const persona = ref({
   apellido: "",
   abreviatura: "",
 });
-const rutPaciente = ref(null);
-const route = useRoute();
-const router = useRouter();
-// Con el uid traere los datos del especialista
-const uid = route.params.uid;
+
+//API GENERAL
 const API_GENERAL = import.meta.env.VITE_URL_API_GENERAL;
 
+//RUTAS
+const route = useRoute();
+const router = useRouter();
+
+//UID
+const uid = route.params.uid;
+
+//Obtener datos del profesional
 const getProfesional = async () => {
   try {
     const response = await axios.get(
@@ -70,6 +76,7 @@ const getProfesional = async () => {
   }
 };
 
+//Obtener datos del especialista
 const getEspecialista = (persona_id, nombre, apellido, dias_atencion) => {
   axios
     .get(
@@ -81,15 +88,16 @@ const getEspecialista = (persona_id, nombre, apellido, dias_atencion) => {
       response.data.nombre = nombre;
       response.data.apellido = apellido;
       storeEspecialista.setEspecialista(response.data);
-      console.log("store especialista 1: ", storeEspecialista.especialista);
-      persona.value.abreviatura =
-        storeEspecialista.especialista.especialista.especialidades[0].abreviatura;
+      console.log("store especialista 1: ", storeEspecialista.especialista.especialista.especialidades[0].especialidad);
+      persona.value.especialidad =
+        storeEspecialista.especialista.especialista.especialidades[0].especialidad;
     })
     .catch((error) => {
       console.error("Error al obtener datos del especialista:", error);
     });
 };
 
+//Autologin
 const autoLogin = async () => {
   try {
     const response = await axios.post(`${API_GENERAL}auth/login`, usuarioVista);
@@ -110,12 +118,14 @@ const autoLogin = async () => {
   }
 };
 
+//Se ejecuta antes de montar el componente
 onBeforeMount(async () => {
   await autoLogin();
   await getProfesional();
   isLoading.value = false;
 });
 
+//Particles
 const particlesOptions = ref({
   background: {
     color: {
@@ -188,6 +198,7 @@ const particlesOptions = ref({
   detectRetina: true,
 });
 
+//Se ejecuta después de montar el componente
 onMounted(() => {
   setTimeout(() => {
     document.querySelector(".hero-content").style.animationPlayState =
@@ -204,20 +215,21 @@ onMounted(() => {
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-    <div class="hero-content" transition-style="in:circle:hesitate">
-      <div class="content content-full text-center">
-        <!-- <i class="fa fa-4x fa-stethoscope text-primary mb-5"></i> -->
-        <img src="/assets/media/AGFree/logo_v1.svg" width="200" alt="Logo" />
-        <h1 class="fw-bold mb-4">Sistema de Reservas Online</h1>
-        <h2 class="fw-light mb-5">
-          {{ persona.abreviatura }}.
+    <div class="hero-content text-center" transition-style="in:circle:hesitate">
+      <div class="content content-full text-center p-0">
+        <h4 class="fw-light">
+          Bienvenido a sistema de reserva de citas Online de:
+        </h4>
+        <h1 class="fw-bold">
           {{ persona.nombre + " " + persona.apellido }}
-        </h2>
-
+        </h1>
+        <h3 class="fw-bold">
+          {{ persona.especialidad }}
+        </h3>
         <div class="row justify-content-center">
-          <div class="col-12 col-xl-10">
-            <div class="bg-card p-5 rounded shadow-lg">
-              <p class="fs-4 fw-medium text-dark mb-4">
+          <div class="col-12">
+            <div class="bg-card rounded shadow-lg">
+              <p class="fs-6 fw-medium text-dark mb-4">
                 Para solicitar una hora de atención, ingrese su RUT y presione
                 continuar.
               </p>
@@ -245,8 +257,6 @@ $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
 
-
-
 @keyframes circle-in-hesitate {
   0% {
     clip-path: circle(0%);
@@ -259,6 +269,10 @@ $verde-pastel: #d1f2eb;
   }
 }
 
+.fs-7 {
+  font-size: 0.8rem !important;
+}
+
 .hero {
   min-height: 100vh;
   background-color: $blanco-marfil;
@@ -268,12 +282,10 @@ $verde-pastel: #d1f2eb;
 }
 
 .hero-content {
-  width: 90%;
-  height: 90%;
-  max-width: 800px;
-  max-height: 800px;
+  max-width: 1000px;
+  //max-height: 800px;
   margin: auto;
-  padding: 4rem 2rem;
+  padding: 4rem;
   background-color: rgba($blanco-marfil, 0.9);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -346,7 +358,7 @@ h2 {
 
 .bg-card {
   background-color: $verde-pastel;
-  padding: 3rem !important;
+  padding: 3rem 2rem !important;
 }
 
 .input-container {
@@ -396,111 +408,9 @@ h2 {
   .hero-content {
     padding: 3rem 1.5rem;
   }
-
-  h1 {
-    font-size: 2.5rem;
+  .hero {
+    overflow: scroll !important;
   }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .bg-card {
-    padding: 2rem !important;
-  }
-
-  :deep(.input-group) {
-    flex-direction: column;
-  }
-
-  :deep(.form-control),
-  :deep(.btn-primary) {
-    width: 100%;
-    margin-top: 1rem;
-    height: 60px;
-    font-size: 1.25rem;
-  }
-}
-
-
-@keyframes orbit7456 {
-  0% {
-  }
-
-  80% {
-    transform: rotate(360deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-h1 {
-  font-size: 3rem;
-  color: $azul-marino;
-  margin-bottom: 1rem;
-}
-
-h2 {
-  font-size: 1.8rem;
-  color: $gris-acero;
-  margin-bottom: 3rem;
-}
-
-.bg-card {
-  background-color: $verde-pastel;
-  padding: 3rem !important;
-}
-
-.input-container {
-  margin-top: 2rem;
-}
-
-.text-primary {
-  color: $verde-azulado !important;
-}
-
-.text-dark {
-  color: $azul-marino !important;
-}
-
-:deep(.input-group) {
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-:deep(.form-control) {
-  flex: 1;
-  font-size: 1.5rem;
-  height: 70px;
-  padding: 1rem 1.5rem;
-  border: 2px solid $verde-azulado;
-}
-
-:deep(.btn-primary) {
-  min-width: 200px;
-  height: 70px;
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
-  background-color: $verde-azulado;
-  border-color: $verde-azulado;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: darken($verde-azulado, 10%);
-    border-color: darken($verde-azulado, 10%);
-  }
-}
-
-// Ajustes adicionales para dispositivos móviles
-@media (max-width: 768px) {
-  .hero-content {
-    padding: 3rem 1.5rem;
-  }
-
   h1 {
     font-size: 2.5rem;
   }

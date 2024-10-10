@@ -62,8 +62,9 @@ const getCitas = async (api) => {
             id: cita.estados_cita.id,
             nombre: cita.estados_cita.estado
           }
-        }));
-      console.log("citas filtradas y ma:", citasEspecialista.value);
+        }))
+        .reverse();
+      console.log("citas filtradas y mas:", citasEspecialista.value);
     }
   } catch (error) {
     console.error("Error al obtener citas:", error);
@@ -273,7 +274,7 @@ onBeforeMount(async() => {
                     <tr>
                       <th scope="row">{{ row.id }}</th>
                       <td style="min-width: 150px">{{ row.nombre_persona }}</td>
-                      <td>{{ row.dia }}</td>
+                      <td>{{ row.fecha }}</td>
                       <td style="min-width: 150px">{{ row.hora }}</td>
                       <td style="min-width: 150px">{{ row.prevision }}</td>
                       <td style="min-width: 150px">
