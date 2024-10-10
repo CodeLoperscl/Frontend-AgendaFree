@@ -61,7 +61,11 @@ const guardarDatos = () => {
 
 //estados
 const updateStoreData = () => {
-  store.updateData(estado.value);
+  if (estado.value) {
+    store.updateData(1);
+  } else {
+    store.updateData(0);
+  }
 };
 //Verificar rut
 const verificarRut = () => {
@@ -79,6 +83,7 @@ const formatearRut = () => {
 
 const inputChange = (est) => {
   estado.value = est;
+  updateStoreData();
   if (est) {
     arrayTipo.tipo = "CI Documento Chileno";
     arrayTipo.ejemplo = "DNI";

@@ -294,14 +294,13 @@ const seleccionarHorario = (id, horario) => {
   solicitarHoraBtnEstado.value = false;
   console.log("id horario seleccionado: ", idHorarioSeleccionado.value);
   nuevaCita.value.hora_id = id;
-  console.log("Ultima cita:",nuevaCita.value);
+  console.log("Ultima cita:", nuevaCita.value);
 };
 
 const fechaMaxima = () => {
   let fecha = new Date();
   fecha.setDate(
-    fecha.getDate() +
-      dataEspecialista.especialista.profesionales[0].max_dias_atencion
+    fecha.getDate() + dataEspecialista.especialista.max_dias_atencion
   );
   return fecha;
 };
@@ -309,7 +308,7 @@ const fechaMaxima = () => {
 const getCitas = () => {
   console.log(
     "Máximos días de atención: ",
-    dataEspecialista.especialista.profesionales[0].max_dias_atencion
+    dataEspecialista.especialista.max_dias_atencion
   );
   solicitarHoraBtnEstado.value = true;
   if (date.value != null) {
@@ -356,7 +355,6 @@ const horasDisponiblesPorDia = () => {
 };
 
 onBeforeMount(async () => {
-  alert();
   console.log("store2", storePersonaPaciente.getPersona());
   console.log("store3", dataEspecialista.especialista);
   await getPrevisiones();
@@ -392,8 +390,10 @@ const disabledDates = ref([
                   class="my-2 rounded-circle"
                   style="max-width: 100px; display: block; margin: 0 auto"
                 />
-                <span class="fst-italic fw-light d-block mt-2">{{
-                `${dataEspecialista.especialista.especialista.especialidades[0].abreviatura}. ${dataEspecialista.especialista.nombre} ${dataEspecialista.especialista.apellido}`}}
+                <span class="fst-italic fw-light d-block mt-2"
+                  >{{
+                    `${dataEspecialista.especialista.especialista.especialidades[0].abreviatura}. ${dataEspecialista.especialista.nombre} ${dataEspecialista.especialista.apellido}`
+                  }}
                 </span>
               </h2>
               <div
@@ -428,7 +428,11 @@ const disabledDates = ref([
                 Selecciona una fecha para ver los horarios disponibles
               </h3>
               <div class="row g-3 flex-grow-1">
-                <div class="col-6" v-for="horario in horariosEspecialista" :key="horario.id">
+                <div
+                  class="col-6"
+                  v-for="horario in horariosEspecialista"
+                  :key="horario.id"
+                >
                   <button
                     :id="horario.id"
                     type="button"
@@ -437,7 +441,10 @@ const disabledDates = ref([
                       'w-100',
                       'py-2',
                       'btn-hora',
-                      { 'btn-hora-seleccionada': horario.id === idHorarioSeleccionado },
+                      {
+                        'btn-hora-seleccionada':
+                          horario.id === idHorarioSeleccionado,
+                      },
                       { 'btn-hora-deshabilitada': horario.agendado },
                     ]"
                     :disabled="horario.agendado"
@@ -559,7 +566,7 @@ h3 {
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba($color-primary, 0.1);
-  
+
   &:hover:not(:disabled) {
     background-color: rgba($color-primary, 0.1);
     box-shadow: 0 6px 8px rgba($color-primary, 0.2);
@@ -594,7 +601,7 @@ body {
 // Actualiza los colores del calendario
 
 .vc-title-wrapper {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .vc-title {
