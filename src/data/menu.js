@@ -17,9 +17,14 @@ export default {
       icon: "si si-calendar",
     },
     {
-      name: "Solicitudes pendientes",
+      name: "Solicitudes Pendientes",
       to: "confirmar-hora",
       icon: "si si-pencil",
     },
+    {
+      name:"Configurar Horario",
+      to: "personalizar-horario",
+      icon: "si si-settings"
+    }
   ],
 };

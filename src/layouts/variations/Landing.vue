@@ -1,10 +1,11 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
 import BaseLayout from "@/layouts/BaseLayout.vue";
-
+import LoadingSpinner from "../../views/AgendaFree/Component/LoadingSpinner.vue";
+import { ref } from "vue";
 // Main store
 const store = useTemplateStore();
-
+const isLoading = ref(true);
 // Set default elements for this layout
 store.setLayout({
   header: true,
@@ -31,10 +32,13 @@ store.mainContent({ mode: "full" });
           <!-- Agenda
           <span class="fw-light">Free</span> -->
           <img src="/assets/media/AGFree/logo_v3.svg" width="200" alt="Logo" />
+          
         </span>
       </RouterLink>
       <!-- END Logo -->
+       <!-- <LoadingSpinner :isLoading="isLoading" /> -->
     </template>
+    
   </BaseLayout>
 </template>
 

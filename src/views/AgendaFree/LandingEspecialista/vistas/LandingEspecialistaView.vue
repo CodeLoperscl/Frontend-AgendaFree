@@ -17,7 +17,11 @@ const usuarioVista = reactive({
 
 //Token
 const token = ref(null);
+//Estados
 const isLoading = ref(true);
+const mostrarBienvenida = ref(true);
+
+//Stores
 const storeEspecialista = useEspecialistaDatos();
 const storeAPIEspecialista = useUrlApiEspecialista();
 const persona = ref({
@@ -120,6 +124,7 @@ const autoLogin = async () => {
 
 //Se ejecuta antes de montar el componente
 onBeforeMount(async () => {
+  
   await autoLogin();
   await getProfesional();
   isLoading.value = false;
@@ -205,10 +210,25 @@ onMounted(() => {
       "running";
   }, 100);
 });
+
+const cerrarBienvenida = () =>{
+  mostrarBienvenida.value = false;
+}
+
 </script>
 
 <template>
-  <LoadingSpinner :isLoading="isLoading" />
+  <!-- <LoadingSpinner :isLoading="isLoading" /> -->
+
+  <!-- Agregar la pantalla de bienvenida -->
+  <div v-if="mostrarBienvenida" class="pantalla-bienvenida">
+    <div class="contenido-bienvenida">
+      <h2>¡Bienvenido!</h2>
+      <p>Gracias por visitar nuestro sistema de reserva de citas online.</p>
+      <button @click="cerrarBienvenida" class="btn-ingresar">Ingresar</button>
+    </div>
+  </div>
+
   <div class="hero d-flex align-items-center justify-content-center">
     <div class="animated-background">
       <div class="shape shape-1"></div>
@@ -256,6 +276,54 @@ $blanco-marfil: #fafafa;
 $azul-marino: #2c3e50;
 $gris-acero: #95a5a6;
 $verde-pastel: #d1f2eb;
+
+
+// Agregar estos nuevos estilos
+.pantalla-bienvenida {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($azul-marino, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.contenido-bienvenida {
+  background-color: $blanco-marfil;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 80%;
+
+  h2 {
+    color: $verde-azulado;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: $azul-marino;
+    margin-bottom: 2rem;
+  }
+}
+
+.btn-ingresar {
+  background-color: $verde-azulado;
+  color: $blanco-marfil;
+  border: none;
+  padding: 0.5rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($verde-azulado, 10%);
+  }
+}
 
 @keyframes circle-in-hesitate {
   0% {

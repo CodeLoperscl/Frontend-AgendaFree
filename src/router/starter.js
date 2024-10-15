@@ -16,7 +16,7 @@ const ReservaHoraView = () => import("@/views/AgendaFree/ModuloReserva/vistas/Re
 const BackendDashboard = () => import("@/views/AgendaFree/Dashboard/DashboardView.vue");
 const CalendarioView = () => import("@/views/AgendaFree/Dashboard/Calendario/CalendarioView.vue");
 const ConfirmarHoraView = () => import("@/views/AgendaFree/Dashboard/ConfirmarReserva/ConfirmarHoraView.vue");
-
+const PersonalizarHorarioView = () => import("@/views/AgendaFree/Dashboard/ConfiguracionHora/ConfiguracionHoraView.vue");
 // Error 404 Not Found
 const NoFoundView = () => import("@/views/errors/404View.vue");
 
@@ -80,6 +80,11 @@ const routes = [
         name: "calendario",
         component: CalendarioView,
       },
+      {
+        path:"",
+        name: "personalizar-horario",
+        component: PersonalizarHorarioView,
+      }
     ],
   },
   {
@@ -124,5 +129,5 @@ router.afterEach((to, from) => {
   NProgress.done();
 });
 
-
+NProgress.inc();
 export default router;
