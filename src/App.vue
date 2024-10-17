@@ -1,7 +1,9 @@
 <script>
+import LoadingSpinner from './views/AgendaFree/Component/LoadingSpinner.vue';
 </script>
 
 <template>
+  <LoadingSpinner />
   <RouterView />
 </template>
 

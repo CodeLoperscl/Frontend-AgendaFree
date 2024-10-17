@@ -1,76 +1,81 @@
 <template>
-  <div v-if="isLoading" class="spinner-overlay">
-    <div class="loader">
-      <div class="orbe" style="--index: 0"></div>
-      <div class="orbe" style="--index: 1"></div>
-      <div class="orbe" style="--index: 2"></div>
-      <div class="orbe" style="--index: 3"></div>
-      <div class="orbe" style="--index: 4"></div>
-    </div>
+  <div v-if="showLoading" class="spinner-overlay">
+    <div id="spinner"><img src="./loggo.svg" alt="Logo" /></div>
+    
   </div>
+  
 </template>
 
 
 <script setup>
 
-import { defineProps } from 'vue';
+import { defineProps, ref, watch } from 'vue';
 
 // Definimos el prop que recibe el estado de carga
-const props = defineProps({
-  isLoading: {
-    type: Boolean,
-    required: true,
-  },
-});
+// const props = defineProps({
+//   isLoading: {
+//     type: Boolean,
+//     required: true,
+//   },
+// });
+const showLoading = ref(true);
+
+// watch(props.isLoading, (newVal)=>{
+//   showLoading = newVal;
+// })
 </script>
 
 <style lang="scss" scoped>
-
-$blanco-marfil: #fafafa;
-$verde-azulado: #16a085;
-$verde-pastel: #d1f2eb;
-/* Estilos para el fondo opaco */
 .spinner-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba($blanco-marfil, 0.8);
+  background-color: rgba(0, 0, 0, 0.5); // Fondo oscuro con opacidad
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
-.orbe {
+#spinner {
+  width: 100px;
+  height: 100px;
   position: absolute;
-  width: 100%;
-  height: 100%;
-  --delay: calc(var(--index) * 0.1s);
-  animation: orbit7456 ease-in-out 1.5s var(--delay) infinite;
-  opacity: calc(1 - calc(0.2 * var(--index)));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url('loggo.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.orbe::after {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  width: var(--size-orbe);
-  height: var(--size-orbe);
-  background-color: $verde-azulado;
-  box-shadow: 0px 0px 20px 2px $verde-azulado;
-  border-radius: 50%;
+@keyframes reboteGiroYDeformacion {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  5% { transform: translate(-50%, -58%) rotate(45deg) scale(0.95, 1.05); }
+  10% { transform: translate(-50%, -65%) rotate(90deg) scale(0.9, 1.1); }
+  15% { transform: translate(-50%, -70%) rotate(180deg) scale(0.85, 1.15); }
+  20% { transform: translate(-50%, -80%) rotate(270deg) scale(0.8, 1.2); }
+  25% { transform: translate(-50%, -80%) rotate(360deg) scale(0.75, 1.25); }
+  30% { transform: translate(-50%, -78%) rotate(360deg) scale(0.8, 1.2); }
+  35% { transform: translate(-50%, -75%) rotate(360deg) scale(0.85, 1.15); }
+  40% { transform: translate(-50%, -70%) rotate(360deg) scale(0.9, 1.1); }
+  45% { transform: translate(-50%, -60%) rotate(360deg) scale(0.95, 1.05); }
+  50% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+  55% { transform: translate(-50%, -40%) rotate(360deg) scale(1.05, 0.95); }
+  60% { transform: translate(-50%, -30%) rotate(360deg) scale(1.1, 0.9); }
+  65% { transform: translate(-50%, -20%) rotate(360deg) scale(1.15, 0.85); }
+  70% { transform: translate(-50%, -10%) rotate(360deg) scale(1.2, 0.8); }
+  75% { transform: translate(-50%, 0%) rotate(360deg) scale(1.25, 0.75); }
+  80% { transform: translate(-50%, -10%) rotate(360deg) scale(1.2, 0.8); }
+  85% { transform: translate(-50%, -20%) rotate(360deg) scale(1.15, 0.85); }
+  90% { transform: translate(-50%, -30%) rotate(360deg) scale(1.1, 0.9); }
+  95% { transform: translate(-50%, -40%) rotate(360deg) scale(1.05, 0.95); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
 }
-.loader {
-  --size-loader: 50px;
-  --size-orbe: 10px;
-  width: var(--size-loader);
-  height: var(--size-loader);
-  position: relative;
-  transform: rotate(45deg);
+#spinner {
+  animation: reboteGiroYDeformacion 1.5s ease-in-out infinite;
 }
 </style>
-  
-  

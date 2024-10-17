@@ -93,8 +93,8 @@ const getEspecialista = (persona_id, nombre, apellido, dias_atencion) => {
       response.data.apellido = apellido;
       storeEspecialista.setEspecialista(response.data);
       console.log("store especialista 1: ", storeEspecialista.especialista.especialista.especialidades[0].especialidad);
-      persona.value.especialidad =
-        storeEspecialista.especialista.especialista.especialidades[0].especialidad;
+      persona.value.especialidad = storeEspecialista.especialista.especialista.especialidades[0].especialidad;
+      isLoading.value = false;
     })
     .catch((error) => {
       console.error("Error al obtener datos del especialista:", error);
@@ -124,10 +124,8 @@ const autoLogin = async () => {
 
 //Se ejecuta antes de montar el componente
 onBeforeMount(async () => {
-  
   await autoLogin();
   await getProfesional();
-  isLoading.value = false;
 });
 
 //Particles
@@ -221,13 +219,13 @@ const cerrarBienvenida = () =>{
   <!-- <LoadingSpinner :isLoading="isLoading" /> -->
 
   <!-- Agregar la pantalla de bienvenida -->
-  <div v-if="mostrarBienvenida" class="pantalla-bienvenida">
+  <!-- <div v-if="mostrarBienvenida" class="pantalla-bienvenida">
     <div class="contenido-bienvenida">
       <h2>¡Bienvenido!</h2>
       <p>Gracias por visitar nuestro sistema de reserva de citas online.</p>
       <button @click="cerrarBienvenida" class="btn-ingresar">Ingresar</button>
     </div>
-  </div>
+  </div> -->
 
   <div class="hero d-flex align-items-center justify-content-center">
     <div class="animated-background">

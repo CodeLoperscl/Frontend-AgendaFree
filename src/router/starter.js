@@ -1,4 +1,7 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouterView, useRoute } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
+
+// Importar el componente LoadingSpinner
+import LoadingSpinner from "@/views/AgendaFree/Component/LoadingSpinner.vue";
 
 import NProgress from "nprogress/nprogress.js";
 
@@ -104,7 +107,7 @@ const routes = [
   },
 ];
 
-// Create Router
+// Crear el router
 const router = createRouter({
   history: createWebHistory(),
   linkActiveClass: "active",
@@ -115,19 +118,17 @@ const router = createRouter({
   routes,
 });
 
-// NProgress
-/*eslint-disable no-unused-vars*/
-NProgress.configure({ showSpinner: false });
+// Crear una instancia de Vue para manejar el estado de carga
+import { createApp, ref } from 'vue';
+const app = createApp({});
 
-router.beforeResolve((to, from, next) => {
-  NProgress.start();
+
+router.beforeEach((to, from, next) => {
   next();
 });
 
+router.afterEach(() => {
 
-router.afterEach((to, from) => {
-  NProgress.done();
 });
 
-NProgress.inc();
 export default router;
