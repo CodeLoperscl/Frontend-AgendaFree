@@ -1,5 +1,5 @@
 <script>
-import LoadingSpinner from './views/AgendaFree/Component/LoadingSpinner.vue';
+
 </script>
 
 <template>

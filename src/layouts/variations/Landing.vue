@@ -1,7 +1,6 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
 import BaseLayout from "@/layouts/BaseLayout.vue";
-import LoadingSpinner from "../../views/AgendaFree/Component/LoadingSpinner.vue";
 import { ref } from "vue";
 // Main store
 const store = useTemplateStore();
@@ -36,7 +35,6 @@ store.mainContent({ mode: "full" });
         </span>
       </RouterLink>
       <!-- END Logo -->
-       <!-- <LoadingSpinner :isLoading="isLoading" /> -->
     </template>
     
   </BaseLayout>

@@ -124,8 +124,15 @@ watch(() => props.isOpen, (newVal) => {
     getNacionalidadPrevision(getToken());
   } else {
     console.log('El modal se ha cerrado');
-    paciente.prevision_id = 0;
-    paciente.nacionalidad = 0;
+    switch(store.sharedData){
+      case 0:
+        paciente.prevision_id = 0;
+        paciente.nacionalidad = 1;
+        break;
+      case 1:
+      paciente.prevision_id = 3;
+      paciente.nacionalidad = 0;
+    }
     paciente.nombre = "";
     paciente.apellido = "";
     paciente.email = "";

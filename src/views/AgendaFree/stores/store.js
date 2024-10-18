@@ -154,3 +154,14 @@ export const useUrlApiEspecialista = defineStore('apiEspecialista', () => {
     clearUrl,
   };
 });
+
+export const useLoadingStore = defineStore('loading', {
+  state: () => ({
+    isLoading: false,
+  }),
+  actions: {
+    setLoading(value) {
+      this.isLoading = value;
+    },
+  },
+});

@@ -1,10 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-// Importar el componente LoadingSpinner
-import LoadingSpinner from "@/views/AgendaFree/Component/LoadingSpinner.vue";
-
 import NProgress from "nprogress/nprogress.js";
-
+import { useLoadingStore } from "../views/AgendaFree/stores/store";
 // Main layout variations
 
 import LayoutLanding from "@/layouts/variations/Landing.vue";
@@ -118,17 +114,17 @@ const router = createRouter({
   routes,
 });
 
-// Crear una instancia de Vue para manejar el estado de carga
-import { createApp, ref } from 'vue';
-const app = createApp({});
-
-
 router.beforeEach((to, from, next) => {
+  const loadingStore = useLoadingStore();
+  loadingStore.setLoading(true);
+  //  NProgress.start();
   next();
 });
 
 router.afterEach(() => {
-
+  //  NProgress.done();
+  const loadingStore = useLoadingStore();
+  loadingStore.setLoading(false);
 });
 
 export default router;

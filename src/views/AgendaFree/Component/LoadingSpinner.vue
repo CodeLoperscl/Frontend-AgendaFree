@@ -1,28 +1,15 @@
 <template>
-  <div v-if="showLoading" class="spinner-overlay">
+  <div v-if="isLoading" class="spinner-overlay">
     <div id="spinner"><img src="./loggo.svg" alt="Logo" /></div>
-    
   </div>
-  
 </template>
 
-
 <script setup>
+import { computed } from 'vue';
+import { useLoadingStore } from '../stores/store';
 
-import { defineProps, ref, watch } from 'vue';
-
-// Definimos el prop que recibe el estado de carga
-// const props = defineProps({
-//   isLoading: {
-//     type: Boolean,
-//     required: true,
-//   },
-// });
-const showLoading = ref(true);
-
-// watch(props.isLoading, (newVal)=>{
-//   showLoading = newVal;
-// })
+const loadingStore = useLoadingStore();
+const isLoading = computed(() => loadingStore.isLoading);
 </script>
 
 <style lang="scss" scoped>

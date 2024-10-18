@@ -5,7 +5,7 @@ import {
   useMainStore,
   usePacienteDatos,
   usePersonaPacienteDatos,
-  useUrlApiEspecialista,
+  useLoadingStore,
 } from "../../stores/store";
 import axios from "axios";
 import { useRouter } from "vue-router";
@@ -16,7 +16,7 @@ import ModalComponent from "./ModalDatosPacientes.vue";
 const modal = ref(false);
 
 //Store
-//const storeAPIEspecialista = useUrlApiEspecialista();
+const storeLoading = useLoadingStore();
 const storePersonaPaciente = usePersonaPacienteDatos();
 const storePaciente = usePacienteDatos();
 const store = useMainStore();
@@ -105,7 +105,7 @@ const inputChange = (est) => {
 
 //Buscar paciente
 const getPaciente = async () => {
-  isLoading.value = true;
+  storeLoading.setLoading(true);
   if(estado.value){
     rutValidated.value = rutInput.value;
   }
@@ -126,7 +126,7 @@ const getPaciente = async () => {
       emitAbrirModal();
     })
     .finally(() => {
-      isLoading.value = false;
+      storeLoading.setLoading(false);
     });
 
   // try {
@@ -162,7 +162,7 @@ const getPaciente = async () => {
 </script>
 
 <template>
-  <LoadingSpinner :isLoading="isLoading" />
+  <LoadingSpinner />
   <div class="row mt-3 justify-content-center">
     <div class="col-12 col-md-10">
       <div class="input-rut">

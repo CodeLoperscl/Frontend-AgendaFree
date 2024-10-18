@@ -1,13 +1,13 @@
 <script setup>
-import { ref, onBeforeMount, onMounted, reactive } from "vue";
+import { ref, onBeforeMount, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import inputRut from "../componentes/inputRut.vue";
 import axios from "axios";
 import {
   useEspecialistaDatos,
   useUrlApiEspecialista,
+  useLoadingStore,
 } from "../../stores/store";
-import LoadingSpinner from "../../Component/LoadingSpinner.vue";
 
 //Usuario visita
 const usuarioVista = reactive({
@@ -17,13 +17,12 @@ const usuarioVista = reactive({
 
 //Token
 const token = ref(null);
-//Estados
-const isLoading = ref(true);
-const mostrarBienvenida = ref(true);
 
 //Stores
 const storeEspecialista = useEspecialistaDatos();
 const storeAPIEspecialista = useUrlApiEspecialista();
+const storeLoading = useLoadingStore();
+//Persona
 const persona = ref({
   id: "",
   uid: "",
@@ -74,6 +73,7 @@ const getProfesional = async () => {
       response.data.personas[0]?.apellido,
       response.data.personas[0]?.profesionales[0].max_dias_atencion
     );
+    
   } catch (error) {
     console.error("Error al obtener datos del especialista:", error);
     router.push({ path: "/error" });
@@ -94,7 +94,6 @@ const getEspecialista = (persona_id, nombre, apellido, dias_atencion) => {
       storeEspecialista.setEspecialista(response.data);
       console.log("store especialista 1: ", storeEspecialista.especialista.especialista.especialidades[0].especialidad);
       persona.value.especialidad = storeEspecialista.especialista.especialista.especialidades[0].especialidad;
-      isLoading.value = false;
     })
     .catch((error) => {
       console.error("Error al obtener datos del especialista:", error);
@@ -124,8 +123,10 @@ const autoLogin = async () => {
 
 //Se ejecuta antes de montar el componente
 onBeforeMount(async () => {
+  storeLoading.setLoading(true);
   await autoLogin();
   await getProfesional();
+  storeLoading.setLoading(false);
 });
 
 //Particles
@@ -201,38 +202,14 @@ const particlesOptions = ref({
   detectRetina: true,
 });
 
-//Se ejecuta después de montar el componente
-onMounted(() => {
-  setTimeout(() => {
-    document.querySelector(".hero-content").style.animationPlayState =
-      "running";
-  }, 100);
-});
-
-const cerrarBienvenida = () =>{
-  mostrarBienvenida.value = false;
-}
 
 </script>
 
 <template>
-  <!-- <LoadingSpinner :isLoading="isLoading" /> -->
 
-  <!-- Agregar la pantalla de bienvenida -->
-  <!-- <div v-if="mostrarBienvenida" class="pantalla-bienvenida">
-    <div class="contenido-bienvenida">
-      <h2>¡Bienvenido!</h2>
-      <p>Gracias por visitar nuestro sistema de reserva de citas online.</p>
-      <button @click="cerrarBienvenida" class="btn-ingresar">Ingresar</button>
-    </div>
-  </div> -->
+  <LoadingSpinner />
 
   <div class="hero d-flex align-items-center justify-content-center">
-    <div class="animated-background">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-    </div>
     <div class="hero-content text-center" transition-style="in:circle:hesitate">
       <div class="content content-full text-center p-0">
         <h4 class="fw-light">
@@ -356,7 +333,7 @@ $verde-pastel: #d1f2eb;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   animation: 2.5s cubic-bezier(0.25, 1, 0.3, 1) circle-in-hesitate both;
-  animation-play-state: paused;
+  animation-play-state: running;
   position: relative;
   z-index: 2;
 }
