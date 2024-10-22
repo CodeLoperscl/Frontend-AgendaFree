@@ -457,6 +457,19 @@ const disabledDates = ref([
             </div>
           </div>
         </div>
+        <div class="col-lg mb-4 d-flex">
+          <div class="card shadow h-100 flex-grow-1 d-flex flex-column">
+            <div class="card-body">
+              <h3 class="card-title text-navy mb-4">Comentarios de la Cita</h3>
+              <textarea
+                class="form-control"
+                rows="4"
+                placeholder="Escribe aquí información que consideres relevante para tu cita..."
+                style="resize: none;"
+              ></textarea>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
