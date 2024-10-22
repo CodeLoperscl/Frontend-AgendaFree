@@ -126,7 +126,10 @@ onBeforeMount(async () => {
   storeLoading.setLoading(true);
   await autoLogin();
   await getProfesional();
-  storeLoading.setLoading(false);
+  setTimeout(()=>{
+    storeLoading.setLoading(false);
+  },2000);
+  
 });
 
 //Particles
