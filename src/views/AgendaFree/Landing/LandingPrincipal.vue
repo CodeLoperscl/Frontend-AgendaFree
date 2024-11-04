@@ -1,400 +1,453 @@
 <template>
-    <div class="landing-page">
-      <header class="header">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b2d85c2509fee5175147a7ccf211aee0578eaeeb9e8874f9f2141229aaa5c879?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="background-image" alt="" />
-        <div class="contact-info">
-          <div class="contact-details">
-            <div class="email-container">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/bc92248466791d4dd34da0cb79c7e53c5956555af5212e86809cb59928e72800?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="icon" alt="Email icon" />
-              <span class="contact-text">Info@youremail.com</span>
-            </div>
-            <div class="phone-container">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9aa51f778c5227a5a003590f4e6c3f6376e293a47c328bdf865f8c364377ecd0?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="icon" alt="Phone icon" />
-              <span class="contact-text">(480) 555-0103</span>
-            </div>
+  <div class="main-container">
+    <div class="hero-saction">
+      <div class="flex-row-ca">
+        <div class="codelopers-chile-gmail">
+          <span class="codelopers-chile-gmail-1"
+            >codelopers.chile@gmail.com</span
+          >
+        </div>
+        <span class="phone-number">(480) 555-0103</span>
+        <div class="icons-mail-fill"><div class="group"></div></div>
+        <div class="icons-phone-fill"><div class="group-2"></div></div>
+        <div class="icons-facebook-fill"><div class="group-3"></div></div>
+        <div class="icons-instagram-fill"><div class="group-4"></div></div>
+        <div class="icons-twitter-fill"><div class="group-5"></div></div>
+        <div class="icons-youtube-fill"><div class="group-6"></div></div>
+      </div>
+      <div class="flex-row-a">
+        <div class="logo"></div>
+        <div class="rectangle">
+          <div class="rectangle-7">
+            <span class="descargar">DESCARGAR</span>
           </div>
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/439282c8c6a96b2cca6e061dbb259a4db02926e7fff0389e8131a83f0b9201f0?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="logo" alt="Company logo" />
+          <span class="caracteristicas">Características</span
+          ><span class="acerca-de">Acerca de</span
+          ><span class="capturas">Capturas</span><span class="blog">Blog</span
+          ><span class="inicio">Inicio</span>
         </div>
-      </header>
-  
-      <nav class="main-nav">
-        <ul class="nav-links">
-          <li><a href="#" class="nav-link active">Home</a></li>
-          <li><a href="#" class="nav-link">About</a></li>
-          <li><a href="#" class="nav-link">Features</a></li>
-        </ul>
-        <div class="nav-actions">
-          <div class="search-container">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8a28117f01709fb3fe4d82194e7374e7b390f9e44efe186a8a8e17b0d0544d7e?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="search-icon" alt="Search icon" />
-          </div>
-          <a href="#" class="nav-link">Screenshot</a>
-          <a href="#" class="nav-link">Blog</a>
-          <a href="#" class="download-button">DESCARGAR</a>
+      </div>
+      <div class="flex-row-cbe">
+        <div class="free-ui-view-mobile-app-mockup"></div>
+        <div class="rectangle-8"></div>
+        <div class="rectangle-9">
+          <span class="una-gran-app">UNA GRAN APP <br />MEJORA TU VIDA</span
+          ><span class="agenda-free"
+            >Agenda Free facilita la gestión de tus citas de manera rápida y
+            sencilla. Olvídate del estrés de manejar calendarios y pagos. Con
+            esta aplicación, podrás organizar tu agenda profesional y optimizar
+            tu tiempo como especialista. Controla tus citas, gestiona pacientes
+            y administra tus horarios sin complicaciones.</span
+          ><span class="descarga-la-app-ahora">DESCARGA LA APP AHORA</span>
+          <div class="toppng"></div>
+          <div class="pngitem"></div>
         </div>
-      </nav>
-  
-      <main class="main-content">
-        <div class="content-wrapper">
-          <section class="hero-section">
-            <div class="hero-text">
-              <h1 class="hero-title">A Great App Makes<br />Your Life Better</h1>
-              <p class="hero-description">
-                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-              </p>
-              <h2 class="cta-title">Download App Now</h2>
-              <div class="app-store-buttons">
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/559a6a4a1ef978ada250c16d06b2b9fbb13861559aebe58e38dea324d7267f1a?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="store-button" alt="App Store button" />
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/cf8c1ee0774427c9efa98227c1483431ca19398ba25da31a86975a8acdd92317?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="store-button" alt="Google Play button" />
-              </div>
-            </div>
-          </section>
-          <aside class="hero-image">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/71763ac77e5465fe7d911bcad5321da09e9448924a25aa3e03ea1ace12f487f0?placeholderIfAbsent=true&apiKey=980d9bd07aac4b738b05d42cf7d3e438" class="app-screenshot" alt="App screenshot" />
-          </aside>
-        </div>
-      </main>
+      </div>
     </div>
-  </template>
-  
-  <style scoped>
-  .landing-page {
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-    position: relative;
-    min-height: 1024px;
-    width: 100%;
-    align-items: center;
-    padding: 35px 0 83px 80px;
-  }
-  
-  @media (max-width: 991px) {
-    .landing-page {
-      max-width: 100%;
-      padding-left: 20px;
-    }
-  }
-  
-  .background-image {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-  
-  .header {
-    position: relative;
-    display: flex;
-    width: 100%;
-    max-width: 1164px;
-    gap: 20px;
-    color: #fff;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    font: 400 16px Josefin Sans, sans-serif;
-  }
-  
-  @media (max-width: 991px) {
-    .header {
-      max-width: 100%;
-    }
-  }
-  
-  .contact-info {
-    display: flex;
-    gap: 40px 47px;
-  }
-  
-  .contact-details {
-    display: flex;
-    gap: 40px;
-  }
-  
-  .email-container,
-  .phone-container {
-    display: flex;
-    gap: 18px;
-    white-space: nowrap;
-  }
-  
-  @media (max-width: 991px) {
-    .email-container,
-    .phone-container {
-      white-space: initial;
-    }
-  }
-  
-  .icon {
-    aspect-ratio: 1;
-    object-fit: contain;
-    object-position: center;
-    width: 18px;
-    margin: auto 0;
-  }
-  
-  .contact-text {
-    flex-basis: auto;
-  }
-  
-  .logo {
-    aspect-ratio: 9.01;
-    object-fit: contain;
-    object-position: center;
-    width: 162px;
-    max-width: 100%;
-    margin: auto 0;
-  }
-  
-  .main-nav {
-    position: relative;
-    border-radius: 5px;
-    background: #fff;
-    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
-    display: flex;
-    margin-top: 15px;
-    width: 1170px;
-    max-width: 100%;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0 5px 0 52px;
-  }
-  
-  @media (max-width: 991px) {
-    .main-nav {
-      padding-left: 20px;
-    }
-  }
-  
-  .nav-links {
-    align-self: stretch;
-    display: flex;
-    gap: 38px;
-    color: #232233;
-    white-space: nowrap;
-    text-transform: uppercase;
-    margin: auto 0;
-    font: 600 20px Josefin Sans, sans-serif;
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  @media (max-width: 991px) {
-    .nav-links {
-      white-space: initial;
-    }
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .nav-link.active {
-    color: #5956e9;
-    line-height: 1.3;
-    text-decoration-line: underline;
-  }
-  
-  .nav-actions {
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-    gap: 40px 42px;
-    flex-wrap: wrap;
-    margin: auto 0;
-  }
-  
-  @media (max-width: 991px) {
-    .nav-actions {
-      max-width: 100%;
-    }
-  }
-  
-  .search-container {
-    border-radius: 5px;
-    background: #fff;
-    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
-    align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 28px 16px;
-  }
-  
-  .search-icon {
-    aspect-ratio: 4.93;
-    object-fit: contain;
-    object-position: center;
-    width: 172px;
-  }
-  
-  .download-button {
-    border-radius: 5px;
-    background: #5956e9;
-    align-self: stretch;
-    color: #fff;
-    white-space: nowrap;
-    text-transform: uppercase;
-    margin: auto 0;
-    padding: 10px 17px;
-    font: 600 20px Josefin Sans, sans-serif;
-    text-decoration: none;
-  }
-  
-  @media (max-width: 991px) {
-    .download-button {
-      white-space: initial;
-    }
-  }
-  
-  .main-content {
-    position: relative;
-    align-self: end;
-    margin-top: 82px;
-    width: 100%;
-    max-width: 1255px;
-  }
-  
-  @media (max-width: 991px) {
-    .main-content {
-      max-width: 100%;
-      margin-top: 40px;
-    }
-  }
-  
-  .content-wrapper {
-    gap: 20px;
-    display: flex;
-  }
-  
-  @media (max-width: 991px) {
-    .content-wrapper {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0px;
-    }
-  }
-  
-  .hero-section {
-    display: flex;
-    flex-direction: column;
-    line-height: normal;
-    width: 50%;
-    margin-left: 0px;
-  }
-  
-  @media (max-width: 991px) {
-    .hero-section {
-      width: 100%;
-    }
-  }
-  
-  .hero-text {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-    align-items: start;
-    justify-content: center;
-    margin: auto 0;
-    padding: 52px 0;
-    border: 18px solid rgba(117, 114, 255, 1);
-  }
-  
-  @media (max-width: 991px) {
-    .hero-text {
-      max-width: 100%;
-      margin-top: 40px;
-    }
-  }
-  
-  .hero-title {
-    color: #5956e9;
-    text-transform: uppercase;
-    font: 700 49px/63px Josefin Sans, sans-serif;
-    margin: 0;
-  }
-  
-  @media (max-width: 991px) {
-    .hero-title {
-      max-width: 100%;
-      font-size: 40px;
-      line-height: 57px;
-    }
-  }
-  
-  .hero-description {
-    color: #6c6c72;
-    margin: 18px 38px 0 0;
-    font: 400 16px/24px Josefin Sans, sans-serif;
-  }
-  
-  @media (max-width: 991px) {
-    .hero-description {
-      max-width: 100%;
-      margin-right: 10px;
-    }
-  }
-  
-  .cta-title {
-    color: #232233;
-    text-transform: uppercase;
-    align-self: start;
-    margin-top: 54px;
-    font: 600 25px Josefin Sans, sans-serif;
-  }
-  
-  @media (max-width: 991px) {
-    .cta-title {
-      margin-top: 40px;
-    }
-  }
-  
-  .app-store-buttons {
-    align-self: start;
-    display: flex;
-    margin-top: 5px;
-    gap: 14px;
-  }
-  
-  .store-button {
-    aspect-ratio: 3.17;
-    object-fit: contain;
-    object-position: center;
-    width: 149px;
-    max-width: 100%;
-  }
-  
-  .hero-image {
-    display: flex;
-    flex-direction: column;
-    line-height: normal;
-    width: 50%;
-    margin-left: 20px;
-  }
-  
-  @media (max-width: 991px) {
-    .hero-image {
-      width: 100%;
-    }
-  }
-  
-  .app-screenshot {
-    aspect-ratio: 0.77;
-    object-fit: contain;
-    object-position: center;
-    width: 100%;
-    flex-grow: 1;
-  }
-  
-  @media (max-width: 991px) {
-    .app-screenshot {
-      max-width: 100%;
-      margin-top: 40px;
-    }
-  }
-  </style>
+    <span class="sobre-nuestra-app">SOBRE NUESTRA APP</span
+    ><span class="agenda-free-a"
+      >Agenda Free es una aplicación diseñada para especialistas que necesitan
+      gestionar sus citas de manera eficiente y organizada. Ofrece una solución
+      integral para controlar horarios, gestionar pagos y mantener la
+      organización con facilidad. Con Agenda Free, tendrás el control total de
+      tu agenda profesional de forma rápida y sencilla.</span
+    >
+    <div class="flex-row-f">
+      <div class="android-smartphone-free-mockup"></div>
+      <div class="rectangle-b">
+        <div class="flex-row-e">
+          <div class="icons-checkbox-circle-fill">
+            <div class="group-c"></div>
+          </div>
+          <span class="diseno-innovador">DISEÑO INNOVADOR</span>
+        </div>
+        <span class="agenda-free-d"
+          >Agenda Free presenta un diseño moderno y funcional. Cada elemento de
+          la interfaz está optimizado para proporcionar una experiencia visual
+          atractiva, sin dejar de lado la eficiencia.</span
+        >
+      </div>
+      <div class="rectangle-e">
+        <span class="facil-de-usar">FÁCIL DE USAR </span>
+        <div class="icons-checkbox-circle-fill-f">
+          <div class="group-10"></div>
+        </div>
+        <span class="nuestra-aplicacion"
+          >Nuestra aplicación ha sido creada pensando en la facilidad de uso.
+          Con una navegación intuitiva, los especialistas pueden gestionar
+          citas, aceptar o rechazar pacientes y controlar los pagos.</span
+        >
+      </div>
+      <div class="rectangle-11">
+        <div class="flex-row-aac">
+          <div class="icons-checkbox-circle-fill-12">
+            <div class="group-13"></div>
+          </div>
+          <span class="mejor-experiencia-de-usuario"
+            >MEJOR EXPERIENCIA DE USUARIO</span
+          >
+        </div>
+        <span class="agenda-free-14"
+          >Agenda Free se enfoca en proporcionar una experiencia sin
+          complicaciones. Todo ha sido diseñado para satisfacer las necesidades
+          de los especialistas, con herramientas que facilitan la gestión del
+          día a día</span
+        >
+      </div>
+      <div class="ellipse"></div>
+    </div>
+    <div class="rectangle-15">
+      <span class="caracteristicas-app">CARACTERÍSTICAS DE LA APP</span
+      ><span class="caracteristicas-app-16"
+        >Agenda Free incluye un conjunto de características diseñadas para
+        facilitar la gestión de citas y optimizar el tiempo de los
+        especialistas. ¡Descubre todo lo que puedes hacer con nuestra
+        aplicación!</span
+      >
+      <div class="icons-comment"><div class="vector"></div></div>
+      <span class="gestion-citas-simplificada"
+        >GESTIÓN DE CITAS SIMPLIFICADA</span
+      ><span class="gestion-citas-simplificada-17"
+        >Organiza, acepta o rechaza citas de manera rápida y eficiente desde
+        cualquier dispositivo. Mantén un control absoluto sobre tu agenda
+        profesional.</span
+      >
+      <div class="icons-male-telemarketer"><div class="group-18"></div></div>
+      <span class="soporte-personas-reales"
+        >SOPORTE 24/7 POR PERSONAS REALES</span
+      ><span class="soporte-personas-reales-19"
+        >Nuestro equipo de soporte está disponible las 24 horas del día, los 7
+        días de la semana, para brindarte ayuda inmediata cuando la
+        necesites.</span
+      >
+      <div class="app"></div>
+      <div class="icons-browser"><div class="surface"></div></div>
+      <div class="icons-cell-phone">
+        <div class="group-1a"><div class="vector-1b"></div></div>
+      </div>
+      <span class="funcionalidades-ilimitadas">FUNCIONALIDADES ILIMITADAS</span
+      ><span class="version-ios-android">VERSIÓN PARA iOS Y ANDROID</span
+      ><span class="version-ios-android-1c"
+        >Disfruta de todas las funciones de Agenda Free sin restricciones.
+        Gestiona citas, pagos y más, sin limitaciones que interrumpan tu flujo
+        de trabajo.</span
+      ><span class="version-ios-android-1d"
+        >Disponible para dispositivos iOS y Android, para que puedas gestionar
+        tu agenda desde cualquier lugar, en cualquier momento.</span
+      >
+      <div class="icons-eye-scanner">
+        <div class="flex-row-e-1e">
+          <div class="group-1f">
+            <div class="group-20"><div class="vector-21"></div></div>
+          </div>
+          <div class="group-22">
+            <div class="group-23"><div class="vector-24"></div></div>
+          </div>
+        </div>
+        <div class="group-25"><div class="vector-26"></div></div>
+        <div class="flex-row">
+          <div class="group-27">
+            <div class="group-28"><div class="vector-29"></div></div>
+          </div>
+          <div class="group-2a">
+            <div class="group-2b"><div class="vector-2c"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="icons-vector">
+        <div class="group-2d">
+          <div class="group-2e"><div class="vector-2f"></div></div>
+        </div>
+        <div class="group-30">
+          <div class="group-31"><div class="vector-32"></div></div>
+        </div>
+        <div class="group-33">
+          <div class="group-34"><div class="vector-35"></div></div>
+        </div>
+        <div class="group-36">
+          <div class="group-37"><div class="vector-38"></div></div>
+        </div>
+      </div>
+      <span class="diseno-exepcional">DISEÑO DE exepcional </span
+      ><span class="graficos-adaptados-retina"
+        >GRÁFICOS ADAPTADOS PARA RETINA</span
+      ><span class="graficos-adaptados-retina-39"
+        >Un diseño moderno y fácil de usar, optimizado para ofrecerte la mejor
+        experiencia visual mientras gestionas tus citas y horarios.</span
+      ><span class="graficos-adaptados-retina-3a"
+        >Disfruta de una calidad gráfica impresionante, adaptada para pantallas
+        de alta resolución. Cada detalle ha sido perfeccionado para ofrecer una
+        visualización nítida y clara.</span
+      >
+    </div>
+    <span class="descubre-interfaz-app"
+      >DESCUBRE LA INTERFAZ DE NUESTRA APP</span
+    ><span class="descubre-interfaz-app-3b"
+      >Agenda Free te ofrece una interfaz intuitiva y fácil de usar, diseñada
+      para que los especialistas puedan gestionar sus citas de manera eficiente.
+      Organiza tus horarios, confirma o rechaza citas y mantén un control total
+      sobre tu agenda con una visualización clara y moderna.</span
+    >
+    <div class="flex-row-3c">
+      <div class="app-screenshort"></div>
+      <div class="ellipse-3d"></div>
+      <div class="ellipse-3e"></div>
+      <div class="pic-e"></div>
+      <div class="wrapper-9"><div class="pic-f"></div></div>
+    </div>
+    <div class="pic-10"></div>
+    <div class="wrapper-a">
+      <div class="pic-11"></div>
+      <span class="text-24">DESCARGA LA APP AHORA</span
+      ><span class="text-25"
+        >Agenda Free está disponible para descarga en Google Play y App Store.
+        Con más de 59,865 descargas, 29,852 "me gusta" y una calificación de 5
+        estrellas por 1,500 usuarios, nuestra aplicación es la herramienta ideal
+        para especialistas que desean optimizar la gestión de sus citas de
+        manera profesional.</span
+      >
+      <div class="pic-12"></div>
+      <div class="pic-13"></div>
+      <div class="box-12">
+        <div class="box-13"><div class="img-15"></div></div>
+        <span class="text-26">59865</span><span class="text-27">descargar</span>
+      </div>
+      <div class="box-14">
+        <div class="box-15"><div class="img-16"></div></div>
+        <span class="text-28">29852</span><span class="text-29">me gusta</span>
+      </div>
+      <div class="section-11">
+        <div class="section-12"><div class="img-17"></div></div>
+        <span class="text-2a">1500</span
+        ><span class="text-2b">5 estrellas</span>
+      </div>
+    </div>
+    <div class="section-13">
+      <div class="pic-14">
+        <span class="text-2c">CÓMO UTILIZAR LA APP PERFECTAMENTE</span
+        ><span class="text-2d"
+          >Aprende a sacar el máximo provecho de Agenda Free con nuestra guía
+          paso a paso. Te mostraremos cómo gestionar tus citas de manera
+          eficiente, cómo aceptar o rechazar solicitudes, y cómo optimizar tu
+          agenda para que nunca pierdas el control de tu tiempo. ¡Mira el video
+          para descubrir todo lo que puedes hacer con nuestra aplicación!</span
+        >
+      </div>
+      <div class="pic-15">
+        <div class="img-18"></div>
+        <div class="pic-16"></div>
+        <div class="pic-17"></div>
+        <div class="box-16"><div class="img-19"></div></div>
+      </div>
+    </div>
+    <span class="text-2e">NUESTRO EQUIPO CREATIVO</span
+    ><span class="text-2f"
+      >Nuestro equipo está compuesto por profesionales altamente calificados y
+      apasionados por ofrecerte la mejor experiencia con Agenda Free. Cada
+      miembro aporta un conjunto único de habilidades, asegurando que nuestra
+      aplicación evolucione constantemente para cumplir con tus
+      necesidades.</span
+    >
+    <div class="group-b">
+      <div class="wrapper-b">
+        <div class="pic-18"><div class="pic-19"></div></div>
+        <span class="text-30">bastian fuentes</span
+        ><span class="text-31">App Developer</span
+        ><span class="text-32"
+          >se especializa en el desarrollo de aplicaciones móviles, asegurando
+          que Agenda Free funcione a la perfección en todos los
+          dispositivos.</span
+        >
+        <div class="group-c">
+          <div class="box-17"><div class="pic-1a"></div></div>
+          <div class="pic-1b"></div>
+          <div class="section-14"><div class="img-1a"></div></div>
+          <div class="img-1b"></div>
+          <div class="box-18"><div class="pic-1c"></div></div>
+          <div class="img-1c"></div>
+          <div class="group-d"><div class="img-1d"></div></div>
+        </div>
+      </div>
+      <div class="box-19">
+        <div class="img-1e"><div class="img-1f"></div></div>
+        <span class="text-33">lewis marca</span
+        ><span class="text-34">UI/UX Designer</span
+        ><span class="text-35"
+          >es el encargado de crear la interfaz de usuario intuitiva y moderna
+          que caracteriza a Agenda Free, mejorando la experiencia de usuario con
+          cada actualización.</span
+        >
+        <div class="section-15">
+          <div class="box-1a"><div class="img-20"></div></div>
+          <div class="pic-1d"></div>
+          <div class="group-e"><div class="pic-1e"></div></div>
+          <div class="pic-1f"></div>
+          <div class="section-16"><div class="img-21"></div></div>
+          <div class="pic-20"></div>
+          <div class="group-f"><div class="img-22"></div></div>
+        </div>
+      </div>
+      <div class="wrapper-c">
+        <div class="pic-21"><div class="pic-22"></div></div>
+        <span class="text-36">dylan cancino</span
+        ><span class="text-37">Website developer</span
+        ><span class="text-38"
+          >trabaja en la versión web de Agenda Free, optimizando la
+          funcionalidad y asegurando que los especialistas puedan acceder a sus
+          calendarios desde cualquier plataforma.</span
+        >
+        <div class="box-1b">
+          <div class="group-10"><div class="pic-23"></div></div>
+          <div class="pic-24"></div>
+          <div class="wrapper-d"><div class="img-23"></div></div>
+          <div class="img-24"></div>
+          <div class="group-11"><div class="pic-25"></div></div>
+          <div class="img-25"></div>
+          <div class="box-1c"><div class="pic-26"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="img-26">
+      <span class="text-39">NUESTROS CLIENTES SATISFECHOS</span
+      ><span class="text-3a"
+        >Nuestros usuarios confían en Agenda Free para organizar sus citas y
+        optimizar su tiempo. A lo largo de los años, hemos ayudado a numerosos
+        especialistas a gestionar sus agendas de manera más eficiente, mejorando
+        su productividad y permitiéndoles enfocarse en lo que realmente importa:
+        sus pacientes.</span
+      >
+      <div class="group-12">
+        <div class="wrapper-e">
+          <div class="pic-27"></div>
+          <span class="text-3b">Nathaly Morales</span
+          ><span class="text-3c">psicologa</span
+          ><span class="text-3d"
+            >"Desde que comenzamos a utilizar Agenda Free, la gestión de citas
+            ha sido mucho más sencilla y eficiente. La plataforma nos permite
+            mantener un control total sobre nuestro horario y ofrece una
+            experiencia inigualable tanto para los especialistas como para los
+            pacientes."</span
+          >
+        </div>
+        <div class="wrapper-f">
+          <div class="img-27"></div>
+          <span class="text-3e">Ann Lubin</span
+          ><span class="text-3f">Co-Founder</span
+          ><span class="text-40"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
+            nunc ante velit vitae. Est tellus vitae, nullam lobortis enim.
+            Faucibus amet etiam tincidunt rhoncus, ullamcorper velit.</span
+          >
+        </div>
+        <div class="wrapper-10">
+          <div class="pic-28"></div>
+          <span class="text-41">Ann Lubin</span
+          ><span class="text-42">Co-Founder</span
+          ><span class="text-43"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
+            nunc ante velit vitae. Est tellus vitae, nullam lobortis enim.
+            Faucibus amet etiam tincidunt rhoncus, ullamcorper velit.</span
+          >
+        </div>
+      </div>
+      <div class="img-28"></div>
+    </div>
+    <span class="text-44">NUESTRO BLOG RECIENTE</span
+    ><span class="text-45"
+      >Mantente al día con las últimas novedades y consejos útiles para mejorar
+      la gestión de tus citas con Agenda Free. Descubre nuevas funciones,
+      actualizaciones, y cómo sacar el máximo provecho de nuestra
+      aplicación.</span
+    >
+    <div class="wrapper-11">
+      <div class="box-1d">
+        <div class="img-29"></div>
+        <span class="text-46"
+          >The Snap Pixel: How It Works and How to Install </span
+        ><span class="text-47"
+          >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc
+          ante velit vitae. Est tellus vitae, nullam lobortis enim.</span
+        ><span class="text-48">Read more</span>
+      </div>
+      <div class="rectangle-3f">
+        <div class="image"></div>
+        <span class="global-partner-solutions"
+          >Global Partner Solutions: A Partnership of Innovation</span
+        ><span class="lorem-ipsum-text"
+          >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc
+          ante velit vitae. Est tellus vitae, nullam lobortis enim.</span
+        ><span class="read-more">Read more</span>
+      </div>
+      <div class="rectangle-40">
+        <div class="image-41"></div>
+        <span class="snapchatters-opportunity"
+          >2021: An opportunity for Snapchatters to start fresh</span
+        ><span class="lorem-ipsum-text-42"
+          >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc
+          ante velit vitae. Est tellus vitae, nullam lobortis enim.</span
+        ><span class="read-more-43">Read more</span>
+      </div>
+    </div>
+    <div class="flex-row-fc">
+      <div class="rectangle-44">
+        <div class="line"></div>
+        <div class="ellipse-45"></div>
+        <div class="ellipse-46"></div>
+        <div class="mail-fill-icons"><div class="group-47"></div></div>
+        <div class="phone-fill-icons"><div class="group-48"></div></div>
+        <span class="email-address">codelopers.chile@gmail.com</span
+        ><span class="phone-number-49">+880 321 655 9985</span>
+      </div>
+      <div class="rectangle-4a">
+        <div class="flex-row-dc">
+          <span class="logo-4b">Logo</span
+          ><span class="enlaces-rapidos">ENLACES RÁPIDOS</span
+          ><span class="boletin-de-noticias">BOLETÍN DE NOTICIAS</span>
+        </div>
+        <div class="flex-row-c">
+          <span class="agenda-free-description"
+            >Agenda Free es la solución perfecta para especialistas que buscan
+            gestionar sus citas de manera eficiente y profesional. Simplifica la
+            organización de tu tiempo con nuestra aplicación fácil de
+            usar.</span
+          ><span class="acerca-de-4c">Acerca de</span
+          ><span class="suscribete-boletin"
+            >Suscríbete a nuestro boletín para recibir las últimas
+            <br />actualizaciones y novedades.</span
+          ><span class="caracteristicas-4d">Características</span>
+        </div>
+        <div class="flex-row-cd">
+          <span class="caracteristicas-4e">Características</span>
+          <div class="rectangle-4f">
+            <div class="rectangle-50">
+              <div class="send-plane-icons"><div class="group-51"></div></div>
+            </div>
+            <span class="email-input">Your email address</span>
+          </div>
+          <span class="blog-52">Blog</span>
+        </div>
+        <div class="flex-row-53">
+          <div class="facebook-icons"><div class="group-54"></div></div>
+          <div class="instagram-icons"><div class="group-55"></div></div>
+          <div class="twitter-icons"><div class="group-56"></div></div>
+          <div class="youtube-icons"><div class="group-57"></div></div>
+          <div class="line-58"></div>
+          <div class="line-59"></div>
+          <div class="line-5a"></div>
+        </div>
+        <div class="line-5b"></div>
+        <div class="flex-row-eeb">
+          <div class="copyright-line-icons"><div class="group-5c"></div></div>
+          <span class="copyright-text"
+            >Copyright 2024 Agenda Free. Todos los derechos reservados.</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="background-image"></div>
+  </div>
+</template>
+
+<script setup></script>
+
+<style src="./index.css"></style>

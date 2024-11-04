@@ -22,16 +22,19 @@ const NoFoundView = () => import("@/views/errors/404View.vue");
 //Auth
 const signInView = () => import('@/views/AgendaFree/SignIn/Lock3View.vue');
 
+//Landing Principal
+const LandingPrincipal = import('@/views/AgendaFree/Landing/LandingPrincipal.vue');
+
 const routes = [
 
   {
     path: "/",
-    component: LayoutBackend,
-    children: [
+    component: LayoutLanding,
+    children:[
       {
-        path: "",
+        path:"",
         name: "landing",
-        component: BackendDashboard,
+        component: LandingPrincipal,
       },
     ],
   },

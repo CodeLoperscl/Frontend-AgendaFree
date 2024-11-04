@@ -2,17 +2,19 @@
 import { reactive, ref, computed, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import { useRouter } from "vue-router";
-import { useMainStore, usePacienteDatos, usePersonaPacienteDatos } from "../../stores/store";
+import { useMainStore, usePacienteDatos, usePersonaPacienteDatos, useLoadingStore } from "../../stores/store";
 import axios from 'axios';
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, helpers } from "@vuelidate/validators";
-import LoadingSpinner from "../../Component/LoadingSpinner.vue";
 
-//Variables
+
+//Stores
 const storePersonaPaciente = usePersonaPacienteDatos();
-const dataPaciente = ref();
 const storePaciente = usePacienteDatos();
 const store = useMainStore();
+const storeLoading = useLoadingStore();
+//Variables
+const dataPaciente = ref();
 const showReservarHora = ref(false);
 const router = useRouter();
 const tipoCampo = ref("RUT");
@@ -30,9 +32,6 @@ const getToken = () =>{
     }
   }
 };
-//Estados
-const isLoading = ref(false);
-
 
 const togglecomponent = async () => {
   const isValid = await v$.value.$validate();
@@ -137,8 +136,11 @@ watch(() => props.isOpen, (newVal) => {
     paciente.apellido = "";
     paciente.email = "";
     paciente.fono = "";
+    v$.value.$reset();
   }
 });
+
+
 
 const registrarPaciente = () =>{
   //Si paciente nuevo es chileno
@@ -171,7 +173,7 @@ const registrarPaciente = () =>{
   console.log(API_GENERAL+"persona", store.sharedData == 0 ? nuevaPersonaChilena.value : nuevaPersonaExtranjera.value);
 
   console.log("token desde ModalDatosPacientes", getToken());
-  isLoading.value = true;
+  storeLoading.setLoading(true);
   axios.post(API_GENERAL+"persona", store.sharedData == 0 ? nuevaPersonaChilena.value : nuevaPersonaExtranjera.value, getToken())
     .then((response)=>{
       if(response){
@@ -181,14 +183,14 @@ const registrarPaciente = () =>{
           storePaciente.setPaciente(response.data.paciente.paciente);
           storePersonaPaciente.setPersona(response.data);
           console.log("Paciente en store: ", storePaciente.getPaciente());
-          isLoading.value = false;
+          storeLoading.setLoading(false);
           router.push({ name: 'modulo-reserva' });
         } else {
           router.push({ name: 'agenda' });
         }
       }else{
         showReservarHora.value = true;
-        isLoading.value = false;
+        storeLoading.setLoading(false);
       }
     });
 }
@@ -211,7 +213,6 @@ const getNacionalidadPrevision = async (token) => {
 
 <template>
   <div v-if="props.isOpen" class="modal-mask">
-    <LoadingSpinner :isLoading="isLoading" />
     <div class="modal-wrapper">
       <div class="modal-container" ref="target">
         <div class="modal-header">
@@ -285,7 +286,6 @@ const getNacionalidadPrevision = async (token) => {
                 <label for="nacionalidad" class="rainbow-text">Nacionalidad: </label>
                 <select 
                   v-model="paciente.nacionalidad" 
-                  :disabled="store.sharedData == 0" 
                   id="nacionalidad" 
                   :class="{ 'is-invalid': v$.nacionalidad.$invalid && v$.nacionalidad.$dirty }"
                 >
@@ -333,6 +333,13 @@ const getNacionalidadPrevision = async (token) => {
 </template>
 
 <style scoped>
+.is-invalid {
+  background-color: #ffcccc; /* Rojo claro */
+  border: 2px solid #ff6666; /* Borde rojo para indicar error */
+}
+
+
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
