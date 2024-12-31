@@ -64,28 +64,13 @@ const getToken = () => {
   };
 };
 
+//La responsabilidad unica de getHorarios es cargar los horarios disponibles del especialista
 const getHorarios = () => {
   axios
     .get(API_ESPECIALISTA + "api/hora_disponible", getToken())
     .then((response) => {
       if (response) {
-        horariosEspecialista.value = response.data.horas_disponibles.filter((hora) => {
-          //const horaActual = new Date();
-          //const fechaActual = format(horaActual, 'yyyy-MM-dd');
-          const horaActual = new Date('2024-12-30T12:00:00');
-          const fechaActual = format(horaActual, 'yyyy-MM-dd');
-          // Combinar fecha actual con la hora de "hora.hora" para crear un formato ISO completo
-          const horaComparada = parseISO(`${fechaActual} ${hora.hora}`);
-
-          console.log(hora.hora);
-          console.log(horaComparada);
-          
-          console.log(isAfter(horaComparada, horaActual));// Filtrar solo las horas que son después de la hora actual// Filtrar solo las horas que son antes de la hora actual
-          return isAfter(horaComparada, horaActual);
-          //lo comento para poder trabajar en las fechas validas
-          //return horaComparada;
-          
-        });
+        horariosEspecialista.value = response.data.horas_disponibles;
         console.log("hora disponible: ", horariosEspecialista.value);
       }
     })
@@ -355,20 +340,34 @@ const getCitas = () => {
   }
 };
 
+// La responsabilidad unica de horasDiposniblesPorDia es filtrar los horarios disponibles, considerando
+// la fecha actual y las citas agendadas
 const horasDisponiblesPorDia = () => {
-  if (citasEspecialista.value.length === 0) {
-    horariosEspecialista.value.forEach((horario) => {
-      horario.agendado = false;
-    });
-  } else {
-    horariosEspecialista.value.forEach((hora) => {
-      const horaReservada = citasEspecialista.value.find(
-        (cita) => cita.hora_id == hora.id
-      );
-      horaReservada ? (hora.agendado = true) : (hora.agendado = false);
-    });
-  }
+  const ahora = new Date(); // Hora actual
+  const fechaActual = format(ahora, "yyyy-MM-dd"); // Fecha actual
+  const fechaSeleccionada = date.value
+
+  horariosEspecialista.value.forEach((hora) => {
+    const horaComparada = parseISO(`${fechaSeleccionada}T${hora.hora}`); // Combinar fecha y hora
+
+    // Si es el día actual, deshabilitar horas anteriores a la hora actual
+    if (fechaSeleccionada === fechaActual) {
+      if (!isAfter(horaComparada, ahora)) {
+        hora.agendado = true; // Marcar como no disponible
+        return; // Pasar al siguiente horario
+      }
+    }
+
+    // Verificar si la hora está reservada
+    const horaReservada = citasEspecialista.value.find(
+      (cita) => cita.hora_id == hora.id
+    );
+
+    // Marcar como agendado si ya está reservada
+    hora.agendado = !!horaReservada;
+  });
 };
+
 
 onBeforeMount(async () => {
   console.log("store2", storePersonaPaciente.getPersona());
