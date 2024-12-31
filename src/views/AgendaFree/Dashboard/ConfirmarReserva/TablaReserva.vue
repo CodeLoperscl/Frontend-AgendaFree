@@ -283,11 +283,11 @@ onBeforeMount(async() => {
                         >
                           {{ "Solicitado" }}
                         </span> 
-                        <span v-if="row.estado.id === 2"
+                        <!-- <span v-if="row.estado.id === 2"
                           class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info"
                         >
                           {{ "Solicitud abono" }}
-                        </span> 
+                        </span>  -->
                         <!--Estado: En espera de abono-->
                         <span v-if="row.estado.id === 3"
                           class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning"
@@ -316,8 +316,8 @@ onBeforeMount(async() => {
                           <span class="d-none d-lg-inline">Rechazar</span>
                           <i class="fa fa-times-circle d-lg-none"></i>
                         </button>
-                        <!--Btn Solicitar Abono-->
-                        <button 
+
+                        <!-- <button 
                           type="button" 
                           class="btn btn-sm btn-alt-primary m-1" 
                           style="width: 
@@ -327,19 +327,18 @@ onBeforeMount(async() => {
                         >
                           <span class="d-none d-lg-inline">Solicitar abono</span>
                           <i class="fa fa-money-check-dollar d-lg-none"></i>
-                        </button>
-                        <!--Btn Rechazar Bono-->
-                        <button 
+                        </button> -->
+
+                        <!-- <button 
                           type="button" 
                           class="btn btn-sm btn-alt-primary m-1" 
                           style="width: 
                           auto; min-width: 60px;"
                           @click="rechazarAbono(row.id)"
-                          v-else-if="row.estado.id == 2"
                         >
                           <span class="d-none d-lg-inline">Rechazar Abono</span>
                           <i class="fa fa-money-check-dollar d-lg-none"></i>
-                        </button>
+                        </button> -->
                       </td>
                     </tr>
                   </template>

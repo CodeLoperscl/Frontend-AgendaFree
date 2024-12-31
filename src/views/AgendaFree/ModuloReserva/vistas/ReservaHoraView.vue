@@ -5,7 +5,7 @@ import { useRoute } from "vue-router";
 import Swal from "sweetalert2";
 import { DatePicker } from "v-calendar";
 import "v-calendar/style.css";
-import { format } from "date-fns";
+import { format, isAfter, isBefore, parseISO } from "date-fns";
 import {
   useEspecialistaDatos,
   useUrlApiEspecialista,
@@ -69,8 +69,24 @@ const getHorarios = () => {
     .get(API_ESPECIALISTA + "api/hora_disponible", getToken())
     .then((response) => {
       if (response) {
-        horariosEspecialista.value = response.data.horas_disponibles;
-        console.log("hora disponible: ", response.data.horas_disponibles);
+        horariosEspecialista.value = response.data.horas_disponibles.filter((hora) => {
+          //const horaActual = new Date();
+          //const fechaActual = format(horaActual, 'yyyy-MM-dd');
+          const horaActual = new Date('2024-12-30T12:00:00');
+          const fechaActual = format(horaActual, 'yyyy-MM-dd');
+          // Combinar fecha actual con la hora de "hora.hora" para crear un formato ISO completo
+          const horaComparada = parseISO(`${fechaActual} ${hora.hora}`);
+
+          console.log(hora.hora);
+          console.log(horaComparada);
+          
+          console.log(isAfter(horaComparada, horaActual));// Filtrar solo las horas que son después de la hora actual// Filtrar solo las horas que son antes de la hora actual
+          return isAfter(horaComparada, horaActual);
+          //lo comento para poder trabajar en las fechas validas
+          //return horaComparada;
+          
+        });
+        console.log("hora disponible: ", horariosEspecialista.value);
       }
     })
     .catch((e) => {

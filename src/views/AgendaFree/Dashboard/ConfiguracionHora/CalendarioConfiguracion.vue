@@ -81,9 +81,9 @@ const semanaAnterior = () => {
 <template>
   <div class="calendario-configuracion">
     <div class="navegacion-semana">
-      <button @click="semanaAnterior" class="btn-nav">&lt;</button>
-      <span>{{ formatoFecha(fechas[0]) }} - {{ formatoFecha(fechas[6]) }}</span>
-      <button @click="semanaSiguiente" class="btn-nav">&gt;</button>
+      <button @click="semanaAnterior" class="btn-nav"><i class="fas fa-chevron-left"></i></button>
+      <span class="semana-texto">{{ formatoFecha(fechas[0]) }} - {{ formatoFecha(fechas[6]) }}</span>
+      <button @click="semanaSiguiente" class="btn-nav"><i class="fas fa-chevron-right"></i></button>
     </div>
     <div class="calendario-grid">
       <div class="celda-hora"></div>
@@ -94,7 +94,7 @@ const semanaAnterior = () => {
       </div>
       <template v-for="hora in horas" :key="hora">
         <div class="celda-hora">
-          {{ formatoHora(hora) }}
+          <p>{{ formatoHora(hora) }}</p>
           <input type="checkbox" :checked="isHoraSeleccionada(hora)" @change="toggleHora(hora)">
         </div>
         <div v-for="fecha in fechas" :key="fecha.toISOString()" class="celda-horario">
@@ -112,64 +112,101 @@ const semanaAnterior = () => {
 
 <style scoped>
 .calendario-configuracion {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   padding: 20px;
   margin: 20px auto;
-  max-width: 900px;
-  width: 100%;
+  max-width: 1200px; /* Incrementa el max-width o elimínalo si quieres que ocupe el 100% */
+  width: 90%; /* Cambia a un porcentaje mayor para ocupar más espacio */
+  color: #333;
 }
+
 
 .navegacion-semana {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   font-size: 1em;
   color: #333;
+  gap: 10px;
 }
 
-.semana-actual {
-  font-weight: bold;
+.semana-texto {
+  font-size: 1.2em;
+  font-weight: 500;
+  background-color: #f0f4f8;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #333;
 }
 
 .btn-nav {
-  background-color: transparent;
+  background-color: #f0f0f0;
   border: none;
+  border-radius: 50%;
+  font-size: 1.4em;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  padding: 8px;
+}
+
+.btn-nav {
+  background-color: #f0f4f8;
+  border: none;
+  border-radius: 50%;
   font-size: 1.2em;
   color: #007bff;
   cursor: pointer;
-  transition: color 0.3s;
-  padding: 5px 10px;
+  transition: background-color 0.3s, color 0.3s;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-nav:hover {
-  color: #0056b3;
+  background-color: #007bff;
+  color: #fff;
 }
 
 .calendario-grid {
   display: grid;
   grid-template-columns: auto repeat(7, 1fr);
-  gap: 1px;
-  background-color: #f8f9fa;
-  border-radius: 4px;
+  gap: 0;
+  background-color: #e9ecef;
+  border-radius: 8px;
   overflow: hidden;
 }
 
-.celda-horario {
-  background-color: #fff;
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 0.9em;
-  border: 0.1rem solid #e9ecef;
+.celda-hora {
+  display: flex;
+  flex-direction: row; /* Asegura que los elementos estén en fila */
+  align-items: center; /* Centra verticalmente el texto y el checkbox */
+  justify-content: start; /* Alinea los elementos al inicio */
+  gap: 4px; /* Reduce el espacio entre la hora y el checkbox */
+  font-weight: 500;
+  color: #495057;
+  padding: auto;
+  padding-right: 4px;
+  background-color: #ffffff;
+  font-size: 0.85em;
+}
+
+.celda-hora p {
+  margin: 1rem; /* Elimina márgenes en el <p> para una mejor alineación */
+  min-width: 20px; /* Establece un ancho mínimo para que el texto no salte de línea */
 }
 
 .celda-dia {
   text-align: center;
-  font-weight: bold;
-  color: #495057;
+  padding: 8px;
+  background-color: #ffffff; /* Fondo blanco */
+  border-bottom: 1px solid #e9ecef;
 }
 
 .dia-nombre {
@@ -180,28 +217,28 @@ const semanaAnterior = () => {
 
 .dia-fecha {
   font-size: 1.1em;
-  margin-top: 2px;
+  font-weight: 600;
+  color: #007bff;
 }
 
-.celda-hora {
-  font-weight: bold;
-  color: #495057;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 8px;
-  font-size: 0.85em;
+.celda-horario {
+  padding: 12px;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
 }
 
 input[type="checkbox"] {
-  margin: 0;
-  cursor: pointer;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border: 2px solid #ced4da;
-  border-radius: 3px;
-  transition: all 0.2s;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 input[type="checkbox"]:checked {
@@ -210,17 +247,23 @@ input[type="checkbox"]:checked {
 }
 
 input[type="checkbox"]:checked::after {
-  content: '\2714';
-  display: block;
-  text-align: center;
+  content: '✔';
+  font-size: 14px;
   color: white;
-  font-size: 12px;
-  line-height: 14px;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #007bff;
 }
 
 .celda-horario input[type="checkbox"] {
   margin: 0 auto;
   display: block;
-  
 }
+
+.calendario-grid input[type="checkbox"] {
+  position: relative;
+}
+
 </style>
+
